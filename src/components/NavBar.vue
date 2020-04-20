@@ -28,8 +28,8 @@ export default {
   },
   methods: {
     navClick(index) {
-      // this.$store.state.navIndex = index;
-      console.log('this.navIndex', this.navIndex);
+      this.$store.state.navIndex = index;
+      // console.log('this.navIndex', this.navIndex);
     }
   }
 }

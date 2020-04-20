@@ -21,6 +21,9 @@ export default {
 </script>
 <style lang="scss">
 @import '@/styles/variable.scss';
+.home-content{
+  position: relative;
+}
 
 .home-content,
 .sw-content,
@@ -42,12 +45,11 @@ export default {
 }
 
 .navbar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   background: white;
-  // z-index: 10;
 }
 
 .sw-content {
