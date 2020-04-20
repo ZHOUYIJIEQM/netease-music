@@ -46,7 +46,6 @@ export default {
   justify-content: space-between;
 
   i {
-    display: inline-block;
     padding: 0 15px;
     color: #636363;
   }
@@ -54,7 +53,7 @@ export default {
   i.iconfont.icon-caidan {
     font-size: 22px;
   }
-
+  // 不是同一套图标，大小有差异
   i.iconfont.icon-sousuo {
     font-size: 26px;
   }
@@ -63,14 +62,13 @@ export default {
     width: 60%;
     font-size: 0;
     // margin: 0 auto;
+    display: flex;
 
     .item {
-      width: 25%;
+      flex: 1;
       text-align: center;
       font-size: $fsize-14;
       color: grey;
-      display: inline-block;
-      vertical-align: middle;
       transition: all .25s;
     }
 

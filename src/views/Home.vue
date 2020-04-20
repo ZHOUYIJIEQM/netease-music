@@ -19,7 +19,7 @@ export default {
 }
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/styles/variable.scss';
 
 .home-content,
@@ -36,7 +36,7 @@ export default {
 }
 
 .swiper-box {
-  // width: 100%;
+  width: 100%;
   height: 100%;
   overflow-y: scroll;
 }
@@ -47,7 +47,7 @@ export default {
   left: 0;
   width: 100%;
   background: white;
-  z-index: 10;
+  // z-index: 10;
 }
 
 .sw-content {
