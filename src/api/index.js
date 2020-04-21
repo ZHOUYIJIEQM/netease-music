@@ -6,27 +6,46 @@ axios.defaults.baseURL = 'http://45.77.111.23:5000';
 axios.interceptors.response.use(res => {
   if (res.data.code !== 200) {
     // 提示响应码错误
-    console.log('响应拦截 -- 响应码错误:', res.data.code)
+    // console.log('响应拦截 -- 响应码错误:', res.data.code)
   }
   console.log(`axios 响应拦截 ${res.config.baseURL}${res.config.url}`);
   // console.log(res)
-  return res;
+  return res.data;
 }, err => {
   // 提示请求错误
-  console.log('响应拦截 -- 请求错误:', err)
+  // console.log('响应拦截 -- 请求错误:');
+  Promise.reject(err)
+  // console.log(err)
+});
+
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  console.log('请求前', config)
+  return config;
+}, function (error) {
+  // 对请求错误做些什么
+  console.log('请求错误', error)
+  return Promise.reject(error);
 });
 
 export function fetchGet(url, param) {
   return new Promise((resolve, reject) => {
-    axios.get(url, {
-        params: param
-      })
-      .then(res => {
-        resolve(res)
-      })
-      .catch(err => {
-        reject(err)
-      })
+    // axios.get(url, {
+    //     params: param
+    //   })
+    axios({
+      method: 'get',
+      url,
+      data: param,
+      withCredentials: true
+    })
+    .then(res => {
+      resolve(res)
+    })
+    .catch(err => {
+      reject(err)
+    })
   })
 }
 
@@ -42,11 +61,8 @@ export default {
    * 刷新登录状态
    */
   RefreshLogin() {
-    return fetchGet('/login/refresh')
-    // .then(res => {
-    //   console.log('refresh:', res)
-    //   return res.code === 200;
-    // })
+    // return fetchGet('/login/refresh')
+    return fetchGet(`/login/refresh?timestamp=${Date.now()}`)
   },
   /**
    * 退出登录状态

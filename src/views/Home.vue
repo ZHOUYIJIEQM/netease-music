@@ -55,5 +55,4 @@
   .sw-content {
     padding-top: $navbar-height;
   }
-
 </style>

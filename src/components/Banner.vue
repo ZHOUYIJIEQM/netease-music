@@ -44,8 +44,8 @@
 
     created() {
       api.BannerList().then(res => {
-        console.log('banner', res);
-        this.banners = res.data.banners;
+        // console.log('banner', res);
+        this.banners = res.banners;
       })
     }
   }
