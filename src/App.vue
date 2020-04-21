@@ -5,7 +5,6 @@
     </keep-alive>
   </div>
 </template>
-
 <style lang="scss">
   @import './styles/reset.scss'
 </style>

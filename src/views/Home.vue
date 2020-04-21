@@ -9,51 +9,51 @@
   </div>
 </template>
 <script>
-import navBar from '@/components/NavBar.vue'
-import homeSwiperContent from '../components/HomeSwiperContent.vue'
-export default {
-  components: {
-    navBar,
-    homeSwiperContent
+  import navBar from '@/components/NavBar.vue'
+  import homeSwiperContent from '../components/HomeSwiperContent.vue'
+  export default {
+    components: {
+      navBar,
+      homeSwiperContent
+    }
   }
-}
-
 </script>
 <style lang="scss">
-@import '@/styles/variable.scss';
-.home-content{
-  position: relative;
-}
+  @import '@/styles/variable.scss';
 
-.home-content,
-.sw-content,
-.swiper-content.sw-full,
-.sw-full .swiper-container,
-.sw-full .swiper-wrapper,
-.sw-full .swiper-slide {
-  height: 100%;
-}
+  .home-content {
+    position: relative;
+  }
 
-.swiper-slide {
-  overflow: hidden;
-}
+  .home-content,
+  .sw-content,
+  .swiper-content.sw-full,
+  .sw-full .swiper-container,
+  .sw-full .swiper-wrapper,
+  .sw-full .swiper-slide {
+    height: 100%;
+  }
 
-.swiper-box {
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-}
+  .swiper-slide {
+    overflow: hidden;
+  }
 
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-}
+  .swiper-box {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
 
-.sw-content {
-  padding-top: $navbar-height;
-}
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+  }
+
+  .sw-content {
+    padding-top: $navbar-height;
+  }
 
 </style>

@@ -56,39 +56,37 @@
   </transition>
 </template>
 <script>
-export default {
-  methods: {
-    goback() {
-      this.$router.back()
+  export default {
+    methods: {
+      goback() {
+        this.$router.back()
+      }
     }
   }
-}
-
 </script>
 <style lang="scss" scoped>
-.search-enter-active {
-  animation: right-search .5s;
-}
-
-.search-leave-active {
-  animation: right-search .5s reverse;
-}
-
-@keyframes right-search {
-  0% {
-    transform: translate3d(100%, 0, 0);
-    // opacity: 0.5;
+  .search-enter-active {
+    animation: right-search .5s;
   }
 
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
+  .search-leave-active {
+    animation: right-search .5s reverse;
   }
-}
 
-.search-page {
-  background: black;
-  color: white;
-}
+  @keyframes right-search {
+    0% {
+      transform: translate3d(100%, 0, 0);
+      // opacity: 0.5;
+    }
 
+    100% {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+  }
+
+  .search-page {
+    background: black;
+    color: white;
+  }
 </style>

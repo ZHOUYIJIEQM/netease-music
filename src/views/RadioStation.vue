@@ -1,6 +1,6 @@
 <template>
-  <div class="cloud-video-content">
-    <div v-for="i in 60" :key="i">video -> {{i}}</div>
+  <div class="cloud-village-content">
+    <div v-for="i in 60" :key="i">RadioStation -> {{i}}</div>
   </div>
 </template>
 <script>
