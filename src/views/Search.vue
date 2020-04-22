@@ -2,56 +2,9 @@
   <transition name="search" mode="out-in">
     <div class="search-page">
       <div @click="goback">============</div>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
-      <h1>This is an search page</h1>
+      <div v-for="index in 60" :key="index">
+        <h1>This is {{index}} search page</h1>
+      </div>
     </div>
   </transition>
 </template>

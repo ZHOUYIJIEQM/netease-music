@@ -50,12 +50,12 @@
     }
 
     i.iconfont.icon-caidan {
-      font-size: 22px;
+      font-size: .22rem;
     }
 
     // 不是同一套图标，大小有差异
     i.iconfont.icon-sousuo {
-      font-size: 26px;
+      font-size: .22rem;
     }
 
     .nav-list {

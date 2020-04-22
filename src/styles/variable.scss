@@ -1,6 +1,9 @@
 // 头部导航高度
 $navbar-height: .55rem;
 
+// 等待加载时的灰色背景
+$grey-bg: #d4d4d4;
+
 // 字体大小
 $fsize-9: .09rem;
 $fsize-10: .10rem;
@@ -12,9 +15,19 @@ $fsize-17: .17rem;
 $fsize-18: .18rem;
 $fsize-19: .19rem;
 $fsize-20: .20rem;
+$fsize-22: .22rem;
 $fsize-25: .25rem;
 
 // 每日推荐的图标高宽
 $recommend-icon-wh: .43rem;
 
 $grey-c: #8c8c8c;
+
+@keyframes roll{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}

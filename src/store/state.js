@@ -5,8 +5,6 @@ const state = {
   toastMsg: '',
   // 登录标记
   isLogin: false,
-  // 轮播
-  banners: [],
   // 推荐歌单
   recommendList: [],
   // 推荐新音乐

@@ -6,38 +6,29 @@ axios.defaults.baseURL = 'http://45.77.111.23:5000';
 axios.interceptors.response.use(res => {
   if (res.data.code !== 200) {
     // 提示响应码错误
-    // console.log('响应拦截 -- 响应码错误:', res.data.code)
+    console.log('响应拦截 -- 响应码错误:', res.data.code)
   }
   console.log(`axios 响应拦截 ${res.config.baseURL}${res.config.url}`);
-  // console.log(res)
+  console.log(res)
   return res.data;
 }, err => {
   // 提示请求错误
-  // console.log('响应拦截 -- 请求错误:');
+  console.log('响应拦截 -- 请求错误:', err);
   Promise.reject(err)
-  // console.log(err)
 });
 
-// 添加请求拦截器
-axios.interceptors.request.use(function (config) {
-  // 在发送请求之前做些什么
-  console.log('请求前', config)
-  return config;
-}, function (error) {
-  // 对请求错误做些什么
-  console.log('请求错误', error)
-  return Promise.reject(error);
-});
-
-export function fetchGet(url, param) {
+export function fetchGet(url, param, methods = 'get') {
   return new Promise((resolve, reject) => {
     // axios.get(url, {
     //     params: param
     //   })
     axios({
-      method: 'get',
+      method: methods,
       url,
       data: param,
+      validateStatus: function (status) {
+        return status < 400; // 状态码在大于或等于400时才会 reject
+      },
       withCredentials: true
     })
     .then(res => {
@@ -68,55 +59,55 @@ export default {
    * 退出登录状态
    */
   Logout() {
-    return fetchGet('/logout')
+    return fetchGet(`/logout?timestamp=${Date.now()}`)
   },
   /**
    * 轮播图
    */
   BannerList() {
-    return fetchGet('/banner');
-    // return fetchGet(`/banner?timestamp=${Date.now()}`);
+    // return fetchGet('/banner');
+    return fetchGet(`/banner?timestamp=${Date.now()}`);
   },
   /**
    * 推荐歌单 (不需要登录)
    */
   RecommendListNo() {
-    return fetchGet('/personalized');
+    return fetchGet(`/personalized?timestamp=${Date.now()}`);
   },
   /**
    * 每日推荐歌单 (需要登录 )
    */
   RecommendList() {
-    return fetchGet('/recommend/resource');
+    return fetchGet(`/recommend/resource?timestamp=${Date.now()}`);
   },
   /**
    * 推荐歌曲 (不需要登录)
    */
   RecommendMusicNo() {
-    return fetchGet('/personalized/newsong');
+    return fetchGet(`/personalized/newsong?timestamp=${Date.now()}`);
   },
   /**
    * 每日推荐歌曲 (需要登录 )
    */
   RecommendMusic() {
-    return fetchGet('/recommend/songs');
+    return fetchGet(`/recommend/songs?timestamp=${Date.now()}`);
   },
   /**
    * 推荐电台 (不需要登录)
    */
   RecommendFMNo() {
-    return fetchGet('/personalized/djprogram');
+    return fetchGet(`/personalized/djprogram?timestamp=${Date.now()}`);
   },
   /**
    * 推荐电台 (需要登录)
    */
   RecommendFM() {
-    return fetchGet('/dj/recommend');
+    return fetchGet(`/dj/recommend?timestamp=${Date.now()}`);
   },
   /**
    * 获取热搜
    */
   HotSearch() {
-    return fetchGet('/personalized');
+    return fetchGet(`/personalized?timestamp=${Date.now()}`);
   }
 }

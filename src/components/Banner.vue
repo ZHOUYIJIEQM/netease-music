@@ -31,12 +31,12 @@
           },
           // 循环
           loop: true,
+          // // 阻止滑动banner时，外层的swiper滑动
+          nested: true,
           autoplay: {
-            delay: 3000,
+            delay: 6000,
             disableOnInteraction: false
-          },
-          // 阻止滑动banner时，外层的swiper滑动
-          nested: true
+          }
         },
         banners: []
       }

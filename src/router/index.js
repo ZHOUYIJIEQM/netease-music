@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import api from '@/api/index.js'
-import store from '@/store/index.js'
-// import axios from 'axios'
-
-const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
+// import store from '@/store/index.js'
 
 Vue.use(VueRouter)
 
@@ -12,12 +8,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "Home" */ '@/views/Home.vue')
   },
   {
     path: '/Search',
     name: 'Search',
-    component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
+    component: () => import(/* webpackChunkName: "Search" */ '../views/Search.vue')
   },
   {
     path: '/DailyRecommend',
@@ -63,26 +59,17 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/') {
-    // 进入'/'就刷新登录状态
-    api.RefreshLogin()
-      .then(res => {
-        // console.log('刷新登录状态:', res);
-        // store.state.isLogin = res.code === 200;
-        // window.localStorage.setItem('isLogin', res.data.code === 200)
-      })
-      // .catch(err => {
-      //   console.log('刷新登录状态报错', err);
-      // })
-  }
   if (to.meta.requiresAuth) {
-    console.log('当前登录状态:', store.state.isLogin)
-    if (store.state.isLogin) {
-    // if (window.localStorage.getItem('isLogin')) {
-      next()
+    // const isLogin = window.localStorage.getItem('isLogin') === 'true' ? true : false;
+    const isLogin = window.localStorage.getItem('isLogin') === 'true';
+    if (isLogin) {
+    // if (store.state.isLogin) {
+      next();
     } else {
-      next(false)
+      alert('需要登录')
+      next({ path: '/LeaderBoard' })
     }
+    // next()
   } else {
     next()
   }
