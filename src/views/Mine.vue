@@ -1,6 +1,6 @@
 <template>
   <div class="mine-content">
-    <div class="mine-title" :style="{backgroundImage: 'url('+backgroundUrl+')', backgroundSize: '100%'}">
+    <div class="mine-title" :style="{backgroundImage: 'url('+titleBg+')', backgroundSize: '100%'}">
       <div class="mine-title-login" v-if="!loginStatus">
         <div class="login-pic">
           <img :src="loginpic" alt="" />
@@ -114,7 +114,8 @@
           { name: '关注新歌', icon: 'icon-guanzhu' }
         ],
         userPlayList: [],
-        userProfile: null
+        userProfile: null,
+        titleBg: ''
       }
     },
     computed: {
@@ -133,13 +134,18 @@
       }
     },
     created() {
-      this.getRecommend()
+      this.titleBg = this.backgroundUrl;
+      this.getRecommend();
     },
     watch: {
       loginStatus() {
         this.getRecommend()
         if (!this.loginStatus) {
+          this.titleBg = ''
           console.log('--')
+        }
+        if (this.loginStatus) {
+          this.titleBg = this.backgroundUrl;
         }
       }
     },
