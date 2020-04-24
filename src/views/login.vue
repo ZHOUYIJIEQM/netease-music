@@ -49,7 +49,7 @@
               if (res.code === api.STATUS) {
                 console.log('登录', res);
                 this.$store.commit('SETISLOGIN', true);
-                window.localStorage.setItem('userInfo', JSON.stringify(res, null, '  '));
+                window.localStorage.setItem('userInfo', JSON.stringify(res, null, 2));
                 window.localStorage.setItem('isLogin', true);
                 this.$store.commit('SETUSERINFO', res);
                 this.$router.push({ name: 'Home' });

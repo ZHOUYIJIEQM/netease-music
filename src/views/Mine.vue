@@ -13,6 +13,9 @@
         </div>
       </div>
       <div class="mine-title-login" v-else>
+        <!-- <pre>
+          {{userProfile}}
+        </pre> -->
         <div class="login-pic">
           <img :src="userInfo.profile.avatarUrl" alt="" />
         </div>
@@ -110,32 +113,21 @@
           { name: '我的收藏', icon: 'icon-shoucang1' },
           { name: '关注新歌', icon: 'icon-guanzhu' }
         ],
-        userPlayList: []
+        userPlayList: [],
+        userProfile: null
       }
     },
     computed: {
       userInfo() {
-        // let result = this.$store.getters.userInfo;
-        // console.log('--------------------------------------------')
-        // console.log(typeof result)
-        // console.log('--------------------------------------------')
-        // if (result !== null) {
-        //   result = JSON.parse(JSON.stringify(result, null, '  '))
-        // }
-        // return result;
         return this.$store.getters.userInfo;
       },
       loginStatus() {
-        console.log('login status change')
-        console.log(this.$store.getters.loginStatus)
         return this.$store.getters.loginStatus;
       },
       backgroundUrl() {
-        console.log('-------------------------------')
-        // console.log(this.userInfo.backgroundUrl)
         let result = '';
         if (this.userInfo !== null) {
-          result = this.userInfo.backgroundUrl;
+          result = this.userInfo.profile.backgroundUrl;
         }
         return result;
       }
@@ -146,6 +138,9 @@
     watch: {
       loginStatus() {
         this.getRecommend()
+        if (!this.loginStatus) {
+          console.log('--')
+        }
       }
     },
     methods: {
@@ -154,17 +149,17 @@
         // console.log('this.loginStatus=============', this.loginStatus)
         if (this.loginStatus) {
           // console.log('===================================')
-          api.UserPlayList({ uid: 1347464355 })
-            // api.UserPlayList({ uid: this.userInfo.account.id })
+          // api.UserPlayList({ uid: 1347464355 })
+          api.UserPlayList({ uid: this.userInfo.account.id })
             .then(res => {
-              console.log('用户歌单 登录', res)
+              // console.log('用户歌单 登录', res)
               this.userPlayList = res.playlist;
             })
         } else {
           // 推荐歌单
           api.RecommendListNo()
             .then(res => {
-              console.log('推荐歌单 不用登录', res)
+              // console.log('推荐歌单 不用登录', res)
               this.userPlayList = res.result;
             })
         }

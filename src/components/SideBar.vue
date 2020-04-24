@@ -22,6 +22,7 @@
         this.$store.commit('SETSIDEBAR', false);
       },
       logout() {
+        this.$store.commit('SETSIDEBAR', false);
         api.Logout()
           .then(res => {
             console.log('退出登录', res);
