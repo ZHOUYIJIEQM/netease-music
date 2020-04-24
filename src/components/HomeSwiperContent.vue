@@ -25,7 +25,8 @@
           { component: cloudVideo }
       ],
         swiperOption: {
-          initialSlide: this.$store.getters.navIndex
+          initialSlide: this.$store.getters.navIndex,
+          resistanceRatio: 0
         }
       }
     },

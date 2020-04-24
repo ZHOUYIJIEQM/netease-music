@@ -3,6 +3,7 @@
     <div class="navbar">
       <navBar></navBar>
     </div>
+    <sideBar></sideBar>
     <div class="sw-content">
       <homeSwiperContent></homeSwiperContent>
     </div>
@@ -14,7 +15,13 @@
   export default {
     components: {
       navBar,
-      homeSwiperContent
+      homeSwiperContent,
+      sideBar: () => import('@/components/SideBar.vue')
+    },
+    computed: {
+      sideBar() {
+        return this.$store.getters.sideBar
+      }
     }
   }
 </script>

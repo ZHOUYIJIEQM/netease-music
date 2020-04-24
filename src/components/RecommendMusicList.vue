@@ -54,6 +54,7 @@
         pic: require('@/assets/image/default.png'),
         songSwiperOption: {
           slidesPerView: 1,
+          resistanceRatio: 0.3,
           nested: true
         }
       }

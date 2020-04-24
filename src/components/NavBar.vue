@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <i class="iconfont icon-caidan"></i>
+    <i class="iconfont icon-caidan" @click="showSidebar"></i>
     <ul class="nav-list">
       <li class="item" v-for="(item, index) in navList" :class="{'active': navIndex === index}" @click="navClick(index)" :key="item.name">{{item.name}}</li>
     </ul>
@@ -20,16 +20,19 @@
           { name: '发现' },
           { name: '云村' },
           { name: '视频' }
-      ]
+        ]
       }
     },
     computed: {
-      ...mapGetters(['navIndex'])
+      ...mapGetters(['navIndex', 'sideBar'])
     },
     methods: {
       navClick(index) {
         this.$store.state.navIndex = index;
         // console.log('this.navIndex', this.navIndex);
+      },
+      showSidebar() {
+        this.$store.commit('SETSIDEBAR', !this.sideBar);
       }
     }
   }

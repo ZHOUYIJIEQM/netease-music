@@ -16,6 +16,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "Search" */ '../views/Search.vue')
   },
   {
+    path: '/Login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
+  },
+  {
     path: '/DailyRecommend',
     name: 'DailyRecommend',
     component: () => import(/* webpackChunkName: "DailyRecommend" */ '../views/DailyRecommend.vue'),
@@ -67,7 +72,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       alert('需要登录')
-      next({ path: '/LeaderBoard' })
+      next({ path: '/Login' })
     }
     // next()
   } else {

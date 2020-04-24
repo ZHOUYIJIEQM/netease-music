@@ -1,19 +1,8 @@
 <template>
-  <swiper
-    class="swiper-container banner-box"
-    :options="swiperOption"
-    v-if="banners.length"
-  >
-    <swiper-slide
-      class="banner-item"
-      v-for="(item, index) in banners"
-      :key="index"
-    >
+  <swiper class="swiper-container banner-box" :options="swiperOption" v-if="banners.length">
+    <swiper-slide class="banner-item" v-for="(item, index) in banners" :key="index">
       <img class="banner-pic" :src="item.imageUrl" alt="">
-      <p
-        :style="'background-color:'+item.titleColor"
-        class="banner-text"
-      >{{item.typeTitle}}</p>
+      <p :style="'background-color:'+item.titleColor" class="banner-text">{{item.typeTitle}}</p>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination"></div>
   </swiper>
@@ -47,34 +36,45 @@
         // console.log('banner', res);
         this.banners = res.banners;
       })
+    },
+
+    watch: {
+      banners() {
+        if (this.banners.length) {
+          // 拿到banner数据后，让父组件隐藏banner处的加载动画
+          this.$emit('showBanner', this.banners.length)
+        }
+      }
     }
   }
 </script>
 <style lang="scss">
-  .banner-box{
+  .banner-box {
     .swiper-pagination-bullet {
       width: 6px;
       height: 6px;
-      margin: 0 2px!important;
+      margin: 0 2px !important;
     }
 
-    .swiper-pagination-bullet.swiper-pagination-bullet-active{
-      background-color:  rgba(241, 4, 4, 0.8);
+    .swiper-pagination-bullet.swiper-pagination-bullet-active {
+      background-color: rgba(241, 4, 4, 0.8);
     }
   }
 </style>
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
-  .banner-box{
+
+  .banner-box {
     // min-height: 1rem!important;
     position: relative;
     overflow: hidden;
     font-size: 0;
   }
 
-  .banner-item{
+  .banner-item {
     position: relative;
-    .banner-text{
+
+    .banner-text {
       font-size: $fsize-12;
       position: absolute;
       right: 0;
@@ -86,11 +86,12 @@
     }
   }
 
-  .banner-pic{
+  .banner-pic {
     width: 100%;
 
   }
-  .banner-box .swiper-slide{
+
+  .banner-box .swiper-slide {
     height: auto;
   }
 </style>

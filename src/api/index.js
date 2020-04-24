@@ -1,15 +1,15 @@
 import axios from 'axios'
 
 axios.defaults.timeout = 10000;
-axios.defaults.baseURL = 'http://45.77.111.23:5000';
+axios.defaults.baseURL = 'http://63.209.32.7:5000';
 
 axios.interceptors.response.use(res => {
   if (res.data.code !== 200) {
     // 提示响应码错误
     console.log('响应拦截 -- 响应码错误:', res.data.code)
   }
-  console.log(`axios 响应拦截 ${res.config.baseURL}${res.config.url}`);
-  console.log(res)
+  // console.log(`axios 响应拦截 ${res.config.baseURL}${res.config.url}`);
+  // console.log(res)
   return res.data;
 }, err => {
   // 提示请求错误
@@ -46,7 +46,7 @@ export default {
    * 登录
    */
   Login(params) {
-    return fetchGet('/login', params);
+    return fetchGet('/login/cellphone', params, 'post');
   },
   /**
    * 刷新登录状态
@@ -108,6 +108,13 @@ export default {
    * 获取热搜
    */
   HotSearch() {
-    return fetchGet(`/personalized?timestamp=${Date.now()}`);
+    return fetchGet(`/search/hot/detail?timestamp=${Date.now()}`);
+  },
+  /**
+   * 获取用户歌单
+   * @param {[object]} uid 用户id
+   */
+  UserPlayList(uid) {
+    return fetchGet('/user/playlist', uid, 'post')
   }
 }

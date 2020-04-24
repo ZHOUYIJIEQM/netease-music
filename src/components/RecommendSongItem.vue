@@ -4,6 +4,7 @@
       <!-- <img :src="songItem.picUrl" alt="" class="list-pic" /> -->
       <img v-lazy="songItem.picUrl" alt="" class="list-pic" />
       <div class="play-count" v-if="songItem.playCount">{{songItem.playCount|formatNum}}</div>
+      <div class="play-count" v-else-if="songItem.playcount">{{songItem.playcount|formatNum}}</div>
     </div>
     <div class="song-item-name">{{songItem.name}}</div>
   </div>

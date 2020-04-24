@@ -2,10 +2,10 @@
   <div class="find-content">
     <!-- 轮播 -->
     <div class="banner-swiper">
-      <div class="banner-bg">
+      <div class="banner-bg" v-if="!this.bannerShow">
         <img src="../assets/image/default.png" alt="" class="banner-img">
       </div>
-      <banner></banner>
+      <banner @showBanner="showBanner"></banner>
     </div>
     <!-- 图标部分 -->
     <div class="find-recommend">
@@ -16,7 +16,6 @@
         <div class="icon-text">{{item.text}}</div>
       </div>
     </div>
-
     <!-- 推荐歌单 -->
     <div class="recommend recommend-song-list">
       <div class="recommend-header">
@@ -30,7 +29,6 @@
         <recommendSongList :recommendSongData="recommendList"></recommendSongList>
       </div>
     </div>
-
     <!-- 推荐音乐 -->
     <div class="recommend recommend-music-list">
       <div class="recommend-header">
@@ -44,7 +42,6 @@
         <recommendMusicList :recommendMusicData="recommendMusic"></recommendMusicList>
       </div>
     </div>
-
     <!-- 推荐电台 -->
     <div class="recommend recommend-fm-list">
       <div class="recommend-header">
@@ -58,11 +55,7 @@
         <recommendSongList :recommendSongData="recommendFM"></recommendSongList>
       </div>
     </div>
-
-    <div class="end">
-      <span>到底啦~</span>
-    </div>
-
+    <pageEnd></pageEnd>
   </div>
 </template>
 <script>
@@ -71,7 +64,8 @@
     components: {
       banner: () => import('@/components/Banner.vue'),
       recommendSongList: () => import('@/components/RecommendSongList.vue'),
-      recommendMusicList: () => import('@/components/RecommendMusicList.vue')
+      recommendMusicList: () => import('@/components/RecommendMusicList.vue'),
+      pageEnd: () => import('@/components/PageEnd.vue')
     },
     data() {
       return {
@@ -108,83 +102,86 @@
         recommendMusic: [],
         // 推荐电台
         recommendFM: [],
-        loginStatus: false
+        // banner处的加载动画 隐藏/显示
+        bannerShow: 0
       }
     },
     computed: {
       isLogin() {
-        // console.log('login status change', this.$store.state.isLogin)
-        return this.$store.state.isLogin;
+        return this.$store.getters.loginStatus;
       }
     },
     created() {
       console.log('=====================created=====================')
-      this.$store.dispatch('getRefreshLogin')
-        .then(res => {
-          console.log('获得登录状态后：', res)
-          this.getRecommendList();
-          this.getRecommendMusic();
-          this.getRecommendFM();
-        })
-        .catch(err => {
-          console.log('获得登录状态后：', err);
-        })
+      this.receiveData();
+    },
+    watch: {
+      // 不知computed里为什么没更新isLogin，写到watch
+      isLogin() {
+        this.receiveData();
+      }
     },
     methods: {
       goPage(page) {
         console.log('page:', page)
         this.$router.push({ name: page })
       },
-      // 推荐歌单
-      getRecommendList() {
+      receiveData() {
+        this.$store.dispatch('getRefreshLogin')
+          .then(res => {
+            // console.log('获得登录状态后：', res)
+            this.getRecommend();
+          })
+          .catch(err => {
+            console.log('获得登录状态后：', err);
+          })
+      },
+      // 获取推荐内容
+      getRecommend() {
+        // 如果是登录状态，使用需要登录的api
         if (this.isLogin) {
-          // 如果是登录状态，使用需要登录的api
+          // 推荐歌单
           api.RecommendList()
             .then(res => {
-              console.log('推荐歌单 已登录', res)
+              // console.log('推荐歌单 已登录', res)
               this.recommendList = res.recommend.slice(0, 9);
             })
-        } else {
-          api.RecommendListNo()
-            .then(res => {
-              console.log('推荐歌单 不用登录', res)
-              this.recommendList = res.result.slice(0, 9);
-            })
-        }
-      },
-      // 推荐新音乐
-      getRecommendMusic() {
-        if (this.isLogin) {
-          // 如果是登录状态，使用需要登录的api
+          // 推荐新音乐
           api.RecommendMusic()
             .then(res => {
-              console.log('推荐歌曲 已登录', res.recommend.slice(0, 9))
+              // console.log('推荐歌曲 已登录', res.recommend.slice(0, 9))
               this.recommendMusic = res.recommend.slice(0, 9);
             })
-        } else {
-          api.RecommendMusicNo()
-            .then(res => {
-              console.log('推荐歌曲 不用登录', res.result)
-              this.recommendMusic = res.result;
-            })
-        }
-      },
-      // 推荐电台
-      getRecommendFM() {
-        if (this.isLogin) {
-          // 如果是登录状态，使用需要登录的api
+          // 推荐电台
           api.RecommendFM()
             .then(res => {
-              console.log('推荐电台 已登录', res)
+              // console.log('推荐电台 已登录', res)
               this.recommendFM = res.djRadios;
             })
         } else {
+          // 推荐歌单
+          api.RecommendListNo()
+            .then(res => {
+              // console.log('推荐歌单 不用登录', res)
+              this.recommendList = res.result.slice(0, 9);
+            })
+          // 推荐新音乐
+          api.RecommendMusicNo()
+            .then(res => {
+              // console.log('推荐歌曲 不用登录', res.result)
+              this.recommendMusic = res.result;
+            })
+          // 推荐电台
           api.RecommendFMNo()
             .then(res => {
-              console.log('推荐电台 不用登录', res)
+              // console.log('推荐电台 不用登录', res)
               this.recommendFM = res.result;
             })
         }
+      },
+
+      showBanner(length) {
+        this.bannerShow = length;
       }
     }
   }
@@ -202,14 +199,16 @@
       min-height: 1.25rem;
       background-size: 100%;
       position: relative;
-      .banner-bg{
+
+      .banner-bg {
         position: absolute;
         width: 100%;
         height: 1.25rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        .banner-img{
+
+        .banner-img {
           width: 1.5rem;
           animation: roll 2.5s ease-in-out infinite;
         }
@@ -255,24 +254,29 @@
       background-color: $grey-bg;
     }
 
-    .recommend{
+    .recommend {
       padding: .05rem 0 .15rem;
-      .recommend-header{
+
+      .recommend-header {
         padding: 0 .15rem;
-        .recommend-title{
+
+        .recommend-title {
           font-size: .12rem;
           color: #8c8c8c;
         }
-        .recommend-header-body{
+
+        .recommend-header-body {
           padding: .05rem 0;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          .recommend-header-text{
+
+          .recommend-header-text {
             font-weight: bold;
             font-size: .18rem;
           }
-          .recommend-header-btn{
+
+          .recommend-header-btn {
             border: 1px solid #8c8c8c;
             padding: 3px 6px;
             border-radius: 20px;
@@ -280,22 +284,11 @@
           }
         }
       }
-      .recommend-content{
+
+      .recommend-content {
         padding: .05rem 0;
         overflow: hidden;
       }
     }
-
-    .end{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: .2rem 0;
-      span{
-        color: grey;
-        font-size: $fsize-12;
-      }
-    }
-
   }
 </style>
