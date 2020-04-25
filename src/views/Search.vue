@@ -9,7 +9,7 @@
           <input class="input-box" :placeholder="placeholder" v-model="query" type="text"/>
         </div>
         <div class="clear">
-          <i class="iconfont icon-chacha" v-show="query" @click="clickQuery"></i>
+          <i class="iconfont icon-chacha" v-show="query" @click="cleanQuery"></i>
         </div>
       </div>
       <div class="search-hots" v-show="!query">
@@ -46,16 +46,18 @@
       }
     },
     created() {
+      this.$loading.show();
       api.HotSearch()
         .then(res => {
           this.hotsList = res.data;
+          this.$loading.hide();
         })
     },
     methods: {
       goBack() {
         this.$router.back()
       },
-      clickQuery() {
+      cleanQuery() {
         this.query = '';
       }
     }

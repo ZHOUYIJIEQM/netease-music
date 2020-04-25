@@ -38,7 +38,7 @@
     },
     methods: {
       handlerSlideChange() {
-        // console.log('this.navIndex', this.navIndex)
+        // console.log('this.navIndex', this.swiper.activeIndex)
         this.$store.state.navIndex = this.swiper.activeIndex
       }
     },

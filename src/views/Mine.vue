@@ -1,6 +1,6 @@
 <template>
   <div class="mine-content">
-    <div class="mine-title" :style="{backgroundImage: 'url('+titleBg+')', backgroundSize: '100%'}">
+    <div class="mine-title" :style="{backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url('+titleBg+')', backgroundSize: '100%'}">
       <div class="mine-title-login" v-if="!loginStatus">
         <div class="login-pic">
           <img :src="loginpic" alt="" />
@@ -13,9 +13,6 @@
         </div>
       </div>
       <div class="mine-title-login" v-else>
-        <!-- <pre>
-          {{userProfile}}
-        </pre> -->
         <div class="login-pic">
           <img :src="userInfo.profile.avatarUrl" alt="" />
         </div>
@@ -77,6 +74,7 @@
             </div>
             <div class="recommendList-text">
               <div class="recommendList-text-name">{{item.name}}</div>
+              <div class="recommendList-text-count">{{item.trackCount}}首</div>
             </div>
           </div>
         </div>
@@ -142,7 +140,6 @@
         this.getRecommend()
         if (!this.loginStatus) {
           this.titleBg = ''
-          console.log('--')
         }
         if (this.loginStatus) {
           this.titleBg = this.backgroundUrl;
@@ -152,10 +149,7 @@
     methods: {
       getRecommend() {
         this.userPlayList = [];
-        // console.log('this.loginStatus=============', this.loginStatus)
         if (this.loginStatus) {
-          // console.log('===================================')
-          // api.UserPlayList({ uid: 1347464355 })
           api.UserPlayList({ uid: this.userInfo.account.id })
             .then(res => {
               // console.log('用户歌单 登录', res)
@@ -165,7 +159,7 @@
           // 推荐歌单
           api.RecommendListNo()
             .then(res => {
-              // console.log('推荐歌单 不用登录', res)
+              console.log('推荐歌单 不用登录', res)
               this.userPlayList = res.result;
             })
         }
@@ -390,6 +384,7 @@
         .recommendList-text {
           display: flex;
           flex-direction: column;
+          justify-content: center;
 
           .recommendList-text-name {
             padding: 0 .1rem;
@@ -397,16 +392,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             font-size: .12rem;
-            color: #383737;
+            color: #191919;
             line-height: 15px;
           }
 
           .recommendList-text-count {
             font-size: .1rem;
-            color: #383737;
+            color: #696969;
             padding: 0 .1rem;
           }
         }

@@ -38,6 +38,7 @@
       },
 
       login() {
+        this.$loading.show();
         // const _this = this;
         if (this.loginForm.phone.trim() === '' || this.loginForm.password.trim() === '') {
           alert('账号或密码不能为空')
@@ -53,6 +54,8 @@
                 window.localStorage.setItem('isLogin', true);
                 this.$store.commit('SETUSERINFO', res);
                 this.$router.push({ name: 'Home' });
+                this.$loading.hide();
+                this.$Toast({ message: '登录成功', time: 3000 });
                 alert('登录成功');
               } else {
                 alert(`登录失败! ${res.msg}`)

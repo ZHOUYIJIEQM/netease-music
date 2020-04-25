@@ -112,7 +112,6 @@
       }
     },
     created() {
-      console.log('=====================created=====================')
       this.receiveData();
     },
     watch: {
@@ -123,7 +122,7 @@
     },
     methods: {
       goPage(page) {
-        console.log('page:', page)
+        // console.log('page:', page)
         this.$router.push({ name: page })
       },
       receiveData() {
@@ -179,7 +178,6 @@
             })
         }
       },
-
       showBanner(length) {
         this.bannerShow = length;
       }

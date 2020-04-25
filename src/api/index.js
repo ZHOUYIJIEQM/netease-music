@@ -44,6 +44,7 @@ export default {
   STATUS: 200,
   /**
    * 登录
+   * @param {object} params 登录账号密码
    */
   Login(params) {
     return fetchGet('/login/cellphone', params, 'post');
@@ -53,13 +54,13 @@ export default {
    */
   RefreshLogin() {
     // return fetchGet('/login/refresh')
-    return fetchGet(`/login/refresh?timestamp=${Date.now()}`)
+    return fetchGet(`/login/refresh?timestamp=${Date.now()}`);
   },
   /**
    * 退出登录状态
    */
   Logout() {
-    return fetchGet(`/logout?timestamp=${Date.now()}`)
+    return fetchGet(`/logout?timestamp=${Date.now()}`);
   },
   /**
    * 轮播图
@@ -115,6 +116,12 @@ export default {
    * @param {[object]} uid 用户id
    */
   UserPlayList(uid) {
-    return fetchGet('/user/playlist', uid, 'post')
+    return fetchGet('/user/playlist', uid, 'post');
+  },
+  /**
+   * 获取排行榜
+   */
+  LeaderBoard() {
+    return fetchGet(`/toplist?timestamp=${Date.now()}`);
   }
 }
