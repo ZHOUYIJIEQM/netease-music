@@ -56,7 +56,6 @@
                 this.$router.push({ name: 'Home' });
                 this.$loading.hide();
                 this.$Toast({ message: '登录成功', time: 3000 });
-                alert('登录成功');
               } else {
                 alert(`登录失败! ${res.msg}`)
               }

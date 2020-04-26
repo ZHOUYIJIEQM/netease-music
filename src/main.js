@@ -8,8 +8,8 @@ import '@/styles/reset.scss'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import VueLazyload from 'vue-lazyload'
-import Toast from '@/plugins/Toast' // message 提示消息插件
-import loading from '@/components/loading/loading.js' // 引入loading
+import Toast from '@/components/Toast' // message 提示消息插件
+import loading from '@/components/Loading/loading.js' // 引入loading
 Vue.use(loading) // 全局使用loading
 
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)

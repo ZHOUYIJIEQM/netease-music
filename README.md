@@ -1,5 +1,6 @@
 # net-music
 
+实现滑动内容切换导航，点击导航切换内容。
 封装自定义 loading toast 组件
 
 ## Project setup

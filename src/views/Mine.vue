@@ -67,21 +67,14 @@
       <div class="recommendList">
         <div class="recommendList-title" v-if="!loginStatus">推荐歌单</div>
         <div class="recommendList-title" v-else>用户歌单</div>
-        <div class="recommendList-List" v-if="!loginStatus">
-          <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index">
-            <div class="recommendList-pic">
-              <img v-lazy="item.picUrl+'?param=50y50'" alt="" />
-            </div>
-            <div class="recommendList-text">
-              <div class="recommendList-text-name">{{item.name}}</div>
-              <div class="recommendList-text-count">{{item.trackCount}}首</div>
-            </div>
-          </div>
+        <div class="loading-postion" v-if="!userPlayList.length">
+          <loading :show="true"></loading>
         </div>
-        <div class="recommendList-List" v-else>
+        <div class="recommendList-List">
           <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index">
             <div class="recommendList-pic">
-              <img v-lazy="item.coverImgUrl+'?param=50y50'" alt="" />
+              <img v-if="item.picUrl" v-lazy="item.picUrl+'?param=50y50'" alt="" />
+              <img v-else v-lazy="item.coverImgUrl+'?param=50y50'" alt="" />
             </div>
             <div class="recommendList-text">
               <div class="recommendList-text-name">{{item.name}}</div>
@@ -99,7 +92,8 @@
   import api from '@/api/index.js'
   export default {
     components: {
-      pageEnd: () => import('@/components/PageEnd.vue')
+      pageEnd: () => import('@/components/PageEnd.vue'),
+      loading: () => import('@/components/Loading/loading.vue')
     },
     data() {
       return {
@@ -346,6 +340,14 @@
 
     .recommendList {
       padding: .2rem 0;
+
+      .loading-postion {
+        position: relative;
+        margin-top: .3rem;
+        .loader {
+          position: absolute;
+        }
+      }
 
       .recommendList-title {
         font-weight: bold;

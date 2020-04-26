@@ -4,18 +4,26 @@
     <transition name="fadeInLeft" mode="out-in">
       <div class="sidebar-left" v-show="this.isShow">
         <div class="sidebar-main-top">
-          <div class="vip-card">黑胶VIP</div>
-        </div>
-        <div class="sidebar-main-content">
-          <div class="main-content-user">
+          <div class="vip-card">
             <div class="login-pic">
               <img :src="userIcon" alt="">
             </div>
             <div class="user-name">{{userName}}</div>
           </div>
+        </div>
+        <div class="sidebar-main-content">
+          <!-- <div class="main-content-user">
+            <div class="login-pic">
+              <img :src="userIcon" alt="">
+            </div>
+            <div class="user-name">{{userName}}</div>
+          </div> -->
           <div class="main-content one" @click="undone">创作者中心</div>
           <div class="main-content two">
             <div class="main-inner" @click="undone" v-for="item in mainContent1" :key="item">{{item}}</div>
+          </div>
+          <div class="main-content three">
+            <div class="main-inner" @click="undone" v-for="(item, index) in mainContent2" :key="index">{{item}}</div>
           </div>
           <div class="main-content three">
             <div class="main-inner" @click="undone" v-for="(item, index) in mainContent2" :key="index">{{item}}</div>
@@ -164,7 +172,31 @@
           justify-content: center;
           align-items: center;
           color: #e6e6e6;
+          flex-direction: column;
+
+          .login-pic {
+            width: .5rem;
+            height: .5rem;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+            }
+          }
+
+          .user-name {
+            font-size: .12rem;
+            padding: .1rem 0 0;
+            color: #efefef;
+            font-weight: bold;
+          }
         }
+      }
+
+      .main-content.one {
+        border-top: 0px !important;
+        padding-top: .15rem!important;
       }
 
       .sidebar-main-content {
@@ -223,6 +255,12 @@
         padding: .1rem .18rem;
         display: flex;
         justify-content: space-between;
+
+        .bottom-inner {
+          flex: 1 0 auto;
+          display: flex;
+          justify-content: center;
+        }
       }
     }
   }
