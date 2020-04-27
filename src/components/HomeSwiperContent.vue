@@ -45,6 +45,9 @@
     watch: {
       navIndex() {
         this.swiper.slideTo(this.navIndex)
+        if (this.navIndex === 2 || this.navIndex === 3) {
+          this.$Toast({ message: '功能未完成', time: 1000 })
+        }
       }
     }
 

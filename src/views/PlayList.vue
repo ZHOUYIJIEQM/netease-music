@@ -37,7 +37,9 @@
         </div>
       </div>
     </div>
-    <pageEnd v-if="playListDate.length"></pageEnd>
+    <div v-if="playListDate.name">
+      <pageEnd></pageEnd>
+    </div>
   </div>
 </template>
 <script>

@@ -28,8 +28,6 @@
       api.LeaderBoard()
         .then(res => {
           this.$loading.hide();
-          console.log('排行榜')
-          console.log(res)
           this.leaderBoard = res.list;
         })
     },

@@ -8,7 +8,7 @@ const action = {
         .then(res => {
           const isLogin = res.code === api.STATUS;
           commit('SETISLOGIN', isLogin)
-          console.log('刷新登录状态:', isLogin);
+          // console.log('刷新登录状态:', isLogin);
           window.localStorage.setItem('isLogin', isLogin)
           resolve(res)
         })
