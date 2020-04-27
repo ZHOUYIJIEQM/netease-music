@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import loadingComponent from '@/components/Loading/loading.vue'
+import loadingComponent from '@/components/Loading/index.vue'
 
 const LoadingConstructor = Vue.extend(loadingComponent)
 

@@ -94,7 +94,7 @@
   export default {
     components: {
       pageEnd: () => import('@/components/PageEnd.vue'),
-      loading: () => import('@/components/Loading/loading.vue')
+      loading: () => import('@/components/Loading/index.vue')
     },
     data() {
       return {
