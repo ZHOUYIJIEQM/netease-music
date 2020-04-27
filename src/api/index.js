@@ -124,6 +124,10 @@ export default {
   LeaderBoard() {
     return fetchGet(`/toplist?timestamp=${Date.now()}`);
   },
+  /**
+   * 歌单详情
+   * @param {obj} id 歌单id
+   */
   PlayListDetail(id) {
     return fetchGet(`/playlist/detail?timestamp=${Date.now()}`, id, 'post')
   }

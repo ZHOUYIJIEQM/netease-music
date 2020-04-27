@@ -20,7 +20,7 @@
         <div class="login-descript">{{userInfo.profile.nickname}}</div>
       </div>
       <div class="login-icon">
-        <div class="icon" v-for="(item, index) in loginIcon" :key="index">
+        <div class="icon"  @click="undone" v-for="(item, index) in loginIcon" :key="index">
           <i class="iconfont" :class="item.icon"></i>
           <div class="icon-text">{{item.name}}</div>
         </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="my-music">
         <div class="my-music-list">
-          <div class="my-music-item">
+          <div class="my-music-item" @click="undone">
             <div class="item-bgi">
               <img v-lazy="'http://p1.music.126.net/76Hpk_9ot2h2dozv5JbbYA==/109951164737016168.jpg'" alt="" />
             </div>
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div class="my-music-item">
+          <div class="my-music-item" @click="undone">
             <div class="item-bgi">
               <img v-lazy="'http://p1.music.126.net/SbC8FdLw-PywMmnD35iRKg==/109951164725561024.jpg'" alt="" />
             </div>
@@ -162,6 +162,9 @@
       goPlayListDetail(id) {
         console.log('id', id)
         this.$router.push({ path: `/playList/${id}` })
+      },
+      undone() {
+        this.$Toast({ message: '功能未开发!', time: 1000 })
       }
     }
   }

@@ -42,7 +42,7 @@ toastMessage.close = () => {
   }
 }
 toastMessage.install = (Vue) => {
-  console.log('install--------toastMessage')
+  // console.log('install--------toastMessage')
   Vue.prototype.$Toast = toastMessage
 }
 export default toastMessage
