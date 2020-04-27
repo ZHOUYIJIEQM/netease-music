@@ -13,17 +13,17 @@ const routes = [
   {
     path: '/Search',
     name: 'Search',
-    component: () => import(/* webpackChunkName: "Search" */ '../views/Search.vue')
+    component: () => import(/* webpackChunkName: "Search" */ '@/views/Search.vue')
   },
   {
     path: '/Login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "Login" */ '../views/Login.vue')
+    component: () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue')
   },
   {
     path: '/DailyRecommend',
     name: 'DailyRecommend',
-    component: () => import(/* webpackChunkName: "DailyRecommend" */ '../views/DailyRecommend.vue'),
+    component: () => import(/* webpackChunkName: "DailyRecommend" */ '@/views/DailyRecommend.vue'),
     meta: {
       requiresAuth: true
     }
@@ -31,27 +31,27 @@ const routes = [
   {
     path: '/SongList',
     name: 'SongList',
-    component: () => import(/* webpackChunkName: "SongList" */ '../views/SongList.vue')
+    component: () => import(/* webpackChunkName: "SongList" */ '@/views/SongList.vue')
   },
   {
     path: '/PlayList/:playlist_id',
     name: 'PlayList',
-    component: () => import(/* webpackChunkName: "PlayList" */ '../views/PlayList.vue')
+    component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayList.vue')
   },
   {
     path: '/LeaderBoard',
     name: 'LeaderBoard',
-    component: () => import(/* webpackChunkName: "LeaderBoard" */ '../views/LeaderBoard.vue')
+    component: () => import(/* webpackChunkName: "LeaderBoard" */ '@/views/LeaderBoard.vue')
   },
   {
     path: '/RadioStation',
     name: 'RadioStation',
-    component: () => import(/* webpackChunkName: "RadioStation" */ '../views/RadioStation.vue')
+    component: () => import(/* webpackChunkName: "RadioStation" */ '@/views/RadioStation.vue')
   },
   {
     path: '/FMMusic',
     name: 'FMMusic',
-    component: () => import(/* webpackChunkName: "FMMusic" */ '../views/FMMusic.vue'),
+    component: () => import(/* webpackChunkName: "FMMusic" */ '@/views/FMMusic.vue'),
     meta: {
       requiresAuth: true
     }
