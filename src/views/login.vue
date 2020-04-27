@@ -1,4 +1,5 @@
 <template>
+  <!-- 登录 -->
   <div class="login-page">
     <div class="title">
       <i class="iconfont icon-fanhui back" @click="goBack"></i>
@@ -14,9 +15,7 @@
         <input id="passwd" type="password" v-model="loginForm.password" placeholder="输入密码" />
       </div>
       <div class="btn">
-        <div class="login-btn" @click="login">
-          登录
-        </div>
+        <div class="login-btn" @click="login"> 登录 </div>
       </div>
     </div>
   </div>
@@ -48,7 +47,7 @@
           api.Login(this.loginForm)
             .then(res => {
               if (res.code === api.STATUS) {
-                console.log('登录', res);
+                // console.log('登录', res);
                 this.$store.commit('SETISLOGIN', true);
                 window.localStorage.setItem('userInfo', JSON.stringify(res, null, 2));
                 window.localStorage.setItem('isLogin', true);

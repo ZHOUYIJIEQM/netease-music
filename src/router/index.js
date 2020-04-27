@@ -31,10 +31,12 @@ const routes = [
   {
     path: '/SongList',
     name: 'SongList',
-    component: () => import(/* webpackChunkName: "SongList" */ '../views/SongList.vue'),
-    meta: {
-      requiresAuth: true
-    }
+    component: () => import(/* webpackChunkName: "SongList" */ '../views/SongList.vue')
+  },
+  {
+    path: '/PlayList/:playlist_id',
+    name: 'PlayList',
+    component: () => import(/* webpackChunkName: "PlayList" */ '../views/PlayList.vue')
   },
   {
     path: '/LeaderBoard',
@@ -44,10 +46,7 @@ const routes = [
   {
     path: '/RadioStation',
     name: 'RadioStation',
-    component: () => import(/* webpackChunkName: "RadioStation" */ '../views/RadioStation.vue'),
-    meta: {
-      requiresAuth: true
-    }
+    component: () => import(/* webpackChunkName: "RadioStation" */ '../views/RadioStation.vue')
   },
   {
     path: '/FMMusic',
@@ -60,7 +59,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior
 })
 
 router.beforeEach((to, from, next) => {
@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
     // const isLogin = window.localStorage.getItem('isLogin') === 'true' ? true : false;
     const isLogin = window.localStorage.getItem('isLogin') === 'true';
     if (isLogin) {
-    // if (store.state.isLogin) {
+      // if (store.state.isLogin) {
       next();
     } else {
       alert('需要登录')
@@ -78,6 +78,14 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-})
+});
+
+function scrollBehavior(to, from, savedPosition) {
+  if (savedPosition) {
+    return savedPosition;
+  } else {
+    return { x: 0, y: 0 };
+  }
+}
 
 export default router

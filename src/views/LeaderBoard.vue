@@ -1,4 +1,5 @@
 <template>
+  <!-- 排行榜 -->
   <div class="cloud-village-content">
     <div v-if="leaderBoard.length">
       <pre>

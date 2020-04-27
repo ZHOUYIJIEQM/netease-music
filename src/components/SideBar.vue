@@ -1,4 +1,5 @@
 <template>
+  <!-- 侧边栏 -->
   <div class="sidebar-content">
     <div class="sidebar-mask" @click="clickMask" v-show="this.isShow"></div>
     <transition name="fadeInLeft" mode="out-in">
@@ -12,12 +13,6 @@
           </div>
         </div>
         <div class="sidebar-main-content">
-          <!-- <div class="main-content-user">
-            <div class="login-pic">
-              <img :src="userIcon" alt="">
-            </div>
-            <div class="user-name">{{userName}}</div>
-          </div> -->
           <div class="main-content one" @click="undone">创作者中心</div>
           <div class="main-content two">
             <div class="main-inner" @click="undone" v-for="item in mainContent1" :key="item">{{item}}</div>

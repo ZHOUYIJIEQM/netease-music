@@ -123,5 +123,8 @@ export default {
    */
   LeaderBoard() {
     return fetchGet(`/toplist?timestamp=${Date.now()}`);
+  },
+  PlayListDetail(id) {
+    return fetchGet(`/playlist/detail?timestamp=${Date.now()}`, id, 'post')
   }
 }

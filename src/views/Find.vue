@@ -1,4 +1,5 @@
 <template>
+  <!-- 发现页 -->
   <div class="find-content">
     <!-- 轮播 -->
     <div class="banner-swiper">
@@ -22,7 +23,7 @@
         <div class="recommend-title">推荐歌单</div>
         <div class="recommend-header-body">
           <div class="recommend-header-text">为你精挑细选</div>
-          <div class="recommend-header-btn">查看更多</div>
+          <div class="recommend-header-btn" @click="goSongList">查看更多</div>
         </div>
       </div>
       <div class="recommend-content">
@@ -124,6 +125,9 @@
       goPage(page) {
         // console.log('page:', page)
         this.$router.push({ name: page })
+      },
+      goSongList() {
+        this.$router.push({ name: 'SongList' })
       },
       receiveData() {
         this.$store.dispatch('getRefreshLogin')

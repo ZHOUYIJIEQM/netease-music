@@ -1,4 +1,5 @@
 <template>
+  <!-- 每日推荐 -->
   <div class="daily-recommend-content">
     <div class="recommend-header">
       <img class="header-bg" :src="headerBg" alt="">

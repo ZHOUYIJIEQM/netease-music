@@ -1,4 +1,5 @@
 <template>
+  <!-- 每日推荐的歌曲 -->
   <div class="song-list-item">
     <div class="song-item-pic">
       <img v-lazy="songItemData.album.picUrl+'?param=100y100'" alt="">
@@ -44,7 +45,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding-top: .06rem;
+        padding: .03rem 0;
       }
 
       .album-name {
@@ -52,7 +53,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding: .06rem 0;
+        padding: .03rem 0;
         font-size: .14rem;
         color: #505050;
       }

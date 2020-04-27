@@ -1,4 +1,5 @@
 <template>
+  <!-- 导航 -->
   <div class="nav">
     <i class="iconfont icon-caidan" @click="showSidebar"></i>
     <ul class="nav-list">

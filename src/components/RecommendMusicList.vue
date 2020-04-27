@@ -1,4 +1,5 @@
 <template>
+  <!-- 发现页推荐音乐 -->
   <div class="recommendMusic-content">
     <swiper
       :options="songSwiperOption"

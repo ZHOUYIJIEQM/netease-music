@@ -1,8 +1,9 @@
 <template>
-  <div class="recommend-song-item">
+  <!-- 发现页推荐歌单项 -->
+  <div class="recommend-song-item" @click="handlerClick(songItem.id)">
     <div class="song-item">
       <!-- <img :src="songItem.picUrl" alt="" class="list-pic" /> -->
-      <img v-lazy="songItem.picUrl" alt="" class="list-pic" />
+      <img v-lazy="songItem.picUrl+'?param=200y200'" alt="" class="list-pic" />
       <div class="play-count" v-if="songItem.playCount">{{songItem.playCount|formatNum}}</div>
       <div class="play-count" v-else-if="songItem.playcount">{{songItem.playcount|formatNum}}</div>
     </div>
@@ -44,7 +45,9 @@
     },
 
     methods: {
-
+      handlerClick(id) {
+        this.$router.push({ path: `/PlayList/${id}` })
+      }
     }
   }
 </script>

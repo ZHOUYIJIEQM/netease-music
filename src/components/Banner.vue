@@ -1,4 +1,5 @@
 <template>
+  <!-- 轮播 -->
   <swiper class="swiper-container banner-box" :options="swiperOption" v-if="banners.length">
     <swiper-slide class="banner-item" v-for="(item, index) in banners" :key="index">
       <img class="banner-pic" :src="item.imageUrl" alt="">

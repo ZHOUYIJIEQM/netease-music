@@ -1,4 +1,5 @@
 <template>
+  <!-- 我的 -->
   <div class="mine-content">
     <div class="mine-title" :style="{backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url('+titleBg+')', backgroundSize: '100%'}">
       <div class="mine-title-login" v-if="!loginStatus">
@@ -71,7 +72,7 @@
           <loading :show="true"></loading>
         </div>
         <div class="recommendList-List">
-          <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index">
+          <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlayListDetail(item.id)">
             <div class="recommendList-pic">
               <img v-if="item.picUrl" v-lazy="item.picUrl+'?param=50y50'" alt="" />
               <img v-else v-lazy="item.coverImgUrl+'?param=50y50'" alt="" />
@@ -153,10 +154,14 @@
           // 推荐歌单
           api.RecommendListNo()
             .then(res => {
-              console.log('推荐歌单 不用登录', res)
+              // console.log('推荐歌单 不用登录', res)
               this.userPlayList = res.result;
             })
         }
+      },
+      goPlayListDetail(id) {
+        console.log('id', id)
+        this.$router.push({ path: `/playList/${id}` })
       }
     }
   }

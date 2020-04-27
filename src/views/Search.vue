@@ -1,4 +1,5 @@
 <template>
+  <!-- 搜索 -->
   <transition name="search" mode="out-in">
     <div class="search-page">
       <div class="search-box-wrapper">
