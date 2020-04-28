@@ -74,8 +74,8 @@
         <div class="recommendList-List">
           <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlayListDetail(item.id)">
             <div class="recommendList-pic">
-              <img v-if="item.picUrl" v-lazy="item.picUrl+'?param=50y50'" alt="" />
-              <img v-else v-lazy="item.coverImgUrl+'?param=50y50'" alt="" />
+              <img v-if="item.picUrl" v-lazy="item.picUrl+'?param=200y200'" alt="" />
+              <img v-else v-lazy="item.coverImgUrl+'?param=200y200'" alt="" />
             </div>
             <div class="recommendList-text">
               <div class="recommendList-text-name">{{item.name}}</div>
