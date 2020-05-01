@@ -66,7 +66,7 @@
 <style lang="scss" scoped>
   .daily-recommend-content {
     .recommend-header {
-      background-color: grey;
+      background-color: #d8d8d8;
       position: relative;
       height: 2rem;
       overflow: hidden;

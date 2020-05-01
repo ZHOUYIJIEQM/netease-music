@@ -1,6 +1,6 @@
 <template>
   <!-- 搜索 -->
-  <transition name="search" mode="out-in">
+  <transition name="fadeInRight" mode="out-in">
     <div class="search-page">
       <div class="search-box-wrapper">
         <div class="rback">
@@ -65,25 +65,7 @@
   }
 </script>
 <style lang="scss" scoped>
-  .search-enter-active {
-    animation: right-search .35s;
-  }
-
-  .search-leave-active {
-    animation: right-search .35s reverse;
-  }
-
-  @keyframes right-search {
-    0% {
-      transform: translate3d(100%, 0, 0);
-      // opacity: 0.5;
-    }
-    100% {
-      transform: translate3d(0, 0, 0);
-      opacity: 1;
-    }
-  }
-
+  @import '@/styles/variable.scss';
   .search-page {
     .search-box-wrapper {
       display: flex;

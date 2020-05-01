@@ -1,6 +1,6 @@
 <template>
   <!-- 发现页推荐歌单项 -->
-  <div class="recommend-song-item" @click="handlerClick(songItem.id)">
+  <div class="recommend-song-item" @click="goPlayList(songItem.id)">
     <div class="song-item">
       <!-- <img :src="songItem.picUrl" alt="" class="list-pic" /> -->
       <img v-lazy="songItem.picUrl+'?param=200y200'" alt="" class="list-pic" />
@@ -45,7 +45,7 @@
     },
 
     methods: {
-      handlerClick(id) {
+      goPlayList(id) {
         this.$router.push({ path: `/PlayList/${id}` })
       }
     }

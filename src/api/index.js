@@ -13,7 +13,7 @@ axios.interceptors.response.use(res => {
   return res.data;
 }, err => {
   // 提示请求错误
-  console.log('响应拦截 -- 请求错误:', err);
+  // console.log('响应拦截 -- 请求错误:', err);
   Promise.reject(err)
 });
 
@@ -130,5 +130,14 @@ export default {
    */
   PlayListDetail(id) {
     return fetchGet(`/playlist/detail?timestamp=${Date.now()}`, id, 'post')
+  },
+  /**
+   * music歌曲
+   * @param {num} id 歌单id
+   */
+  MusicUrl(id) {
+    return fetchGet(`/song/url?timestamp=${Date.now()}`, {
+      id
+    }, 'post')
   }
 }

@@ -10,7 +10,7 @@
         v-for="(item, index) in musicData"
         :key="index"
       >
-        <div class="music-item" v-for="(item1, index1) in item" :key="index1">
+        <div class="music-item" v-for="(item1, index1) in item" :key="index1" @click="playSong(item1)">
           <div class="recommend-music-item">
             <div class="recommend-music-item-pic">
               <img v-if="item1.picUrl" v-lazy="item1.picUrl+'?param=200y200'" class="music-item-pic" />
@@ -80,6 +80,14 @@
           newArr.push(arr.splice(0, num));
         }
         return newArr;
+      },
+      playSong(song) {
+        console.log('song', song)
+        this.$store.commit('SETPLAYLIST', song);
+        this.$store.commit('SETFULLSCREEN', true);
+        this.$store.commit('SETPLAYING', true);
+        this.$store.commit('SETSHOWPLAYER', true);
+        // console.log('vuex playlist', this.$store.getters.playList)
       }
     }
   }

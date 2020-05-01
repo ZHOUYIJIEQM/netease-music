@@ -24,6 +24,6 @@
     font-size: 16px;
     border-radius: 8px;
     text-align: center;
-    z-index: 10;
+    z-index: 200;
   }
 </style>

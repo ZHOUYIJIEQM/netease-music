@@ -1,53 +1,55 @@
 <template>
   <!-- 歌单详情 -->
-  <div class="playlist-content">
-    <div class="playlist-header">
-      <div class="playlist-header-title">
-        <i class="iconfont icon-fanhui" @click="goBack()"></i>
-        <div class="title-text">{{playListDate.name}}</div>
-      </div>
-      <div class="title-descript">
-        <div class="mask">
-          <img :src="playListDate.coverImgUrl" alt="">
+  <transition name="fadeInRight" mode="out-in">
+    <div class="playlist-content">
+      <div class="playlist-header">
+        <div class="playlist-header-title">
+          <i class="iconfont icon-fanhui" @click="goBack()"></i>
+          <div class="title-text">{{playListDate.name}}</div>
         </div>
-        <div class="descript-img">
-          <img v-lazy="playListDate.coverImgUrl" alt="">
-        </div>
-        <div class="descript-text">
-          <div class="descript-name">{{playListDate.name}}</div>
-          <div class="descript-creator" v-if="playListDate.creator">{{playListDate.creator.nickname}}</div>
-          <div class="descript-elipse" @click="showDescript($event)">{{playListDate.description}}</div>
-        </div>
-      </div>
-    </div>
-    <div class="list-content">
-      <div class="list-content-title">
-        <div class="diaodai one"></div>
-        <div class="diaodai two"></div>
-        <div class="title-text one">播放全部</div>
-        <div class="title-text two">多选</div>
-      </div>
-      <div class="playlist-song-item" v-for="(item, index) in playListDate.tracks" :key="index" @click="clickSong(item.id)">
-        <div class="song-num">{{index+1}}</div>
-        <div class="song-detail">
-          <div class="song-name">{{item.name}}</div>
-          <div class="song-singer">
-            {{item.ar[0].name}}<template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+        <div class="title-descript">
+          <div class="mask">
+            <img :src="playListDate.coverImgUrl" alt="">
+          </div>
+          <div class="descript-img">
+            <img v-lazy="playListDate.coverImgUrl" alt="">
+          </div>
+          <div class="descript-text">
+            <div class="descript-name">{{playListDate.name}}</div>
+            <div class="descript-creator" v-if="playListDate.creator">{{playListDate.creator.nickname}}</div>
+            <div class="descript-elipse" @click="showDescript($event)">{{playListDate.description}}</div>
           </div>
         </div>
       </div>
+      <div class="list-content">
+        <div class="list-content-title">
+          <div class="diaodai one"></div>
+          <div class="diaodai two"></div>
+          <div class="title-text one">播放全部</div>
+          <div class="title-text two">多选</div>
+        </div>
+        <div class="playlist-song-item" v-for="(item, index) in playListDate.tracks" :key="index" @click="playSong(item)">
+          <div class="song-num">{{index+1}}</div>
+          <div class="song-detail">
+            <div class="song-name">{{item.name}}</div>
+            <div class="song-singer">
+              {{item.ar[0].name}}<template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="playListDate.name">
+        <pageEnd></pageEnd>
+      </div>
     </div>
-    <div v-if="playListDate.name">
-      <pageEnd></pageEnd>
-    </div>
-  </div>
+  </transition>
 </template>
 <script>
   import api from '@/api/index.js'
   export default {
     data() {
       return {
-        playListDate: [],
+        playListDate: {},
         listId: 0
       }
     },
@@ -83,8 +85,12 @@
             alert('网络错误!')
           })
       },
-      clickSong(id) {
-        console.log('song', id)
+      playSong(song) {
+        this.$store.commit('SETPLAYLIST', song);
+        this.$store.commit('SETFULLSCREEN', true);
+        this.$store.commit('SETPLAYING', true);
+        this.$store.commit('SETSHOWPLAYER', true);
+        // console.log('vuex playlist', this.$store.getters.playList)
       },
       showDescript(event) {
       }
@@ -98,7 +104,15 @@
   }
 </script>
 <style lang="scss" scoped>
+  @import '@/styles/variable.scss';
   .playlist-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 10;
+    background-color: #fff;
     .playlist-header {
       .playlist-header-title {
         position: fixed;
@@ -245,6 +259,7 @@
         display: flex;
         align-items: center;
         padding: .06rem 0;
+        flex: 1 0 auto;
         .song-num {
           width: 0.3rem;
           display: flex;
@@ -261,6 +276,7 @@
             overflow: hidden;
             white-space: nowrap;
             padding: .02rem 0;
+            font-size: .16rem;
           }
           .song-singer {
             font-size: .12rem;
@@ -268,7 +284,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             color: grey;
-            padding: .05rem 0;
+            padding: .02rem 0;
           }
         }
       }
