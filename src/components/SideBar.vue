@@ -144,7 +144,8 @@
       top: 0;
       bottom: 0;
       background: white;
-      z-index: 10;
+      z-index: 200;
+      box-shadow: 2px 2px 8px black;
 
       .sidebar-main-top {
         background: linear-gradient(120deg, #adadad, #505050);

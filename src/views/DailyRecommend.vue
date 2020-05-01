@@ -116,7 +116,7 @@
         }
 
         .history {
-          padding: 0.05rem 0;
+          padding: 0.05rem;
           background: #ffffffbd;
           color: #3a3a3a;
           border-radius: .2rem;

@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+  import api from '@/api/index.js'
   export default {
     props: {
       recommendMusicData: Array
@@ -82,12 +83,14 @@
         return newArr;
       },
       playSong(song) {
-        console.log('song', song)
-        this.$store.commit('SETPLAYLIST', song);
-        this.$store.commit('SETFULLSCREEN', true);
-        this.$store.commit('SETPLAYING', true);
-        this.$store.commit('SETSHOWPLAYER', true);
-        // console.log('vuex playlist', this.$store.getters.playList)
+        this.$loading.show()
+        api.MusicDetail(song.id)
+          .then(res => {
+            this.$store.commit('SETPLAYLIST', res.songs[0]);
+            this.$store.commit('SETFULLSCREEN', true);
+            this.$store.commit('SETPLAYING', true);
+            this.$store.commit('SETSHOWPLAYER', true);
+          })
       }
     }
   }

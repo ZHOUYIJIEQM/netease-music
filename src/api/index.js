@@ -132,12 +132,19 @@ export default {
     return fetchGet(`/playlist/detail?timestamp=${Date.now()}`, id, 'post')
   },
   /**
-   * music歌曲
+   * 获取歌曲url
    * @param {num} id 歌单id
    */
   MusicUrl(id) {
     return fetchGet(`/song/url?timestamp=${Date.now()}`, {
       id
     }, 'post')
+  },
+  /**
+   * 获取歌曲详细
+   * @param {num} id 歌单id
+   */
+  MusicDetail(ids) {
+    return fetchGet(`/song/detail?ids=${ids}&timestamp=${Date.now()}`)
   }
 }

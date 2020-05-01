@@ -1,58 +1,32 @@
 <template>
   <div class="player" v-show="showPlayer">
     <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
-      <div class="normal-player" v-show="fullScreen"  v-if="playList[currentIndex]">
+      <div class="normal-player" v-show="fullScreen" v-if="playList[currentIndex]">
+        <!-- 播放器背景 -->
+        <!-- 每日推荐 与 歌单的song有些不同 al-> album ar-> artists-->
         <div class="bgimg">
-          <img class="bgi" :src="playList[currentIndex].al && playList[currentIndex].al.picUrl" alt="">
+          <img class="bgi" :src="(playList[currentIndex].al && playList[currentIndex].al.picUrl) || (playList[currentIndex].album && playList[currentIndex].album.picUrl)" alt="">
         </div>
         <div class="full-page">
           <div class="header">
             <i class="iconfont icon-fanhui" @click="togglePlayer()"></i>
             <div class="song-name" v-text="playList[currentIndex].name"></div>
-            <div class="singer-name" v-if="(playList[currentIndex].ar && playList[currentIndex].ar.length)">
-              <template v-for="(item, index) in playList[currentIndex].ar">
-                {{playList[currentIndex].ar[index].name}}
-                <template v-if="index>=0 && index<playList[currentIndex].ar.length-1">/</template>
+            <div class="singer-name">
+              <template v-if="playList[currentIndex].ar">
+                <template v-for="(item, index) in playList[currentIndex].ar">
+                  {{playList[currentIndex].ar[index].name}}
+                  <template v-if="index>=0 && index<playList[currentIndex].ar.length-1">/</template>
+                </template>
+                -
+                <template v-if="playList[currentIndex].al">{{playList[currentIndex].al.name}}</template>
               </template>
-              - {{playList[currentIndex].al && playList[currentIndex].al.name}}
             </div>
-          </div>
-          <div class="middle">
-            <div class="cd-wrapper" ref="cdWrapper">
-              <div class="img-roll song-play" :class="roll">
-                <img v-lazy="(playList[currentIndex].al && playList[currentIndex].al.picUrl)" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="bottom">
-            <i class="iconfont icon-shangyishoushangyige" @click="changeSong"></i>
-            <i class="iconfont" :class="bofang" @click="clickPlayStatus"></i>
-            <i class="iconfont icon-xiayigexiayishou" @click="changeSong"></i>
           </div>
         </div>
       </div>
     </transition>
-    <transition name="mini">
-      <div class="mini-player" v-show="!fullScreen" v-if="playList[currentIndex]">
-        <div class="bgimg song-play" :class="roll" @click="togglePlayer" >
-          <img class="bgi" :src="playList[currentIndex].al && playList[currentIndex].al.picUrl" alt="">
-        </div>
-        <div class="player-text" @click="togglePlayer">
-          <div class="song-name" v-text="playList[currentIndex].name"></div>
-          <div class="singer-name" v-if="playList[currentIndex].ar.length">
-            <template v-for="(item, index) in playList[currentIndex].ar">
-              {{playList[currentIndex].ar[index].name}}
-              <template v-if="index>=0 && index<playList[currentIndex].ar.length-1">/</template>
-            </template>
-            - {{playList[currentIndex].al && playList[currentIndex].al.name}}
-          </div>
-        </div>
-        <div class="player-status">
-          <i class="iconfont" :class="bofang" @click="clickPlayStatus"></i>
-        </div>
-      </div>
+    <transition name="normal">
     </transition>
-    <audio ref="audio"></audio>
   </div>
 </template>
 <script>
