@@ -46,6 +46,12 @@
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
   .leader-board-content {
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff;
     .song-list-header-title {
       position: fixed;
       left: 0;

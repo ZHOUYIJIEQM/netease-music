@@ -168,7 +168,7 @@
               this.$refs.audio.play();
               this.$loading.hide()
             } else {
-              this.$Toast({ message: '获取的音频地址为null，尝试其它获取方式，可能无法播放', time: 5000 })
+              this.$Toast({ message: '可能是vip歌曲, 获取的音频地址为null, 正尝试其它获取方式。 音乐可能无法播放！', time: 6000 })
               this.$refs.audio.src = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
               this.$refs.audio.play();
               this.$loading.hide()
@@ -180,7 +180,7 @@
 </script>
 <style lang="scss" scoped>
   .player {
-    z-index: 100;
+    z-index: 310;
 
     .normal-player {
       position: fixed;
@@ -189,7 +189,7 @@
       bottom: 0;
       left: 0;
       background: rgb(111, 111, 111);
-      z-index: 11;
+      z-index: 301;
       .bgimg {
         position: absolute;
         top: 0;
@@ -256,6 +256,7 @@
             }
             img {
               width: 100%;
+              height: 100%;
             }
           }
         }
@@ -299,7 +300,7 @@
       right: 0;
       height: .5rem;
       background: #fff;
-      z-index: 10;
+      z-index: 300;
       display: flex;
       align-items: center;
       border-top: 1px solid #e2e2e2;
@@ -312,6 +313,7 @@
         margin-left: .1rem;
         img {
           width: 100%;
+          height: 100%;
         }
       }
       .player-text {

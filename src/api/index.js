@@ -23,20 +23,20 @@ export function fetchGet(url, param, methods = 'get') {
     //     params: param
     //   })
     axios({
-      method: methods,
-      url,
-      data: param,
-      validateStatus: function (status) {
-        return status < 400; // 状态码在大于或等于400时才会 reject
-      },
-      withCredentials: true
-    })
-    .then(res => {
-      resolve(res)
-    })
-    .catch(err => {
-      reject(err)
-    })
+        method: methods,
+        url,
+        data: param,
+        validateStatus: function (status) {
+          return status < 400; // 状态码在大于或等于400时才会 reject
+        },
+        withCredentials: true
+      })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
   })
 }
 
@@ -146,5 +146,12 @@ export default {
    */
   MusicDetail(ids) {
     return fetchGet(`/song/detail?ids=${ids}&timestamp=${Date.now()}`)
+  },
+  /**
+   * 搜索 关键词
+   * @param {obj}
+   */
+  SearchSong(params) {
+    return fetchGet(`/search?timestamp=${Date.now()}`, params, 'post')
   }
 }
