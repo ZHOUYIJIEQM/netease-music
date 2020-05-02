@@ -3,7 +3,7 @@
   <div class="recommend-song-item" @click="goPlayList(songItem.id)">
     <div class="song-item">
       <!-- <img :src="songItem.picUrl" alt="" class="list-pic" /> -->
-      <img v-lazy="songItem.picUrl+'?param=200y200'" alt="" class="list-pic" />
+      <img v-lazy="songItem.picUrl+'?param=600y600'" alt="" class="list-pic" />
       <div class="play-count" v-if="songItem.playCount">{{songItem.playCount|formatNum}}</div>
       <div class="play-count" v-else-if="songItem.playcount">{{songItem.playcount|formatNum}}</div>
     </div>

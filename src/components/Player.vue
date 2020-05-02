@@ -229,6 +229,7 @@
             white-space: nowrap;
             overflow: hidden;
             font-weight: bold;
+            font-size: .18rem
           }
           .singer-name {
             text-align: center;

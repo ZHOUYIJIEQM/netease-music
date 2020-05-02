@@ -29,6 +29,7 @@
           </div>
         </div>
       </div>
+      <pageEnd v-if="recommendList.length"></pageEnd>
     </div>
   </transition>
 </template>
@@ -43,7 +44,8 @@
       }
     },
     components: {
-      songItem: () => import('@/components/PlayListItem.vue')
+      songItem: () => import('@/components/PlayListItem.vue'),
+      pageEnd: () => import('@/components/PageEnd.vue')
     },
     created() {
       this.$loading.show();

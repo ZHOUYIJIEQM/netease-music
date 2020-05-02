@@ -174,7 +174,7 @@
       left: 0;
       background: white;
       width: 100%;
-      box-shadow: 0px 1px 3px #bbb;
+      box-shadow: 0px 1px 1px #dedede;
       .rback,
       .search-icon {
         width: .45rem;
@@ -315,7 +315,7 @@
       .search-result-list {
         padding: .13rem 0;
         .search-result-item {
-          padding: .05rem .1rem;
+          padding: .07rem .1rem;
           color: #3a3a3a;
           display: flex;
           align-items: center;

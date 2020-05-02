@@ -9,7 +9,7 @@
       <div v-if="leaderBoard.length" class="board-list">
         <div class="board-item" v-for="(item, index) in leaderBoard" :key="index" @click="handlerClick(item.id)">
           <div class="board-img">
-            <img v-lazy="item.coverImgUrl+'?param=200y200'" alt="">
+            <img v-lazy="item.coverImgUrl+'?param=600y600'" alt="">
           </div>
           <div class="board-text">{{item.name}}</div>
         </div>

@@ -144,7 +144,7 @@
       top: 0;
       bottom: 0;
       background: white;
-      z-index: 200;
+      z-index: 400;
       box-shadow: 2px 2px 8px black;
 
       .sidebar-main-top {
