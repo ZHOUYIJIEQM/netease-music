@@ -1,7 +1,7 @@
 <template>
   <div class="player" v-show="showPlayer">
     <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
-      <div class="normal-player" v-show="fullScreen"  v-if="playList[currentIndex]">
+      <div class="normal-player" v-show="fullScreen" v-if="playList[currentIndex]">
         <div class="bgimg">
           <img class="bgi" :src="playList[currentIndex].al && playList[currentIndex].al.picUrl" alt="">
         </div>
@@ -34,7 +34,7 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" v-if="playList[currentIndex]">
-        <div class="bgimg song-play" :class="roll" @click="togglePlayer" >
+        <div class="bgimg song-play" :class="roll" @click="togglePlayer">
           <img class="bgi" :src="playList[currentIndex].al && playList[currentIndex].al.picUrl" alt="">
         </div>
         <div class="player-text" @click="togglePlayer">
@@ -52,7 +52,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio"></audio>
+    <audio ref="audio" @ended="end"></audio>
   </div>
 </template>
 <script>
@@ -93,9 +93,6 @@
     methods: {
       changeSong() {
         this.$Toast({ message: '播放列表待开发', time: 2000 })
-      },
-      goBack() {
-        this.$store.commit('SETFULLSCREEN', !this.fullScreen)
       },
       togglePlayer() {
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
@@ -142,6 +139,9 @@
         this.playing ? this.$refs.audio.pause() : this.$refs.audio.play()
         this.$store.commit('SETPLAYING', !this.playing);
       },
+      end() {
+        this.$store.commit('SETPLAYING', !this.playing)
+      },
       _getPosAndScale() {
         // 左下角图
         const targetWidth = 35
@@ -158,17 +158,19 @@
     },
     watch: {
       playList(newValue, oldValue) {
-        const id = this.playList[0].id
+        const songId = this.playList[0].id
         this.$loading.show();
         this.$refs.audio.pause();
-        api.MusicUrl(id)
+        api.MusicUrl(songId)
           .then(res => {
             if (res.data[0].url !== null) {
               this.$refs.audio.src = res.data[0].url;
               this.$refs.audio.play();
               this.$loading.hide()
             } else {
-              this.$Toast({ message: '可能是vip歌曲,普通用户获取的地址为null', time: 4000 })
+              this.$Toast({ message: '获取的音频地址为null，尝试其它获取方式，可能无法播放', time: 5000 })
+              this.$refs.audio.src = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
+              this.$refs.audio.play();
               this.$loading.hide()
             }
           })
@@ -226,6 +228,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+            font-weight: bold;
           }
           .singer-name {
             text-align: center;

@@ -1,5 +1,5 @@
 <template>
-  <!-- 歌单 -->
+  <!-- 歌单广场 -->
   <transition name="fadeInRight" mode="out-in">
     <div class="song-list-content">
       <div class="mask" :style="{backgroundImage: 'url('+bgImg+')'}"></div>
@@ -11,7 +11,7 @@
         <div class="list-content-item" v-for="(item, index) in allSongList" :key="index">
           <recommendSongItem :songItem="item"></recommendSongItem>
         </div>
-        <div class="list-content-item">
+        <div class="page-end">
           <pageEnd v-if="allSongList.length"></pageEnd>
         </div>
       </div>
@@ -107,6 +107,9 @@
       .list-content-item {
         width: 1.1rem;
         padding-bottom: 0.2rem;
+      }
+      .page-end {
+        width: 100%;
       }
       // /deep/ .recommend-song-item{
       //   width: 1rem;

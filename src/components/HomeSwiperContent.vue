@@ -11,10 +11,10 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import mine from '@/views/Mine.vue'
-  import find from '@/views/Find.vue'
-  import cloudVillage from '@/views/CloudVillage.vue'
-  import cloudVideo from '@/views/CloudVideo.vue'
+  import mine from '@/components/Mine.vue'
+  import find from '@/components/Find.vue'
+  import cloudVillage from '@/components/CloudVillage.vue'
+  import cloudVideo from '@/components/CloudVideo.vue'
   export default {
     data() {
       return {
@@ -23,7 +23,7 @@
           { component: find },
           { component: cloudVillage },
           { component: cloudVideo }
-      ],
+        ],
         swiperOption: {
           initialSlide: this.$store.getters.navIndex,
           resistanceRatio: 0
@@ -46,7 +46,7 @@
       navIndex() {
         this.swiper.slideTo(this.navIndex)
         if (this.navIndex === 2 || this.navIndex === 3) {
-          this.$Toast({ message: '功能未完成', time: 1000 })
+          this.$Toast({ message: '功能未开发!', time: 1000 })
         }
       }
     }

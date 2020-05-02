@@ -2,7 +2,7 @@
   <!-- 发现页推荐歌单 -->
   <div>
     <swiper
-      class="swiper-container songlist-swiper"
+      class="songlist-swiper"
       :options="songSwiperOption"
       v-if="recommendSongData.length"
     >

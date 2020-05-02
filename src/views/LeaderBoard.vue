@@ -1,19 +1,21 @@
 <template>
   <!-- 排行榜 -->
-  <div class="leader-board-content">
-    <div class="song-list-header-title">
-      <i class="iconfont icon-fanhui" @click="goBack"></i>
-      <div class="title-text">排行榜</div>
-    </div>
-    <div v-if="leaderBoard.length" class="board-list">
-      <div class="board-item" v-for="(item, index) in leaderBoard" :key="index" @click="handlerClick(item.id)">
-        <div class="board-img">
-          <img v-lazy="item.coverImgUrl+'?param=200y200'" alt="">
+  <transition name="fadeInRight" mode="out-in">
+    <div class="leader-board-content">
+      <div class="song-list-header-title">
+        <i class="iconfont icon-fanhui" @click="goBack"></i>
+        <div class="title-text">排行榜</div>
+      </div>
+      <div v-if="leaderBoard.length" class="board-list">
+        <div class="board-item" v-for="(item, index) in leaderBoard" :key="index" @click="handlerClick(item.id)">
+          <div class="board-img">
+            <img v-lazy="item.coverImgUrl+'?param=200y200'" alt="">
+          </div>
+          <div class="board-text">{{item.name}}</div>
         </div>
-        <div class="board-text">{{item.name}}</div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
   import api from '@/api/index.js'
@@ -42,6 +44,7 @@
   }
 </script>
 <style lang="scss" scoped>
+  @import '@/styles/variable.scss';
   .leader-board-content {
     .song-list-header-title {
       position: fixed;
