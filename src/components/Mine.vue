@@ -13,7 +13,7 @@
           </router-link>
         </div>
       </div>
-      <div class="mine-title-login" v-else>
+      <div class="mine-title-login" v-else-if="userInfo!==null">
         <div class="login-pic">
           <img :src="userInfo.profile.avatarUrl" alt="" />
         </div>

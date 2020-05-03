@@ -134,14 +134,15 @@
         this.$router.push({ name: 'SongList' })
       },
       receiveData() {
-        this.$store.dispatch('getRefreshLogin')
-          .then(res => {
-            // console.log('获得登录状态后：', res)
-            this.getRecommend();
-          })
-          .catch(err => {
-            console.log('获得登录状态后：', err);
-          })
+        this.getRecommend();
+        // this.$store.dispatch('getRefreshLogin')
+        //   .then(res => {
+        //     // console.log('获得登录状态后：', res)
+        //     this.getRecommend();
+        //   })
+        //   .catch(err => {
+        //     console.log('获得登录状态后：', err);
+        //   })
       },
       // 获取推荐内容
       getRecommend() {
