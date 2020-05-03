@@ -31,27 +31,27 @@
 - [排行榜](#排行榜)  
 
 ### <a id="首页">[首页](#预览图)</a> 
-![首页](./preview/发现.png)  
-![首页](./preview/我的.png)  
+![首页](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/发现.png)  
+![首页](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/我的.png)  
 ### <a id="登录后刷新主页">[登录后刷新主页](#预览图)</a>
-![上拉加载](./preview/登录后刷新主页.png)
+![上拉加载](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/登录后刷新主页.png)
 ### <a id="侧边栏">[侧边栏](#预览图)</a>
-![侧边栏](./preview/侧边栏.png)
+![侧边栏](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/侧边栏.png)
 ### <a id="登录">[登录](#预览图)</a>
-![登录](./preview/登录.png)
+![登录](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/登录.png)
 ### <a id="搜索">[搜索](#预览图)</a>
-![搜索](./preview/搜索.png)
-![搜索](./preview/搜索1.png)
+![搜索](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/搜索.png)
+![搜索](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/搜索1.png)
 ### <a id="歌单广场">[歌单广场](#预览图)</a>
-![歌单广场](./preview/歌单广场.png)
+![歌单广场](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/歌单广场.png)
 ### <a id="歌单详情">[歌单详情](#预览图)</a>
-![歌单详情](./preview/歌单详情.png)  
+![歌单详情](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/歌单详情.png)  
 ### <a id="每日推荐">[每日推荐](#预览图)</a>
-![每日推荐](./preview/每日推荐歌曲.png)
+![每日推荐](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/每日推荐歌曲.png)
 ### <a id="播放界面">[播放界面(待完善)](#预览图)</a>
-![播放界面](./preview/播放界面.png)  
+![播放界面](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/播放界面.png)  
 ### <a id="网易云排行榜">[网易云排行榜](#预览图)</a>
-![网易云排行榜](./preview/网易云排行榜.png)  
+![网易云排行榜](https://raw.githubusercontent.com/ZHOUYIJIEQM/netease-music/master/preview/网易云排行榜.png)  
 
 ## 仅用于学习使用
 
