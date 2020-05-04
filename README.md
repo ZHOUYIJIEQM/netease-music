@@ -1,4 +1,4 @@
-# 仿安卓网易云音乐App
+# 仿网易云音乐App
 > 基于vue+axios+vue-router+vuex+sass+flex布局开发  
 > 后台使用了 [Binaryify 网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
