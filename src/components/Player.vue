@@ -1,5 +1,5 @@
 <template>
-  <div class="player" v-show="showPlayer">
+  <div class="player" v-show="showPlayer" ref="player">
     <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
       <div class="normal-player" v-show="fullScreen" v-if="playList[currentIndex]">
         <div class="bgimg">
@@ -25,9 +25,13 @@
             </div>
           </div>
           <div class="bottom">
-            <i class="iconfont icon-shangyishoushangyige" @click="changeSong"></i>
-            <i class="iconfont" :class="bofang" @click="clickPlayStatus"></i>
-            <i class="iconfont icon-xiayigexiayishou" @click="changeSong"></i>
+            <!-- 进度条 -->
+            <vprogress :duration="songDuration" :currentTime="currentTime" @changeCurrentTime="changeTime" @MoveCurrentTime="moveProgressBtn"></vprogress>
+            <div class="bottom-btn">
+              <i class="iconfont icon-shangyishoushangyige" @click="changeSong"></i>
+              <i class="iconfont" :class="bofang" @click="clickPlayStatus"></i>
+              <i class="iconfont icon-xiayigexiayishou" @click="changeSong"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -52,15 +56,24 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" @ended="end"></audio>
+    <audio ref="audio" @canplay="canplay" @timeupdate="timeupdate" @ended="end" @error="error"></audio>
   </div>
 </template>
 <script>
   import animations from 'create-keyframe-animation'
   import api from '@/api/index.js'
+  import vprogress from '@/components/Progress.vue'
   export default {
+    components: {
+      vprogress
+    },
     data() {
-      return {}
+      return {
+        songDuration: 0,
+        currentTime: 0,
+        currentTimer: null,
+        isMove: false
+      }
     },
     computed: {
       showPlayer() {
@@ -90,12 +103,46 @@
         return this.$store.getters.currentIndex;
       }
     },
+    mounted() {
+      // console.log('this.$refs', this.$refs)
+    },
     methods: {
       changeSong() {
         this.$Toast({ message: '播放列表待开发', time: 2000 })
       },
       togglePlayer() {
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
+      },
+      canplay() {
+        console.log('可以播放')
+        this.$refs.audio.play();
+        this.$loading.hide()
+        this.songDuration = this.$refs.audio.duration;
+        this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
+        // this.currentTimer = setInterval(() => {
+        //   this.currentTime = this.$refs.audio.currentTime
+        //   console.log(this.currentTime)
+        // }, 1000);
+      },
+      end() {
+        this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
+      },
+      error() {
+        this.$Toast({ message: '音频播放错误', time: 3000 })
+      },
+      timeupdate() {
+        if (!this.isMove) {
+          this.currentTime = this.$refs.audio.currentTime
+        }
+      },
+      changeTime(timeP, isMove) {
+        this.$refs.audio.currentTime = this.$refs.audio.duration * timeP;
+        this.isMove = isMove;
+      },
+      moveProgressBtn(timeP, isMove) {
+        this.currentTime = this.$refs.audio.duration * timeP
+        this.isMove = isMove;
+        // console.log('时间百分比', this.currentTime)
       },
       enter(el, done) {
         // console.log('enter')
@@ -139,9 +186,6 @@
         this.playing ? this.$refs.audio.pause() : this.$refs.audio.play()
         this.$store.commit('SETPLAYING', !this.playing);
       },
-      end() {
-        this.$store.commit('SETPLAYING', !this.playing)
-      },
       _getPosAndScale() {
         // 左下角图
         const targetWidth = 35
@@ -160,19 +204,20 @@
       playList(newValue, oldValue) {
         const songId = this.playList[0].id
         this.$loading.show();
+        this.$Toast({ message: '正在加载音频', time: 1500 })
         this.$refs.audio.pause();
         api.MusicUrl(songId)
           .then(res => {
             if (res.data[0].url !== null) {
               this.$refs.audio.src = res.data[0].url;
-              this.$refs.audio.play();
-              this.$loading.hide()
             } else {
               this.$Toast({ message: '可能是vip歌曲, 获取的音频地址为null, 正尝试其它获取方式。 音乐可能无法播放！', time: 6000 })
               this.$refs.audio.src = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
-              this.$refs.audio.play();
-              this.$loading.hide()
             }
+          })
+          .catch(() => {
+            this.$Toast({ message: '请求错误, 无法播放', time: 1000 })
+            this.$loading.hide()
           })
       }
     }
@@ -210,7 +255,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: rgba(255, 255, 255, 0.38);
+        background: rgba(255, 255, 255, 0.35);
         .header {
           height: .45rem;
           padding: 0 .15rem;
@@ -267,19 +312,26 @@
           bottom: 0;
           height: 1.5rem;
           display: flex;
-          justify-content: center;
-          align-items: center;
-          .iconfont {
-            flex: 1;
-            text-align: center;
-            font-size: .3rem;
-            color: #1d1d1d;
-          }
-          .icon-bofang {
-            font-size: .5rem;
-          }
-          .icon-zanting_huaban {
-            font-size: .45rem;
+          flex-direction: column;
+          justify-content: space-around;
+          .bottom-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 50px;
+            margin-bottom: .1rem;
+            .iconfont {
+              flex: 1;
+              text-align: center;
+              font-size: .3rem;
+              color: #1d1d1d;
+            }
+            .icon-bofang {
+              font-size: .5rem;
+            }
+            .icon-zanting_huaban {
+              font-size: .45rem;
+            }
           }
         }
       }
