@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 axios.defaults.timeout = 15000;
-axios.defaults.baseURL = 'http://149.28.24.198:5000';
-// axios.defaults.baseURL = 'http://63.209.32.7:5000';
+// axios.defaults.baseURL = 'http://149.28.24.198:5000';
+axios.defaults.baseURL = 'http://63.209.32.7:5000';
 
 axios.interceptors.response.use(res => {
   if (res.data.code !== 200) {

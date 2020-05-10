@@ -92,19 +92,14 @@
         return this.$store.getters.playing;
       },
       playList() {
-        // console.log(this.$store.getters.playList)
         return this.$store.getters.playList;
       },
       playListName() {
-        // console.log(this.$store.getters.playList)
         return this.$store.getters.playListName;
       },
       currentIndex() {
         return this.$store.getters.currentIndex;
       }
-    },
-    mounted() {
-      // console.log('this.$refs', this.$refs)
     },
     methods: {
       changeSong() {
@@ -114,15 +109,10 @@
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
       },
       canplay() {
-        console.log('可以播放')
         this.$refs.audio.play();
         this.$loading.hide()
         this.songDuration = this.$refs.audio.duration;
         this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
-        // this.currentTimer = setInterval(() => {
-        //   this.currentTime = this.$refs.audio.currentTime
-        //   console.log(this.currentTime)
-        // }, 1000);
       },
       end() {
         this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
@@ -142,7 +132,6 @@
       moveProgressBtn(timeP, isMove) {
         this.currentTime = this.$refs.audio.duration * timeP
         this.isMove = isMove;
-        // console.log('时间百分比', this.currentTime)
       },
       enter(el, done) {
         // console.log('enter')
@@ -164,12 +153,10 @@
         animations.runAnimation(this.$refs.cdWrapper, 'move', done)
       },
       afterEnter() {
-        // console.log('afterEnter')
         animations.unregisterAnimation('move')
         this.$refs.cdWrapper.style.animation = ''
       },
       leave(el, done) {
-        // console.log('leave')
         this.$refs.cdWrapper.style.transition = 'all .4s'
         const { x, y, scale } = this._getPosAndScale()
         this.$refs.cdWrapper.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`
@@ -178,7 +165,6 @@
         })
       },
       afterLeave() {
-        // console.log('afterLeave')
         this.$refs.cdWrapper.style.transition = ''
         this.$refs.cdWrapper.style.transform = ''
       },
