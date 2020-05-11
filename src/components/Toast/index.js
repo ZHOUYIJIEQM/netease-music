@@ -6,8 +6,9 @@ let timer = null
 const toastMessage = (options) => {
   if (!instance) {
     instance = new ToastTem();
-    instance.vm = instance.$mount();
-    document.body.appendChild(instance.vm.$el);
+    // console.log('toast', instance === instance.$mount()) //true
+    // console.log('toast $mount()', instance.$mount())
+    document.body.appendChild(instance.$mount().$el);
   }
   if (timer) {
     clearTimeout(timer);
@@ -42,7 +43,6 @@ toastMessage.close = () => {
   }
 }
 toastMessage.install = (Vue) => {
-  // console.log('install--------toastMessage')
   Vue.prototype.$Toast = toastMessage
 }
 export default toastMessage
