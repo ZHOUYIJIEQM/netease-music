@@ -85,7 +85,6 @@
         progressBtn.addEventListener('touchend', function (event) {
           this.isMoving = false;
           _this.$emit('changeCurrentTime', parseInt(progressBtn.offsetLeft) / progressBox.offsetWidth, false);
-          console.log('松开')
         }, false);
       },
       // 把数字转出 '03: 23' 这样的格式

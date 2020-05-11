@@ -92,6 +92,7 @@
       cleanQuery() {
         this.query = '';
         this.searchResult = [];
+        this.resultOffset = 0;
       },
       clickHotList(hotsItem) {
         this.query = hotsItem.searchWord
@@ -150,6 +151,7 @@
       query(newValue, oldVale) {
         if (newValue.trim()) {
           this.getSong(newValue)
+          this.resultOffset = 0;
         }
       }
     }
