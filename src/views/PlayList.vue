@@ -111,7 +111,7 @@
     top: 0;
     right: 0;
     height: 100%;
-    z-index: 10;
+    z-index: 15;
     background-color: #fff;
     .playlist-header {
       .playlist-header-title {
