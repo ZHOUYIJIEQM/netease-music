@@ -261,7 +261,7 @@
           .hots-item-detail {
             display: flex;
             flex-direction: column;
-            flex: 1 0 auto;
+            flex: 1 0 70%;
             padding-left: .15rem;
 
             .item-searchWord {
@@ -271,6 +271,9 @@
 
               .item-name {
                 font-size: .18rem;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
               }
 
               .hots-item-pic {
