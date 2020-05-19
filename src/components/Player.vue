@@ -108,11 +108,8 @@
       togglePlayer() {
         if (this.fullScreen) {
           this.$router.go(-1)
-<<<<<<< HEAD
         } else {
           this.$router.push('/Player')
-=======
->>>>>>> ac0d49d6322ded7c8d20b1e658664fd72d2d4f49
         }
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
       },
@@ -221,7 +218,6 @@
           })
       },
       '$route'(to, from) {
-<<<<<<< HEAD
         // 没点左上角的退出按钮, 手机直接操作返回, 或者浏览器直接返回时 隐藏播放界面
         if (from.path === '/Player') {
           if (this.fullScreen) {
@@ -231,11 +227,6 @@
         // 前进动作
         if (to.path === '/Player') {
           if (!this.fullScreen) {
-=======
-        if (from.path === '/player') {
-          if (this.fullScreen) {
-            this.$router.go(-1)
->>>>>>> ac0d49d6322ded7c8d20b1e658664fd72d2d4f49
             this.$store.commit('SETFULLSCREEN', !this.fullScreen)
           }
         }
