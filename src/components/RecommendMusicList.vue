@@ -127,9 +127,14 @@
           flex-direction: column;
           padding-left: .15rem;
           justify-content: center;
+          flex-basis: 75%;
+          overflow: hidden;
 
           .music-item-name {
             font-size: .16rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
           }
 
           .music-item-artists {
