@@ -91,6 +91,7 @@
             this.$store.commit('SETPLAYING', true);
             this.$store.commit('SETSHOWPLAYER', true);
           })
+        this.$router.push('/player')
       }
     }
   }
