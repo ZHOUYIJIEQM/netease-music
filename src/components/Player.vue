@@ -106,6 +106,9 @@
         this.$Toast({ message: '播放列表待开发', time: 2000 })
       },
       togglePlayer() {
+        if (this.fullScreen) {
+          this.$router.go(-1)
+        }
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
       },
       canplay() {
@@ -205,6 +208,14 @@
             this.$Toast({ message: '请求错误, 无法播放', time: 1000 })
             this.$loading.hide()
           })
+      },
+      '$route'(to, from) {
+        if (from.path === '/player') {
+          if (this.fullScreen) {
+            this.$router.go(-1)
+            this.$store.commit('SETFULLSCREEN', !this.fullScreen)
+          }
+        }
       }
     }
   }
