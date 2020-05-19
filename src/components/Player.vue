@@ -106,6 +106,11 @@
         this.$Toast({ message: '播放列表待开发', time: 2000 })
       },
       togglePlayer() {
+        if (this.fullScreen) {
+          this.$router.go(-1)
+        } else {
+          this.$router.push('/Player')
+        }
         this.$store.commit('SETFULLSCREEN', !this.fullScreen)
       },
       canplay() {
@@ -186,6 +191,12 @@
         return { x, y, scale }
       }
     },
+    mounted() {
+      // 说明页面地址直接到播放器界面, 此时没东西展示, 跳回主页
+      if (this.playList.length === 0 && this.$router.history.current.path === '/Player') {
+        this.$router.push({ name: 'Home' })
+      }
+    },
     watch: {
       playList(newValue, oldValue) {
         const songId = this.playList[0].id
@@ -205,6 +216,20 @@
             this.$Toast({ message: '请求错误, 无法播放', time: 1000 })
             this.$loading.hide()
           })
+      },
+      '$route'(to, from) {
+        // 没点左上角的退出按钮, 手机直接操作返回, 或者浏览器直接返回时 隐藏播放界面
+        if (from.path === '/Player') {
+          if (this.fullScreen) {
+            this.$store.commit('SETFULLSCREEN', !this.fullScreen)
+          }
+        }
+        // 前进动作
+        if (to.path === '/Player') {
+          if (!this.fullScreen) {
+            this.$store.commit('SETFULLSCREEN', !this.fullScreen)
+          }
+        }
       }
     }
   }

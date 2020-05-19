@@ -127,6 +127,7 @@
             this.$store.commit('SETFULLSCREEN', true);
             this.$store.commit('SETPLAYING', true);
             this.$store.commit('SETSHOWPLAYER', true);
+            this.$router.push('/Player')
           })
       },
       getSong(keyWords, pageOffset = 0) {

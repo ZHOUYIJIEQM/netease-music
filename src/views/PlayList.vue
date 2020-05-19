@@ -90,7 +90,7 @@
         this.$store.commit('SETFULLSCREEN', true);
         this.$store.commit('SETPLAYING', true);
         this.$store.commit('SETSHOWPLAYER', true);
-        // console.log('vuex playlist', this.$store.getters.playList)
+        this.$router.push('/Player')
       },
       showDescript(event) {
       }
