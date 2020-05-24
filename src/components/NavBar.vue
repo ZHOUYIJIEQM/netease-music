@@ -18,9 +18,9 @@
       return {
         navList: [
           { name: '我的' },
-          { name: '发现' },
-          { name: '云村' },
-          { name: '视频' }
+          { name: '发现' }
+          // { name: '云村' },
+          // { name: '视频' }
         ]
       }
     },

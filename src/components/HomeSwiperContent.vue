@@ -13,16 +13,16 @@
   import { mapGetters } from 'vuex'
   import mine from '@/components/Mine.vue'
   import find from '@/components/Find.vue'
-  import cloudVillage from '@/components/CloudVillage.vue'
-  import cloudVideo from '@/components/CloudVideo.vue'
+  // import cloudVillage from '@/components/CloudVillage.vue'
+  // import cloudVideo from '@/components/CloudVideo.vue'
   export default {
     data() {
       return {
         swList: [
           { component: mine },
-          { component: find },
-          { component: cloudVillage },
-          { component: cloudVideo }
+          { component: find }
+          // { component: cloudVillage },
+          // { component: cloudVideo }
         ],
         swiperOption: {
           initialSlide: this.$store.getters.navIndex,
