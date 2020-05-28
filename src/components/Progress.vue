@@ -13,7 +13,7 @@
     data() {
       return {
         progWidth: 0,
-        btnLeft: this.$refs.progressBtn / 2
+        btnLeft: -this.btnHalfW
       }
     },
     props: {
@@ -32,14 +32,15 @@
       },
       startTime() {
         return this.timeFormat(this.currentTime)
+      },
+      btnHalfW() {
+        return this.$refs.progressBtn.offsetWidth / 2
       }
     },
     watch: {
       currentTime(newValue, oldValue) {
-        if (!this.isMoving) {
-          this.progWidth = newValue / this.duration * this.$refs.progressBox.offsetWidth;
-          this.btnLeft = newValue / this.duration * this.$refs.progressBox.offsetWidth - this.$refs.progressBtn.offsetWidth / 2;
-        }
+        this.progWidth = parseInt(newValue / this.duration * this.$refs.progressBox.offsetWidth);
+        this.btnLeft = parseInt(newValue / this.duration * this.$refs.progressBox.offsetWidth - this.$refs.progressBtn.offsetWidth / 2);
       }
     },
     mounted() {
@@ -55,16 +56,16 @@
         const boxLeft = progressBox.getBoundingClientRect().left;
         const btnW = progressBtn.offsetWidth;
 
-        progressBox.addEventListener('click', function (event) {
+        progressBox.addEventListener('click', function(event) {
           const progressLineW = event.pageX - boxLeft
           if (progressLineW >= 0 && progressLineW <= progressBox.offsetWidth) {
             progressLine.style.width = progressLineW + 'px';
             progressBtn.style.left = progressLineW - btnW / 2 + 'px'
           }
-          _this.$emit('changeCurrentTime', parseInt(progressBtn.style.left) / progressBox.offsetWidth);
+          _this.$emit('changeCurrentTime', parseInt(parseInt(progressLine.offsetWidth) / progressBox.offsetWidth * _this.duration), false);
         }, false)
 
-        progressBtn.addEventListener('touchmove', function (event) {
+        progressBtn.addEventListener('touchmove', function(event) {
           // 边界限制
           const setBtnLeft = event.changedTouches[0].pageX - boxLeft;
           if (setBtnLeft < 0) {
@@ -79,12 +80,12 @@
             progressBtn.style.left = event.changedTouches[0].pageX - boxLeft + 'px';
             progressLine.style.width = event.changedTouches[0].pageX - boxLeft + btnW / 2 + 'px';
           }
-          _this.$emit('MoveCurrentTime', parseInt(progressBtn.offsetLeft) / progressBox.offsetWidth, true);
+          _this.$emit('MoveCurrentTime', parseInt(parseInt(progressLine.offsetWidth) / progressBox.offsetWidth * _this.duration), true);
         }, false)
 
-        progressBtn.addEventListener('touchend', function (event) {
-          this.isMoving = false;
-          _this.$emit('changeCurrentTime', parseInt(progressBtn.offsetLeft) / progressBox.offsetWidth, false);
+        progressBtn.addEventListener('touchend', function(event) {
+          console.log('---', _this.currentTime)
+          _this.$emit('changeCurrentTime', _this.currentTime, false);
         }, false);
       },
       // 把数字转出 '03: 23' 这样的格式
@@ -106,23 +107,27 @@
     display: flex;
     align-items: center;
     height: .2rem;
+
     .song-time {
       flex: 0 0 0.6rem;
       text-align: center;
       font-size: .12rem;
       overflow: hidden;
     }
+
     .progress-box {
       flex: 1 0 auto;
       height: .02rem;
       border-radius: .1rem;
       background: white;
       position: relative;
+
       .progress {
         width: 0%;
         height: 100%;
         background: #3a3a3a;
       }
+
       .slider-btn {
         width: .06rem;
         height: .06rem;

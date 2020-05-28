@@ -17,7 +17,7 @@
               - {{playList[currentIndex].al && playList[currentIndex].al.name}}
             </div>
           </div>
-          <div class="middle">
+          <div class="middle" ref="cdmiddle">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="img-roll song-play" :class="roll">
                 <img v-lazy="(playList[currentIndex].al && playList[currentIndex].al.picUrl)" alt="">
@@ -131,11 +131,12 @@
         }
       },
       changeTime(timeP, isMove) {
-        this.$refs.audio.currentTime = this.$refs.audio.duration * timeP;
+        this.$refs.audio.currentTime = timeP;
         this.isMove = isMove;
       },
       moveProgressBtn(timeP, isMove) {
-        this.currentTime = this.$refs.audio.duration * timeP
+        this.currentTime = timeP
+        // this.currentTime = parseInt(this.$refs.audio.duration * timeP)
         this.isMove = isMove;
       },
       enter(el, done) {
@@ -180,14 +181,16 @@
       _getPosAndScale() {
         // 左下角图
         const targetWidth = 35
-        const Left = 30
-        const top = 160
-        // 放大后
+        const Left = 25
+        const Bottom = 35
+        let top = 0;
+        this.$nextTick(() => {
+          top = this.$refs.cdmiddle.getBoundingClientRect().top
+        })
         const width = window.innerWidth * 0.68
         const scale = targetWidth / width
-        const x = -(window.innerWidth / 2 - Left)
-        const y = window.innerHeight - width / 2 - top
-        // console.log('x, y, scale', x, y, scale)
+        const x = -window.innerWidth / 2 + Left
+        const y = window.innerHeight - width - top - Bottom
         return { x, y, scale }
       }
     },
@@ -347,13 +350,31 @@
         }
       }
     }
+    .normal-enter-active,
+    .normal-leave-active {
+      transition: all .4s;
+      .header,
+      .bottom {
+        transition: all .4s cubic-bezier(.16,.68,.73,.99);
+      }
+    }
+    .normal-enter,
+    .normal-leave-to {
+      opacity: 0;
+      .header {
+        transform: translate3d(0, -150%, 0);
+      }
+      .bottom {
+        transform: translate3d(0, 150%, 0);
+      }
+    }
 
-    mini-enter-active,
-    mini-leave-active {
+    .mini-enter-active,
+    .mini-leave-active {
       transition: all .5s;
     }
-    mini-enter,
-    mini-leave-to {
+    .mini-enter,
+    .mini-leave-to {
       opacity: 0;
     }
 
