@@ -21,9 +21,9 @@
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 8px;
+    padding: .08rem;
+    font-size: .16rem;
+    border-radius: .08rem;
     text-align: center;
     z-index: 500;
   }

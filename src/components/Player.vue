@@ -123,7 +123,14 @@
         this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
       },
       error() {
-        this.$Toast({ message: '音频播放错误', time: 3000 })
+        var timer = null;
+        timer && clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.$Toast({ message: '无法播放收费歌曲！', time: 3000 })
+          this.$loading.hide();
+          this.togglePlayer();
+          this.clickPlayStatus();
+        }, 2000)
       },
       timeupdate() {
         if (!this.isMove) {
@@ -249,12 +256,14 @@
       left: 0;
       background: rgb(111, 111, 111);
       z-index: 301;
+
       .bgimg {
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0;
+
         .bgi {
           position: absolute;
           left: 50%;
@@ -263,6 +272,7 @@
           filter: blur(50px);
         }
       }
+
       .full-page {
         position: absolute;
         top: 0;
@@ -270,15 +280,18 @@
         bottom: 0;
         left: 0;
         background: rgba(255, 255, 255, 0.35);
+
         .header {
           height: .45rem;
           padding: 0 .15rem;
+
           .icon-fanhui {
             color: black;
             font-size: .22rem;
             position: absolute;
             line-height: .45rem;
           }
+
           .song-name {
             width: 2.3rem;
             margin: 0 auto;
@@ -288,15 +301,18 @@
             white-space: nowrap;
             overflow: hidden;
             font-weight: bold;
-            font-size: .18rem
+            font-size: .18rem;
           }
+
           .singer-name {
+            font-size: .16rem;
             text-align: center;
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
           }
         }
+
         .middle {
           position: absolute;
           top: 1.5rem;
@@ -304,22 +320,26 @@
           width: 100%;
           display: flex;
           justify-content: center;
+
           .cd-wrapper {
             border: .1rem solid rgba(0, 0, 0, 0.3);
             height: 2.3rem;
             width: 2.3rem;
             border-radius: 50%;
             overflow: hidden;
+
             .img-roll {
               width: 100%;
               height: 100%;
             }
+
             img {
               width: 100%;
               height: 100%;
             }
           }
         }
+
         .bottom {
           position: absolute;
           width: 100%;
@@ -328,21 +348,25 @@
           display: flex;
           flex-direction: column;
           justify-content: space-around;
+
           .bottom-btn {
             display: flex;
             justify-content: center;
             align-items: center;
             line-height: 50px;
             margin-bottom: .1rem;
+
             .iconfont {
               flex: 1;
               text-align: center;
               font-size: .3rem;
               color: #1d1d1d;
             }
+
             .icon-bofang {
               font-size: .5rem;
             }
+
             .icon-zanting_huaban {
               font-size: .45rem;
             }
@@ -350,20 +374,25 @@
         }
       }
     }
+
     .normal-enter-active,
     .normal-leave-active {
       transition: all .4s;
+
       .header,
       .bottom {
-        transition: all .4s cubic-bezier(.16,.68,.73,.99);
+        transition: all .4s cubic-bezier(.16, .68, .73, .99);
       }
     }
+
     .normal-enter,
     .normal-leave-to {
       opacity: 0;
+
       .header {
         transform: translate3d(0, -150%, 0);
       }
+
       .bottom {
         transform: translate3d(0, 150%, 0);
       }
@@ -373,6 +402,7 @@
     .mini-leave-active {
       transition: all .5s;
     }
+
     .mini-enter,
     .mini-leave-to {
       opacity: 0;
@@ -396,11 +426,13 @@
         border-radius: 50%;
         overflow: hidden;
         margin-left: .1rem;
+
         img {
           width: 100%;
           height: 100%;
         }
       }
+
       .player-text {
         display: flex;
         flex-direction: column;
@@ -409,6 +441,7 @@
         color: #585858;
         flex: 1 0 auto;
         line-height: 1.5;
+
         div {
           text-overflow: ellipsis;
           overflow: hidden;
@@ -416,8 +449,10 @@
           width: 2rem;
         }
       }
+
       .player-status {
         padding: 0 .2rem;
+
         .iconfont {
           font-size: .3rem;
           color: #d60e0e;
@@ -430,9 +465,11 @@
   .song-play {
     animation: rotate 10s linear infinite;
   }
+
   .click-pause {
     animation-play-state: paused;
   }
+
   .click-play {
     animation-play-state: running;
   }
@@ -441,6 +478,7 @@
     0% {
       transform: rotate(0);
     }
+
     100% {
       transform: rotate(360deg);
     }

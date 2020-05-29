@@ -72,7 +72,7 @@
       getPlayList() {
         this.playListDate = [];
         this.$loading.show();
-        api.PlayListDetail({ id: this.$route.params.playlist_id })
+        api.PlayListDetail(this.$route.params.playlist_id)
           .then(res => {
             if (res.code === api.STATUS) {
               this.playListDate = res.playlist
@@ -137,6 +137,7 @@
           overflow: hidden;
           white-space: nowrap;
           padding-bottom: .02rem;
+          font-size: .16rem;
         }
       }
     }
@@ -181,6 +182,7 @@
         .descript-name {
           color: #191919;
           font-weight: bold;
+          font-size: .16rem;
         }
         .descript-creator {
           font-size: .12rem;
@@ -252,6 +254,7 @@
 
         .title-text {
           color: #383838;
+          font-size: .16rem;
         }
       }
 
@@ -265,6 +268,7 @@
           display: flex;
           justify-content: center;
           padding: 0 .03rem;
+          font-size: .16rem;
         }
         .song-detail {
           display: flex;

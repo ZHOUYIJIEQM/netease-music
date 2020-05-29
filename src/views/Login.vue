@@ -47,20 +47,21 @@
           api.Login(this.loginForm)
             .then(res => {
               if (res.code === api.STATUS) {
-                // console.log('登录', res);
                 this.$store.commit('SETISLOGIN', true);
                 window.localStorage.setItem('userInfo', JSON.stringify(res, null, 2));
+                window.localStorage.setItem('token', res.token)
                 window.localStorage.setItem('isLogin', true);
                 this.$store.commit('SETUSERINFO', res);
                 this.$router.push({ name: 'Home' });
-                this.$loading.hide();
                 this.$Toast({ message: '登录成功', time: 3000 });
               } else {
                 alert(`登录失败! ${res.msg}`)
               }
+              this.$loading.hide();
             })
             .catch(err => {
               console.log('登录失败', err)
+              this.$loading.hide();
               alert('登录失败');
             })
         }

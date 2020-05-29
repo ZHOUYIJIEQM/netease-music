@@ -86,11 +86,7 @@
         this.$loading.show()
         api.MusicDetail(song.id)
           .then(res => {
-            this.$store.commit('SETPLAYLIST', res.songs[0]);
-            this.$store.commit('SETFULLSCREEN', true);
-            this.$store.commit('SETPLAYING', true);
-            this.$store.commit('SETSHOWPLAYER', true);
-            this.$router.push('/Player')
+            this.$store.dispatch('setPlayShow', res.songs[0]);
           })
       }
     }

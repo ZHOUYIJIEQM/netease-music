@@ -88,15 +88,12 @@
         this.$store.commit('SETSIDEBAR', false);
         api.Logout()
           .then(res => {
-            console.log('退出登录', res);
             this.$loading.hide();
-            this.$Toast({ message: '已退出' })
-            this.$store.commit('SETISLOGIN', false);
-            window.localStorage.setItem('isLogin', false)
-            window.localStorage.removeItem('userInfo');
-            // window.localStorage.removeItem('isLogin');
+            this.$Toast({ message: '已退出登录' })
+            this.$store.dispatch('setLoginStatus', false)
           })
           .catch(err => {
+            this.$loading.hide();
             console.log('退出登录失败', err);
           })
       }

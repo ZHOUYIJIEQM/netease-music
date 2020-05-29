@@ -34,8 +34,9 @@
       <div class="my-music">
         <div class="my-music-list">
           <div class="my-music-item" @click="undone">
-            <div class="item-bgi">
-              <img v-lazy="'http://p1.music.126.net/76Hpk_9ot2h2dozv5JbbYA==/109951164737016168.jpg'" alt="" />
+            <div class="item-bgi" v-if="userPlayList[0]">
+              <img v-if="userPlayList[0].picUrl" v-lazy="userPlayList[0].picUrl+'?param=600y600'" alt="" />
+              <img v-else v-lazy="userPlayList[0].coverImgUrl+'?param=600y600'" alt="" />
             </div>
             <div class="z2">
               <i class="iconlike iconfont icon-aixin"></i>
@@ -49,8 +50,9 @@
             </div>
           </div>
           <div class="my-music-item" @click="undone">
-            <div class="item-bgi">
-              <img v-lazy="'http://p1.music.126.net/SbC8FdLw-PywMmnD35iRKg==/109951164725561024.jpg'" alt="" />
+            <div class="item-bgi" v-if="userPlayList[1]">
+              <img v-if="userPlayList[1].picUrl" v-lazy="userPlayList[1].picUrl+'?param=600y600'" alt="" />
+              <img v-else v-lazy="userPlayList[1].coverImgUrl+'?param=600y600'" alt="" />
             </div>
             <div class="z2">
               <i class="iconfm iconfont icon-Radiodiantai"></i>
@@ -160,7 +162,7 @@
         }
       },
       goPlayListDetail(id) {
-        console.log('id', id)
+        // console.log('id', id)
         this.$router.push({ path: `/playList/${id}` })
       },
       undone() {
@@ -274,7 +276,7 @@
         align-items: center;
         flex-direction: column;
         background-color: rgba(21, 21, 21, 0.5);
-        overflow-y: hidden;
+        overflow: hidden;
         border-radius: 8px;
         position: relative;
         margin-right: .1rem;
@@ -406,7 +408,7 @@
             -webkit-box-orient: vertical;
             font-size: .12rem;
             color: #191919;
-            line-height: 15px;
+            line-height: 1.2;
           }
 
           .recommendList-text-count {

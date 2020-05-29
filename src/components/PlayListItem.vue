@@ -21,10 +21,7 @@
         this.$loading.show()
         api.MusicDetail(song.id)
           .then(res => {
-            this.$store.commit('SETPLAYLIST', res.songs[0]);
-            this.$store.commit('SETFULLSCREEN', true);
-            this.$store.commit('SETPLAYING', true);
-            this.$store.commit('SETSHOWPLAYER', true);
+            this.$store.dispatch('setPlayShow', res.songs[0]);
           })
       }
     }
@@ -59,6 +56,8 @@
         overflow: hidden;
         white-space: nowrap;
         padding: .03rem 0;
+        font-size: .16rem;
+        line-height: 1;
       }
 
       .album-name {
@@ -69,6 +68,7 @@
         padding: .03rem 0;
         font-size: .14rem;
         color: #505050;
+        line-height: 1;
       }
     }
   }

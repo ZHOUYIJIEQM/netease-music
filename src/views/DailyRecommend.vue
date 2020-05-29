@@ -52,8 +52,7 @@
       api.RecommendMusic()
         .then(res => {
           if (res.code === api.STATUS) {
-            // console.log('每日推荐')
-            // console.log(res)
+            // console.log('每日推荐', res)
             this.$loading.hide();
             this.recommendList = res.recommend;
             this.headerBg = res.recommend[0].album.picUrl + '?param=400y400'

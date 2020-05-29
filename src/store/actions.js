@@ -1,4 +1,5 @@
 import api from '@/api/index.js'
+import router from '../router'
 
 const action = {
   // 获取登录状态
@@ -17,6 +18,24 @@ const action = {
           reject(err)
         })
     })
+  },
+  // 退出登录后操作
+  setLoginStatus({ commit }, status) {
+    // console.log(status)
+    if (!status) {
+      window.localStorage.removeItem('userInfo');
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('isLogin');
+    }
+    commit('SETISLOGIN', status);
+  },
+  // 设置播放器界面显示,参数:点击的歌曲
+  setPlayShow({ commit }, song) {
+    commit('SETPLAYLIST', song);
+    commit('SETFULLSCREEN', true);
+    commit('SETPLAYING', true);
+    commit('SETSHOWPLAYER', true);
+    router.push('/Player')
   }
 }
 

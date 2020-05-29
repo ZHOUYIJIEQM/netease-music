@@ -51,9 +51,6 @@
             this.bgImg = this.allSongList[0].picUrl;
             this.$loading.hide()
           })
-      },
-      goSongList(id) {
-        console.log('歌单id', id)
       }
     }
   }
@@ -67,7 +64,7 @@
     right: 0;
     z-index: 5;
     .mask {
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       bottom: 0;

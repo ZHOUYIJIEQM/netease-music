@@ -116,7 +116,6 @@
       this.receiveData();
     },
     watch: {
-      // 不知computed里为什么没更新isLogin，写到watch
       isLogin() {
         this.receiveData();
       }
@@ -135,14 +134,6 @@
       },
       receiveData() {
         this.getRecommend();
-        // this.$store.dispatch('getRefreshLogin')
-        //   .then(res => {
-        //     // console.log('获得登录状态后：', res)
-        //     this.getRecommend();
-        //   })
-        //   .catch(err => {
-        //     console.log('获得登录状态后：', err);
-        //   })
       },
       // 获取推荐内容
       getRecommend() {
@@ -157,8 +148,8 @@
           // 推荐新音乐
           api.RecommendMusic()
             .then(res => {
-              // console.log('推荐歌曲 已登录', res.recommend.slice(0, 9))
-              this.recommendMusic = res.recommend.slice(0, 9);
+              // console.log('推荐歌曲 已登录', res)
+              this.recommendMusic = res.recommend.slice(0, 15);
             })
           // 推荐电台
           api.RecommendFM()
@@ -176,7 +167,7 @@
           // 推荐新音乐
           api.RecommendMusicNo()
             .then(res => {
-              // console.log('推荐歌曲 不用登录', res.result)
+              // console.log('推荐歌曲 不用登录', res)
               this.recommendMusic = res.result;
             })
           // 推荐电台

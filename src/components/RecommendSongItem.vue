@@ -82,10 +82,10 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      font-size: 12px;
+      font-size: .12rem;
       color: #292727;
       padding-top: 6px;
-      line-height: 14px;
+      line-height: 1.2;
     }
   }
 </style>

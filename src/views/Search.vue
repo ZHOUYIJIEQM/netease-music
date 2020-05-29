@@ -14,7 +14,7 @@
           <i class="icon-sousuo iconfont"></i>
         </div>
       </div>
-      <div class="search-hots" v-show="!query">
+      <div class="search-hots" v-if="!query">
         <div class="search-hots-title">
           热搜榜
         </div>
@@ -93,6 +93,7 @@
         this.query = '';
         this.searchResult = [];
         this.resultOffset = 0;
+        this.$refs.searchPage.scrollTop = 0;
       },
       clickHotList(hotsItem) {
         this.query = hotsItem.searchWord
@@ -123,11 +124,7 @@
         this.$loading.show()
         api.MusicDetail(song.id)
           .then(res => {
-            this.$store.commit('SETPLAYLIST', res.songs[0]);
-            this.$store.commit('SETFULLSCREEN', true);
-            this.$store.commit('SETPLAYING', true);
-            this.$store.commit('SETSHOWPLAYER', true);
-            this.$router.push('/Player')
+            this.$store.dispatch('setPlayShow', res.songs[0]);
           })
       },
       getSong(keyWords, pageOffset = 0) {
@@ -136,11 +133,9 @@
         this.$loading.show();
         api.SearchSong({ keywords: keyWords, offset: pageOffset, limit: 30 })
           .then(res => {
-            // if (res.code === api.STATUS) {
             this.searchResult = res.result.songs;
             this.isLoading = false;
             this.$loading.hide()
-            // }
           })
           .catch(err => {
             console.log('err', err)

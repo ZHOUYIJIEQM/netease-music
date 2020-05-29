@@ -3,9 +3,10 @@ const state = {
   navIndex: 1,
   showSidebar: false,
   // 登录标记
-  isLogin: window.localStorage.getItem('isLogin') === 'true',
+  isLogin: window.localStorage.getItem('isLogin'),
   // 用户信息
   userInfo: window.localStorage.getItem('userInfo'),
+  token: window.localStorage.getItem('token'),
   // 播放器
   showPlayer: false,
   fullScreen: false,

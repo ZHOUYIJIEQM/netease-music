@@ -48,7 +48,6 @@
     },
     methods: {
       setProgress() {
-        // console.log('progress this.$refs', this.$refs)
         const _this = this;
         const progressBox = this.$refs.progressBox;
         const progressBtn = this.$refs.progressBtn;
@@ -68,14 +67,12 @@
         progressBtn.addEventListener('touchmove', function(event) {
           // 边界限制
           const setBtnLeft = event.changedTouches[0].pageX - boxLeft;
-          if (setBtnLeft < 0) {
+          if (setBtnLeft <= 0) {
             progressBtn.style.left = -btnW / 2 + 'px';
             progressLine.style.width = 0 + 'px';
-            return;
-          } else if (setBtnLeft > progressBox.offsetWidth - btnW / 2) {
+          } else if (setBtnLeft >= progressBox.offsetWidth - btnW / 2) {
             progressBtn.style.left = progressBox.offsetWidth - btnW / 2 + 'px';
             progressLine.style.width = progressBox.offsetWidth + 'px';
-            return;
           } else {
             progressBtn.style.left = event.changedTouches[0].pageX - boxLeft + 'px';
             progressLine.style.width = event.changedTouches[0].pageX - boxLeft + btnW / 2 + 'px';
@@ -84,7 +81,7 @@
         }, false)
 
         progressBtn.addEventListener('touchend', function(event) {
-          console.log('---', _this.currentTime)
+          // console.log(progressLine.offsetWidth)
           _this.$emit('changeCurrentTime', _this.currentTime, false);
         }, false);
       },
