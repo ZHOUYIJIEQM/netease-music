@@ -1,22 +1,20 @@
 <template>
   <!-- 歌单广场 -->
-  <transition name="fadeInRight" mode="out-in">
-    <div class="song-list-content">
-      <div class="mask" :style="{backgroundImage: 'url('+bgImg+')'}"></div>
-      <div class="song-list-header-title">
-        <i class="iconfont icon-fanhui" @click="goBack()"></i>
-        <div class="title-text">歌单广场</div>
+  <div class="song-list-content">
+    <div class="mask" :style="{backgroundImage: 'url('+bgImg+')'}"></div>
+    <div class="song-list-header-title">
+      <i class="iconfont icon-fanhui" @click="goBack()"></i>
+      <div class="title-text">歌单广场</div>
+    </div>
+    <div class="list-content">
+      <div class="list-content-item" v-for="(item, index) in allSongList" :key="index">
+        <recommendSongItem :songItem="item"></recommendSongItem>
       </div>
-      <div class="list-content">
-        <div class="list-content-item" v-for="(item, index) in allSongList" :key="index">
-          <recommendSongItem :songItem="item"></recommendSongItem>
-        </div>
-        <div class="page-end">
-          <pageEnd v-if="allSongList.length"></pageEnd>
-        </div>
+      <div class="page-end">
+        <pageEnd v-if="allSongList.length"></pageEnd>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 <script>
   import api from '@/api/index.js'
@@ -57,12 +55,17 @@
 </script>
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
+
   .song-list-content {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    background: white;
     z-index: 5;
+
     .mask {
       position: fixed;
       top: 0;
@@ -74,6 +77,7 @@
       filter: blur(20px);
       background-size: cover;
     }
+
     .song-list-header-title {
       position: fixed;
       left: 0;
@@ -90,10 +94,12 @@
         color: black;
         font-size: .24rem;
       }
+
       .title-text {
         padding-left: .15rem;
       }
     }
+
     .list-content {
       padding: 0.05rem .13rem;
       padding-top: .55rem;
@@ -101,13 +107,16 @@
       flex-wrap: wrap;
       justify-content: space-between;
       background-color: rgba(255, 255, 255, 0.6);
+
       .list-content-item {
         width: 1.1rem;
         padding-bottom: 0.2rem;
       }
+
       .page-end {
         width: 100%;
       }
+
       // /deep/ .recommend-song-item{
       //   width: 1rem;
       // }

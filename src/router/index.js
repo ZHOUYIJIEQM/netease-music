@@ -7,21 +7,25 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    redirect: '/Home'
+  },
+  {
+    path: '/Home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "Home" */ '@/views/Home.vue')
   },
   {
-    path: '/Search',
+    path: '/Home/Search',
     name: 'Search',
     component: () => import(/* webpackChunkName: "Search" */ '@/views/Search.vue')
   },
   {
-    path: '/Login',
+    path: '/Home/Login',
     name: 'Login',
     component: () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue')
   },
   {
-    path: '/DailyRecommend',
+    path: '/Home/DailyRecommend',
     name: 'DailyRecommend',
     component: () => import(/* webpackChunkName: "DailyRecommend" */ '@/views/DailyRecommend.vue'),
     meta: {
@@ -29,27 +33,27 @@ const routes = [
     }
   },
   {
-    path: '/SongList',
+    path: '/Home/SongList',
     name: 'SongList',
     component: () => import(/* webpackChunkName: "SongList" */ '@/views/SongList.vue')
   },
   {
-    path: '/PlayList/:playlist_id',
+    path: '/Home/PlayList/:playlist_id',
     name: 'PlayList',
     component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayList.vue')
   },
   {
-    path: '/LeaderBoard',
+    path: '/Home/LeaderBoard',
     name: 'LeaderBoard',
     component: () => import(/* webpackChunkName: "LeaderBoard" */ '@/views/LeaderBoard.vue')
   },
   {
-    path: '/RadioStation',
+    path: '/Home/RadioStation',
     name: 'RadioStation',
     component: () => import(/* webpackChunkName: "RadioStation" */ '@/views/RadioStation.vue')
   },
   {
-    path: '/FMMusic',
+    path: '/Home/FMMusic',
     name: 'FMMusic',
     component: () => import(/* webpackChunkName: "FMMusic" */ '@/views/FMMusic.vue'),
     meta: {
@@ -72,7 +76,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       alert('需要登录')
-      next({ path: '/Login' })
+      next({ name: 'Login' })
     }
     // next()
   } else {

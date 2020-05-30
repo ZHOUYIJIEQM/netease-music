@@ -1,56 +1,54 @@
 <template>
   <!-- 搜索 -->
-  <transition name="fadeInRight" mode="out-in">
-    <div class="search-page" ref="searchPage">
-      <div class="search-box-wrapper">
-        <div class="rback">
-          <i class="iconfont icon-fanhui" @click="goBack()"></i>
-        </div>
-        <div class="search-box">
-          <input class="input-box" :placeholder="placeholder" v-model="query" type="text" />
-          <i class="iconfont icon-chacha" v-show="query" @click="cleanQuery"></i>
-        </div>
-        <div class="search-icon">
-          <i class="icon-sousuo iconfont"></i>
-        </div>
+  <div class="search-page" ref="searchPage">
+    <div class="search-box-wrapper">
+      <div class="rback">
+        <i class="iconfont icon-fanhui" @click="goBack()"></i>
       </div>
-      <div class="search-hots" v-if="!query">
-        <div class="search-hots-title">
-          热搜榜
-        </div>
-        <div class="search-hots-list">
-          <div class="hots-item" v-for="(item, index) in hotsList" :key="index" @click="clickHotList(item)">
-            <div class="hots-item-numb" :class="{three: index < 3}">{{index+1}}</div>
-            <div class="hots-item-detail">
-              <div class="item-searchWord">
-                <div class="item-name" :class="{bold: index < 3}">{{item.searchWord}}</div>
-                <div class="hots-item-pic" :class="{up: item.iconType == 5}" v-if="item.iconUrl">
-                  <img :src="item.iconUrl" />
-                </div>
-                <div class="hots-item-score">{{item.score}}</div>
-              </div>
-              <div class="item-content">{{item.content}}</div>
-            </div>
-          </div>
-        </div>
+      <div class="search-box">
+        <input class="input-box" :placeholder="placeholder" v-model="query" type="text" />
+        <i class="iconfont icon-chacha" v-show="query" @click="cleanQuery"></i>
       </div>
-      <div class="search-result" v-if="searchResult.length">
-        <div class="header">单曲</div>
-        <div class="search-result-list">
-          <div class="search-result-item" v-for="(item, index) in searchResult" :key="index" @click="playSong(item)">
-            <div class="song-num">{{index+1}}</div>
-            <div class="song-item">
-              <div class="song-name">{{item.name}}</div>
-              <div class="singer-name">{{(item.artists && item.artists[0].name)}} - {{(item.album && item.album.name)}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="page-end" v-show="hotsList.length || searchResult.length">
-        <pageEnd></pageEnd>
+      <div class="search-icon">
+        <i class="icon-sousuo iconfont"></i>
       </div>
     </div>
-  </transition>
+    <div class="search-hots" v-if="!query">
+      <div class="search-hots-title">
+        热搜榜
+      </div>
+      <div class="search-hots-list">
+        <div class="hots-item" v-for="(item, index) in hotsList" :key="index" @click="clickHotList(item)">
+          <div class="hots-item-numb" :class="{three: index < 3}">{{index+1}}</div>
+          <div class="hots-item-detail">
+            <div class="item-searchWord">
+              <div class="item-name" :class="{bold: index < 3}">{{item.searchWord}}</div>
+              <div class="hots-item-pic" :class="{up: item.iconType == 5}" v-if="item.iconUrl">
+                <img :src="item.iconUrl" />
+              </div>
+              <div class="hots-item-score">{{item.score}}</div>
+            </div>
+            <div class="item-content">{{item.content}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="search-result" v-if="searchResult.length">
+      <div class="header">单曲</div>
+      <div class="search-result-list">
+        <div class="search-result-item" v-for="(item, index) in searchResult" :key="index" @click="playSong(item)">
+          <div class="song-num">{{index+1}}</div>
+          <div class="song-item">
+            <div class="song-name">{{item.name}}</div>
+            <div class="singer-name">{{(item.artists && item.artists[0].name)}} - {{(item.album && item.album.name)}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-end" v-show="hotsList.length || searchResult.length">
+      <pageEnd></pageEnd>
+    </div>
+  </div>
 </template>
 <script>
   import api from '@/api/index.js'
@@ -81,7 +79,7 @@
     },
     mounted() {
       const _this = this;
-      this.$refs.searchPage.addEventListener('scroll', function (event) {
+      this.$refs.searchPage.addEventListener('scroll', function(event) {
         _this.scrllBottom()
       }, false)
     },
@@ -155,6 +153,7 @@
 </script>
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
+
   .search-page {
     position: fixed;
     top: 0;
@@ -164,6 +163,7 @@
     height: 100%;
     overflow-y: scroll;
     z-index: 100;
+
     .search-box-wrapper {
       display: flex;
       padding-bottom: .05rem;
@@ -173,6 +173,7 @@
       background: white;
       width: 100%;
       box-shadow: 0px 1px 1px #dedede;
+
       .rback,
       .search-icon {
         width: .45rem;
@@ -187,6 +188,7 @@
           font-size: .25rem;
           color: #313131;
         }
+
         .icon-sousuo {
           padding-top: .05rem;
           font-size: .3rem;
@@ -208,6 +210,7 @@
           outline: none;
           font-size: .18rem;
         }
+
         i.iconfont {
           font-size: .23rem;
           color: #333333;
@@ -217,7 +220,8 @@
 
     }
 
-    .search-hots, .search-result {
+    .search-hots,
+    .search-result {
       padding-top: .5rem;
 
       // padding: 0 .15rem;
@@ -313,23 +317,29 @@
         font-weight: bold;
         padding: .15rem 0 0 .13rem;
       }
+
       .search-result-list {
         padding: .13rem 0;
+
         .search-result-item {
           padding: .07rem .1rem;
           color: #3a3a3a;
           display: flex;
           align-items: center;
+
           &:hover {
             background-color: #f1f1f1;
           }
+
           .song-num {
             width: .35rem;
             text-align: center;
           }
+
           .song-item {
             padding-left: .05rem;
             flex: 1 0;
+
             &>div {
               text-overflow: ellipsis;
               overflow: hidden;
@@ -337,10 +347,12 @@
               width: 3rem;
               padding: .025rem;
             }
+
             .song-name {
               font-size: .16rem;
               color: #000;
             }
+
             .singer-name {
               font-size: .12rem;
             }

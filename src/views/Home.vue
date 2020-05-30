@@ -30,6 +30,7 @@
 
   .home-content {
     position: relative;
+    background: white;
   }
 
   .home-content,

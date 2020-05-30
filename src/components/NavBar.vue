@@ -5,7 +5,7 @@
     <ul class="nav-list">
       <li class="item" v-for="(item, index) in navList" :class="{'active': navIndex === index}" @click="navClick(index)" :key="item.name">{{item.name}}</li>
     </ul>
-    <router-link to="/search" class="search" tag="div">
+    <router-link :to="{name: 'Search'}" class="search" tag="div">
       <i class="iconfont icon-sousuo"></i>
     </router-link>
   </div>

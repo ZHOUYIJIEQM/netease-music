@@ -8,7 +8,7 @@
         </div>
         <div class="login-descript">登录立享手机电脑多端同步</div>
         <div class="login-btn">
-          <router-link to="/login">
+          <router-link :to="{name: 'Login'}">
             <span>立即登录</span>
           </router-link>
         </div>
@@ -20,7 +20,7 @@
         <div class="login-descript">{{userInfo.profile.nickname}}</div>
       </div>
       <div class="login-icon">
-        <div class="icon"  @click="undone" v-for="(item, index) in loginIcon" :key="index">
+        <div class="icon" @click="undone" v-for="(item, index) in loginIcon" :key="index">
           <i class="iconfont" :class="item.icon"></i>
           <div class="icon-text">{{item.name}}</div>
         </div>
@@ -162,8 +162,10 @@
         }
       },
       goPlayListDetail(id) {
-        // console.log('id', id)
-        this.$router.push({ path: `/playList/${id}` })
+        this.$router.push({
+          name: 'PlayList',
+          params: { playlist_id: id }
+        })
       },
       undone() {
         this.$Toast({ message: '功能未开发!', time: 1000 })
@@ -354,6 +356,7 @@
       .loading-postion {
         position: relative;
         margin-top: .3rem;
+
         .loader {
           position: absolute;
         }

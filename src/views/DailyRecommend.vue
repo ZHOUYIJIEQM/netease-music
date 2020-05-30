@@ -1,38 +1,36 @@
 <template>
   <!-- 每日推荐 -->
-  <transition name="fadeInRight" mode="out-in">
-    <div class="daily-recommend-content">
-      <div class="recommend-header">
-        <img class="header-bg" :src="headerBg" alt="">
-        <div class="recommend-header-title">
-          <i class="iconfont icon-fanhui" @click="goBack()"></i>
-        </div>
-        <div class="recommend-header-date">
-          <div>
-            <span class="date">{{today.getDate()}}</span>
-            <span>/</span>
-            <span class="month">{{today.getMonth()+1}}</span>
-          </div>
-          <div class="history">历史推荐</div>
-        </div>
-        <div class="mask"></div>
+  <div class="daily-recommend-content">
+    <div class="recommend-header">
+      <img class="header-bg" :src="headerBg" alt="">
+      <div class="recommend-header-title">
+        <i class="iconfont icon-fanhui" @click="goBack()"></i>
       </div>
-      <div class="recommend-content">
-        <div class="recommend-content-title">
-          <div class="diaodai one"></div>
-          <div class="diaodai two"></div>
-          <div class="title-text one">播放全部</div>
-          <div class="title-text two">多选</div>
+      <div class="recommend-header-date">
+        <div>
+          <span class="date">{{today.getDate()}}</span>
+          <span>/</span>
+          <span class="month">{{today.getMonth()+1}}</span>
         </div>
-        <div class="recommend-song-list">
-          <div v-for="(item, index) in recommendList" :key="index">
-            <songItem :songItemData="item"></songItem>
-          </div>
-        </div>
+        <div class="history">历史推荐</div>
       </div>
-      <pageEnd v-if="recommendList.length"></pageEnd>
+      <div class="mask"></div>
     </div>
-  </transition>
+    <div class="recommend-content">
+      <div class="recommend-content-title">
+        <div class="diaodai one"></div>
+        <div class="diaodai two"></div>
+        <div class="title-text one">播放全部</div>
+        <div class="title-text two">多选</div>
+      </div>
+      <div class="recommend-song-list">
+        <div v-for="(item, index) in recommendList" :key="index">
+          <songItem :songItemData="item"></songItem>
+        </div>
+      </div>
+    </div>
+    <pageEnd v-if="recommendList.length"></pageEnd>
+  </div>
 </template>
 <script>
   import api from '@/api/index.js'
@@ -69,6 +67,7 @@
 </script>
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
+
   .daily-recommend-content {
     .recommend-header {
       background-color: #d8d8d8;

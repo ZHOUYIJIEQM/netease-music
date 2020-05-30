@@ -1,69 +1,67 @@
 <template>
   <!-- 歌单详情 -->
-  <transition name="fadeInRight" mode="in-out">
-    <div class="playlist-content">
-      <div class="playlist-header">
-        <div class="playlist-header-title">
-          <i class="iconfont icon-fanhui" @click="goBack()"></i>
-          <div class="title-text">{{playListDate.name}}</div>
+  <div class="playlist-content">
+    <div class="playlist-header">
+      <div class="playlist-header-title">
+        <i class="iconfont icon-fanhui" @click="goBack()"></i>
+        <div class="title-text">{{playListDate.name}}</div>
+      </div>
+      <div class="title-descript" @click="toggleDes">
+        <div class="mask">
+          <img :src="playListDate.coverImgUrl" alt="">
         </div>
-        <div class="title-descript" @click="toggleDes">
-          <div class="mask">
-            <img :src="playListDate.coverImgUrl" alt="">
-          </div>
-          <div class="descript-img">
-            <img v-lazy="playListDate.coverImgUrl" alt="">
-          </div>
-          <div class="descript-text">
-            <div class="descript-name">{{playListDate.name}}</div>
-            <div class="descript-creator" v-if="playListDate.creator">{{playListDate.creator.nickname}}</div>
-            <div class="descript-elipse" @click="showDescript($event)">{{playListDate.description}}</div>
-          </div>
+        <div class="descript-img">
+          <img v-lazy="playListDate.coverImgUrl" alt="">
+        </div>
+        <div class="descript-text">
+          <div class="descript-name">{{playListDate.name}}</div>
+          <div class="descript-creator" v-if="playListDate.creator">{{playListDate.creator.nickname}}</div>
+          <div class="descript-elipse" @click="showDescript($event)">{{playListDate.description}}</div>
         </div>
       </div>
-      <div class="list-content">
-        <div class="list-content-title">
-          <div class="diaodai one"></div>
-          <div class="diaodai two"></div>
-          <div class="title-text one">播放全部</div>
-          <div class="title-text two">多选</div>
-        </div>
-        <div class="playlist-song-item" v-for="(item, index) in playListDate.tracks" :key="index" @click="playSong(item)">
-          <div class="song-num">{{index+1}}</div>
-          <div class="song-detail">
-            <div class="song-name">{{item.name}}</div>
-            <div class="song-singer">
-              {{item.ar[0].name}}<template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="playListDate.name">
-        <pageEnd></pageEnd>
-      </div>
-      <transition name="show-descript" mode="out-in">
-        <div class="playlist-descript" v-show="showDes" @touchmove.stop="">
-          <div class="des-bg">
-            <img v-lazy="playListDate.coverImgUrl" alt="">
-          </div>
-          <div class="des-main">
-            <div class="descript-header">
-              <i class="des-close iconfont icon-chacha" @click="toggleDes"></i>
-              <img v-lazy="playListDate.coverImgUrl" alt="" class="descript-img">
-              <div class="descript-title">{{playListDate.name}}</div>
-            </div>
-            <div class="descript-content">
-              <div class="des-tag">
-                <span class="tag-title">标签:</span>
-                <span class="tags" v-for="(item, index) in playListDate.tags" :key="index">{{item}}</span>
-              </div>
-              <div class="des-text" v-html="playListDate.description && playListDate.description.replace(/\n/g, '<br/>')"></div>
-            </div>
-          </div>
-        </div>
-      </transition>
     </div>
-  </transition>
+    <div class="list-content">
+      <div class="list-content-title">
+        <div class="diaodai one"></div>
+        <div class="diaodai two"></div>
+        <div class="title-text one">播放全部</div>
+        <div class="title-text two">多选</div>
+      </div>
+      <div class="playlist-song-item" v-for="(item, index) in playListDate.tracks" :key="index" @click="playSong(item)">
+        <div class="song-num">{{index+1}}</div>
+        <div class="song-detail">
+          <div class="song-name">{{item.name}}</div>
+          <div class="song-singer">
+            {{item.ar[0].name}}<template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="playListDate.name">
+      <pageEnd></pageEnd>
+    </div>
+    <transition name="show-descript" mode="out-in">
+      <div class="playlist-descript" v-show="showDes">
+        <div class="des-bg">
+          <img v-lazy="playListDate.coverImgUrl" alt="">
+        </div>
+        <div class="des-main"  @touchmove.prevent="">
+          <div class="descript-header">
+            <i class="des-close iconfont icon-chacha" @click="toggleDes"></i>
+            <img v-lazy="playListDate.coverImgUrl" alt="" class="descript-img">
+            <div class="descript-title">{{playListDate.name}}</div>
+          </div>
+          <div class="descript-content">
+            <div class="des-tag">
+              <span class="tag-title">标签:</span>
+              <span class="tags" v-for="(item, index) in playListDate.tags" :key="index">{{item}}</span>
+            </div>
+            <div class="des-text" v-html="playListDate.description && playListDate.description.replace(/\n/g, '<br/>')"></div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 <script>
   import api from '@/api/index.js'
@@ -453,19 +451,25 @@
             }
           }
         }
+
         .descript-content {
           padding: .1rem .25rem 0 .25rem;
           @include fz($size: .12rem);
+
           .des-tag {
             padding: .05rem 0 .15rem;
+            .tag-title {
+              margin-right: .09rem;
+            }
             .tags {
               display: inline-block;
               padding: 0.04rem .08rem;
               margin: 0 .05rem;
-              background-color: rgba(103, 103, 103, 0.38);
+              background-color: rgba(193, 185, 185, 0.3);
               border-radius: .1rem;
             }
           }
+
           .des-text {
             line-height: 1.5;
             height: 2.6rem;

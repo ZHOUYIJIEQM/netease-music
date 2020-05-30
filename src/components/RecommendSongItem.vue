@@ -27,26 +27,15 @@
       }
     },
     data() {
-      return {
-        // songItem: {
-        //   "id": 3114363672,
-        //   "type": 0,
-        //   "name": "“世界总有些温柔留给你，值得去等待”",
-        //   "copywriter": "编辑推荐：美好会在路上不期而遇",
-        //   "picUrl": "https://p1.music.126.net/JFFzHD3DV_Kys5B_Yqe9Hg==/109951164714030339.jpg",
-        //   "canDislike": false,
-        //   "trackNumberUpdateTime": 1581385842261,
-        //   "playCount": 948001,
-        //   "trackCount": 58,
-        //   "highQuality": false,
-        //   "alg": "featured"
-        // },
-      }
+      return {}
     },
 
     methods: {
       goPlayList(id) {
-        this.$router.push({ path: `/PlayList/${id}` })
+        this.$router.push({
+          name: 'PlayList',
+          params: { playlist_id: id }
+        })
       }
     }
   }
