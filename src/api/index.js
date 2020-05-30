@@ -4,9 +4,10 @@ import store from '../store'
 import Vue from 'vue'
 
 const VUE = new Vue();
+
 if (process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = 'http://localhost:3000';
-  // axios.defaults.baseURL = 'http://141.164.55.61:5000';
+  // axios.defaults.baseURL = 'http://localhost:3000';
+  axios.defaults.baseURL = 'http://141.164.55.61:5000';
 } else if (process.env.NODE_ENV === 'debug') {
   axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV === 'production') {
@@ -24,6 +25,7 @@ axios.interceptors.request.use(
     return config
   },
   error => {
+    console.log('请求错误', error)
     return Promise.reject(error)
   }
 )
@@ -34,8 +36,8 @@ axios.interceptors.response.use(
     return res.data;
   },
   error => {
-    // console.log(error.response)
-    if (error.response.status) {
+    // console.log('响应错误error.config\n', JSON.parse(JSON.stringify(error, null, 2)))
+    if (error.response) {
       switch (error.response.status) {
         case 400:
           console.log(error.response.statusText)
@@ -54,6 +56,17 @@ axios.interceptors.response.use(
           // VUE.$Toast({ message: error.response.statusText, time: 1000 });
           break;
       }
+    }
+    // 超时处理
+    if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+      var newHttp = new Promise(function(resolve) {
+        console.log('请求重试')
+        resolve()
+      })
+      // 返回一个promise实例，同时重新发起请求，config请求配置，包扩请求头和请求参数
+      return newHttp.then(function() {
+        return axios(error.config)
+      })
     }
     return Promise.reject(error)
   }

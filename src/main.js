@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -19,6 +20,10 @@ Vue.use(VueLazyload, {
 })
 
 Vue.use(Toast)
+
+// 设置全局的请求次数，请求的间隙
+axios.defaults.retry = 3;
+axios.defaults.retryDelay = 2000;
 
 Vue.config.productionTip = false
 

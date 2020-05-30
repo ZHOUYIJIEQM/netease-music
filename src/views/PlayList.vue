@@ -1,13 +1,13 @@
 <template>
   <!-- 歌单详情 -->
-  <transition name="fadeInRight" mode="out-in">
+  <transition name="fadeInRight" mode="in-out">
     <div class="playlist-content">
       <div class="playlist-header">
         <div class="playlist-header-title">
           <i class="iconfont icon-fanhui" @click="goBack()"></i>
           <div class="title-text">{{playListDate.name}}</div>
         </div>
-        <div class="title-descript">
+        <div class="title-descript" @click="toggleDes">
           <div class="mask">
             <img :src="playListDate.coverImgUrl" alt="">
           </div>
@@ -41,6 +41,27 @@
       <div v-if="playListDate.name">
         <pageEnd></pageEnd>
       </div>
+      <transition name="show-descript" mode="out-in">
+        <div class="playlist-descript" v-show="showDes" @touchmove.stop="">
+          <div class="des-bg">
+            <img v-lazy="playListDate.coverImgUrl" alt="">
+          </div>
+          <div class="des-main">
+            <div class="descript-header">
+              <i class="des-close iconfont icon-chacha" @click="toggleDes"></i>
+              <img v-lazy="playListDate.coverImgUrl" alt="" class="descript-img">
+              <div class="descript-title">{{playListDate.name}}</div>
+            </div>
+            <div class="descript-content">
+              <div class="des-tag">
+                <span class="tag-title">标签:</span>
+                <span class="tags" v-for="(item, index) in playListDate.tags" :key="index">{{item}}</span>
+              </div>
+              <div class="des-text" v-html="playListDate.description && playListDate.description.replace(/\n/g, '<br/>')"></div>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
   </transition>
 </template>
@@ -50,7 +71,8 @@
     data() {
       return {
         playListDate: {},
-        listId: 0
+        listId: 0,
+        showDes: false
       }
     },
     computed: {
@@ -66,6 +88,9 @@
       // console.log('this.listId', this.listId)
     },
     methods: {
+      toggleDes() {
+        this.showDes = !this.showDes;
+      },
       goBack() {
         this.$router.back()
       },
@@ -86,14 +111,9 @@
           })
       },
       playSong(song) {
-        this.$store.commit('SETPLAYLIST', song);
-        this.$store.commit('SETFULLSCREEN', true);
-        this.$store.commit('SETPLAYING', true);
-        this.$store.commit('SETSHOWPLAYER', true);
-        this.$router.push('/Player')
+        this.$store.dispatch('setPlayShow', song)
       },
-      showDescript(event) {
-      }
+      showDescript(event) {}
     },
     watch: {
       listId() {
@@ -105,6 +125,8 @@
 </script>
 <style lang="scss" scoped>
   @import '@/styles/variable.scss';
+  @import '@/styles/mixin.scss';
+
   .playlist-content {
     position: absolute;
     left: 0;
@@ -113,6 +135,7 @@
     height: 100%;
     z-index: 15;
     background-color: #fff;
+
     .playlist-header {
       .playlist-header-title {
         position: fixed;
@@ -130,6 +153,7 @@
           color: black;
           font-size: .24rem;
         }
+
         .title-text {
           padding-left: .15rem;
           width: 3.5rem;
@@ -148,6 +172,7 @@
       margin-bottom: -.5rem;
       position: relative;
       background: rgba(173, 173, 173, 0.3);
+
       .mask {
         position: absolute;
         height: 100%;
@@ -158,20 +183,25 @@
         bottom: 0;
         z-index: -1;
         filter: blur(50px);
+
         img {
           width: 100%;
+          transform: scale(1.5);
         }
       }
+
       .descript-img {
         width: 1.2rem;
         height: 1.2rem;
         overflow: hidden;
         border-radius: .05rem;
         margin-left: 0.2rem;
+
         img {
           width: 100%;
         }
       }
+
       .descript-text {
         width: 2rem;
         flex: 1 0;
@@ -179,11 +209,13 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+
         .descript-name {
           color: #191919;
           font-weight: bold;
           font-size: .16rem;
         }
+
         .descript-creator {
           font-size: .12rem;
           padding-top: .1rem;
@@ -211,10 +243,12 @@
       background: #fff;
       border-radius: .2rem .2rem 0 0;
       box-shadow: -1px -5px 5px rgba(128, 128, 128, .3);
+
       .list-content-item {
         width: 1.1rem;
         padding-bottom: 0.2rem;
       }
+
       .list-content-title {
         display: flex;
         justify-content: space-between;
@@ -263,6 +297,7 @@
         align-items: center;
         padding: .06rem 0;
         flex: 1 0 auto;
+
         .song-num {
           width: 0.3rem;
           display: flex;
@@ -270,11 +305,13 @@
           padding: 0 .03rem;
           font-size: .16rem;
         }
+
         .song-detail {
           display: flex;
           flex-direction: column;
           width: 2.8rem;
           padding-left: .15rem;
+
           .song-name {
             text-overflow: ellipsis;
             overflow: hidden;
@@ -282,6 +319,7 @@
             padding: .02rem 0;
             font-size: .16rem;
           }
+
           .song-singer {
             font-size: .12rem;
             overflow: hidden;
@@ -289,6 +327,149 @@
             white-space: nowrap;
             color: grey;
             padding: .02rem 0;
+          }
+        }
+      }
+    }
+
+    // .show-descript-enter-active, .show-descript-leave-active {
+    //   transition: all .05s;
+    // }
+    // .show-descript-enter, .show-descript-leave-to {
+    //   transform: scale(0) ;
+    // }
+
+    .show-descript-enter-active {
+      animation: bounce-in .5s;
+    }
+
+    .show-descript-leave-active {
+      animation: bounce-out .5s;
+    }
+
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      30% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes bounce-out {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      30% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
+    .playlist-descript {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 30;
+      @include bf(column);
+
+      .des-bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        @include bf();
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        z-index: -1;
+
+        img {
+          filter: blur(30px);
+          transform: scale(1.5);
+          height: 100%;
+        }
+      }
+
+      .des-main {
+        background: rgba(56, 56, 56, 0.43);
+        height: 100%;
+
+        .descript-header {
+          position: relative;
+          @include bf(column);
+          align-items: center;
+          padding-top: .6rem;
+
+          .des-close {
+            position: absolute;
+            right: .2rem;
+            top: .2rem;
+            @include fz(.24rem);
+          }
+
+          .descript-img {
+            width: 53%;
+            border-radius: .05rem;
+          }
+
+          .descript-title {
+            position: relative;
+            text-align: center;
+            padding: .2rem;
+            width: 70%;
+            @include elip;
+            @include fz($weight: bold);
+
+            &:after {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              content: '';
+              height: .01rem;
+              width: 100%;
+              background-image: linear-gradient(45deg, transparent, #fff 35%, #fff 65%, transparent);
+              ;
+            }
+          }
+        }
+        .descript-content {
+          padding: .1rem .25rem 0 .25rem;
+          @include fz($size: .12rem);
+          .des-tag {
+            padding: .05rem 0 .15rem;
+            .tags {
+              display: inline-block;
+              padding: 0.04rem .08rem;
+              margin: 0 .05rem;
+              background-color: rgba(103, 103, 103, 0.38);
+              border-radius: .1rem;
+            }
+          }
+          .des-text {
+            line-height: 1.5;
+            height: 2.6rem;
+            overflow: scroll;
           }
         }
       }

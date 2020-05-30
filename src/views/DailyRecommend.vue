@@ -15,6 +15,7 @@
           </div>
           <div class="history">历史推荐</div>
         </div>
+        <div class="mask"></div>
       </div>
       <div class="recommend-content">
         <div class="recommend-content-title">
@@ -84,6 +85,14 @@
         transform: translate(-50%, -50%);
       }
 
+      .mask {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(68, 68, 68, 0.3);
+        position: absolute;
+        top: 0;
+      }
+
       .recommend-header-title {
         position: relative;
         height: .45rem;
@@ -91,6 +100,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 .15rem;
+        z-index: 100;
 
         .iconfont {
           color: white;
@@ -105,6 +115,7 @@
         color: white;
         display: flex;
         flex-direction: column;
+        z-index: 100;
 
         span {
           padding: 0 .03rem;
@@ -136,6 +147,7 @@
       padding: 0 .15rem;
       background: white;
       border-radius: .2rem .2rem 0 0;
+      z-index: 100;
       // box-shadow: 0 -2px 10px #9c9c9c;
 
       .recommend-content-title {
