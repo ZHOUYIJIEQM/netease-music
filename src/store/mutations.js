@@ -25,12 +25,17 @@ const mutation = {
   },
   // 设置播放列表
   SETPLAYLIST(state, playList) {
-    const findex = state.playList.findIndex(item => item.id === playList.id)
-    if (findex !== -1) {
-      state.playList.splice(findex, 1)
+    let result = [];
+    if (Array.isArray(playList)) {
+      result = playList.concat(state.playList)
+      state.playList = result;
+    } else {
+      const findex = state.playList.findIndex(item => item.id === playList.id)
+      if (findex !== -1) {
+        state.playList.splice(findex, 1)
+      }
+      state.playList.unshift(playList);
     }
-    state.playList.unshift(playList);
-    // console.log(playList)
   },
   // 清空播放列表
   CLEARPLAYLIST(state) {

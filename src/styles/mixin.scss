@@ -4,15 +4,23 @@
   flex-wrap: $wrap;
 }
 
-@mixin fz($size: .16rem, $color: white, $weight: normal) {
+@mixin fz($size: .16rem, $color: white, $weight: normal, $line-height: 1) {
   font-size: $size;
   font-weight: $weight;
   color: $color;
-  line-height: 1;
+  line-height: $line-height;
 }
 
 @mixin elip {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+@mixin twoelip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

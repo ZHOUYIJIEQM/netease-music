@@ -34,20 +34,31 @@
           this.modeName = 'in-out';
           // this.modeName = 'out-in';
         }
+        if (to.path === '/Player' || from.path === '/Player') {
+          this.transitionName = ''
+        }
       }
     }
   }
 </script>
 <style lang="scss">
-  .view {
-    transition: all .1s linear;
-  }
+  // .view {
+  //   transition: all .1s linear;
+  // }
   .slide-left-enter,
   .slide-right-leave-active {
     transform: translate(100%, 0);
   }
+
   .slide-left-leave-active,
   .slide-right-enter {
     transform: translate(-100%, 0);
+  }
+
+  .slide-left-enter-active,
+  .slide-left-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active {
+    transition: all .15s linear;
   }
 </style>

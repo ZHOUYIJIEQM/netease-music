@@ -1,0 +1,323 @@
+@import '@/styles/mixin.scss';
+.player {
+  z-index: 310;
+
+  .normal-player {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgb(111, 111, 111);
+    z-index: 301;
+
+    .bgimg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      .bgi {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(.8);
+        filter: blur(50px);
+      }
+    }
+
+    .full-page {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(167, 167, 167, 0.68);
+
+      .header {
+        height: .45rem;
+        padding: 0 .15rem;
+
+        .icon-fanhui {
+          color: black;
+          font-size: .22rem;
+          position: absolute;
+          line-height: .45rem;
+        }
+
+        .song-name {
+          width: 2.3rem;
+          margin: 0 auto;
+          text-align: center;
+          line-height: .45rem;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          font-weight: bold;
+          font-size: .18rem;
+        }
+
+        .singer-name {
+          font-size: .16rem;
+          text-align: center;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+
+      .middle {
+        position: absolute;
+        top: 1.5rem;
+        bottom: 2rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .cd-wrapper {
+          border: .1rem solid rgba(0, 0, 0, 0.3);
+          height: 2.3rem;
+          width: 2.3rem;
+          border-radius: 50%;
+          overflow: hidden;
+
+          .img-roll {
+            width: 100%;
+            height: 100%;
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      .bottom {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        height: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        .bottom-btn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          line-height: 50px;
+          margin-bottom: .1rem;
+
+          .iconfont {
+            flex: 1;
+            text-align: center;
+            font-size: .3rem;
+            color: #1d1d1d;
+          }
+
+          .icon-bofang {
+            font-size: .5rem;
+          }
+
+          .icon-zanting_huaban {
+            font-size: .45rem;
+          }
+        }
+      }
+    }
+  }
+
+  .normal-enter-active,
+  .normal-leave-active {
+    transition: all .4s;
+
+    .header,
+    .bottom {
+      transition: all .4s cubic-bezier(.16, .68, .73, .99);
+    }
+  }
+
+  .normal-enter,
+  .normal-leave-to {
+    opacity: 0;
+
+    .header {
+      transform: translate3d(0, -150%, 0);
+    }
+
+    .bottom {
+      transform: translate3d(0, 150%, 0);
+    }
+  }
+
+  .mini-enter-active,
+  .mini-leave-active {
+    transition: all .5s;
+  }
+
+  .mini-enter,
+  .mini-leave-to {
+    opacity: 0;
+  }
+
+  .mini-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: .5rem;
+    background: #fff;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #e2e2e2;
+
+    .bgimg {
+      width: 0.35rem;
+      height: 0.35rem;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-left: .1rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .player-text {
+      display: flex;
+      flex-direction: column;
+      padding-left: .15rem;
+      font-size: .12rem;
+      color: #585858;
+      flex: 1 0 auto;
+      line-height: 1.5;
+
+      div {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 2rem;
+      }
+    }
+
+    .player-status {
+      padding: 0 0 0 .1rem;
+
+      .iconfont {
+        font-size: .24rem;
+        color: #d23333;
+        font-weight: bold;
+      }
+    }
+
+    .player-list {
+      padding: 0 .1rem;
+      .icon-PlayListbofangliebiao {
+        font-size: .26rem;
+        color: #d23333;
+      }
+    }
+  }
+
+  .mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 303;
+    background-color: rgba(45, 45, 45, 0.45);
+  }
+
+  .playlist-content {
+    position: fixed;
+    bottom: .5rem;
+    width: 2.8rem;
+    left: 50%;
+    margin-left: -1.4rem;
+    background: white;
+    z-index: 303;
+    border-radius: .1rem;
+    padding: .1rem .08rem;
+    font-size: .16rem;
+
+    .playlist-header{
+      .header-title {
+        padding: .05rem 0 .15rem;
+        span {
+          color: #8e8e8e;
+        }
+      }
+    }
+
+    .playlist-main {
+      max-height: 3rem;
+      overflow: scroll;
+      .active {
+        color: red;
+        .singer {
+          font-size: .12rem;
+          color: red!important;
+        }
+      }
+      .list-song-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: .1rem 0;
+        .item-detail {
+          display: flex;
+          overflow: hidden;
+          .song {
+            font-size: .14rem;
+            line-height: 1.2;
+            @include elip;
+            .singer {
+              font-size: .1rem;
+              color: #696363;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .playlist-enter-active,
+  .playlist-leave-active {
+    transition: all .2s;
+  }
+
+  .playlist-enter,
+  .playlist-leave-to {
+    transform: translate(0, 100%);
+    opacity: 0;
+  }
+
+}
+
+.song-play {
+  animation: rotate 10s linear infinite;
+}
+
+.click-pause {
+  animation-play-state: paused;
+}
+
+.click-play {
+  animation-play-state: running;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

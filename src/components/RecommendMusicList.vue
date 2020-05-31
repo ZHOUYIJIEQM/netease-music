@@ -1,15 +1,8 @@
 <template>
   <!-- 发现页推荐音乐 -->
   <div class="recommendMusic-content">
-    <swiper
-      :options="songSwiperOption"
-      class="swiper-container recommend-music-swiper"
-      v-if="musicData.length"
-    >
-      <swiper-slide
-        v-for="(item, index) in musicData"
-        :key="index"
-      >
+    <swiper :options="songSwiperOption" class="swiper-container recommend-music-swiper" v-if="musicData.length">
+      <swiper-slide v-for="(item, index) in musicData" :key="index">
         <div class="music-item" v-for="(item1, index1) in item" :key="index1" @click="playSong(item1)">
           <div class="recommend-music-item">
             <div class="recommend-music-item-pic">
@@ -32,10 +25,7 @@
       </swiper-slide>
     </swiper>
     <div class="temporarily" v-else>
-      <div class="recommend-music-item"
-        v-for="(item, index) in 3"
-        :key="index"
-      >
+      <div class="recommend-music-item" v-for="(item, index) in 3" :key="index">
         <div class="recommend-music-item-pic">
           <img class="img" src="../assets/image/default.png" alt="">
         </div>
@@ -84,7 +74,7 @@
       },
       playSong(song) {
         this.$loading.show()
-        api.MusicDetail(song.id)
+        api.MusicDetail('' + song.id)
           .then(res => {
             this.$store.dispatch('setPlayShow', res.songs[0]);
           })
@@ -93,7 +83,7 @@
   }
 </script>
 <style lang="scss" scoped>
-  .recommendMusic-content{
+  .recommendMusic-content {
     .recommend-music-swiper {
       .music-item {
         padding: .1rem 0 0;
@@ -165,23 +155,28 @@
         }
       }
     }
-    .temporarily{
+
+    .temporarily {
       height: 2rem;
       padding-left: .15rem;
-      .recommend-music-item{
+
+      .recommend-music-item {
         display: flex;
         padding-left: .15rem;
-        padding: 0 0 .1rem ;
-        .recommend-music-item-pic{
+        padding: 0 0 .1rem;
+
+        .recommend-music-item-pic {
           width: .6rem;
           height: .6rem;
           overflow: hidden;
           border-radius: 5px;
-          .img{
+
+          .img {
             width: 100%;
           }
         }
-        .recommend-music-item-text{
+
+        .recommend-music-item-text {
           margin: 0 .15rem;
           border-radius: 5px;
           flex: auto;

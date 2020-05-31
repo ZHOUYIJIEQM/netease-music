@@ -36,6 +36,8 @@
         return this.$refs['swiper-wrapper'].$swiper
       }
     },
+    mounted() {
+    },
     methods: {
       handlerSlideChange() {
         // console.log('this.navIndex', this.swiper.activeIndex)

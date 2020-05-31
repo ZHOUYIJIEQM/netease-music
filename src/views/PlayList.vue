@@ -1,51 +1,82 @@
 <template>
   <!-- 歌单详情 -->
-  <div class="playlist-content">
-    <div class="playlist-header">
-      <div class="playlist-header-title">
-        <i class="iconfont icon-fanhui" @click="goBack()"></i>
-        <div class="title-text">{{playListDate.name}}</div>
-      </div>
-      <div class="title-descript" @click="toggleDes">
-        <div class="mask">
-          <img :src="playListDate.coverImgUrl" alt="">
+  <div class="playlist-content" ref="pl-cntent">
+    <div class="content" ref="content" v-if="playListDate.coverImgUrl">
+      <div class="playlist-header">
+        <div class="header-bgi">
+          <img class="bgimage" :class="{black: !playListDate.backgroundCoverUrl}" v-lazy="(playListDate.backgroundCoverUrl || playListDate.coverImgUrl) " alt="">
+          <!-- <div class="mask"></div> -->
         </div>
-        <div class="descript-img">
-          <img v-lazy="playListDate.coverImgUrl" alt="">
+        <div class="header-title">
+          <div class="title-bgi" ref='headerTitle'>
+            <img :src="playListDate.backgroundCoverUrl || playListDate.coverImgUrl" alt="">
+          </div>
+          <i class="iconfont icon-fanhui" @click="goBack"></i>
+          <span class="title-text">{{playListTitle}}</span>
         </div>
-        <div class="descript-text">
-          <div class="descript-name">{{playListDate.name}}</div>
-          <div class="descript-creator" v-if="playListDate.creator">{{playListDate.creator.nickname}}</div>
-          <div class="descript-elipse" @click="showDescript($event)">{{playListDate.description}}</div>
+        <div class="header-descript" @click="toggleDes">
+          <div class="des-name">{{playListDate.name}}</div>
+          <div class="des-creator">
+            <img :src="playListDate.creator.avatarUrl" alt="">
+            <span>{{playListDate.creator.nickname}}</span>
+          </div>
+          <div class="des-descript" v-html="playListDate.description.replace(/\n/g, '<br/>')"></div>
         </div>
-      </div>
-    </div>
-    <div class="list-content">
-      <div class="list-content-title">
-        <div class="diaodai one"></div>
-        <div class="diaodai two"></div>
-        <div class="title-text one">播放全部</div>
-        <div class="title-text two">多选</div>
-      </div>
-      <div class="playlist-song-item" v-for="(item, index) in playListDate.tracks" :key="index" @click="playSong(item)">
-        <div class="song-num">{{index+1}}</div>
-        <div class="song-detail">
-          <div class="song-name">{{item.name}}</div>
-          <div class="song-singer">
-            {{item.ar[0].name}}<template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+        <div class="header-icon">
+          <div class="box" @click="$Toast({message:'功能未开发!', time: 500})">
+            <i class="comment iconfont icon-pinglun"></i>
+            <span class="comment-count">{{playListDate.commentCount|formatNum}}</span>
+          </div>
+          <div class="box" @click="$Toast({message:'功能未开发!', time: 500})">
+            <i class="share iconfont icon-fenxiang"></i>
+            <span class="share-count">{{playListDate.shareCount|formatNum}}</span>
+          </div>
+          <div class="box" @click="$Toast({message:'功能未开发!', time: 500})">
+            <i class="comment iconfont icon-xiazai1"></i>
+            <span class="comment-count">下载</span>
+          </div>
+          <div class="box">
+            <i class="comment iconfont icon-show_duoxuan"></i>
+            <span class="comment-count">多选</span>
           </div>
         </div>
       </div>
+      <div class="playlist-song" ref="playlistSong">
+        <div class="list-title">
+          <div class="play-all" @click="playAll">
+            <i class="iconfont icon-bofang"></i>
+            <span class="text">播放全部</span>
+            <span class="count">(共{{playListDate.trackCount}}首)</span>
+          </div>
+          <div class="collect">
+            + 收藏 ({{playListDate.subscribedCount|formatNum}})
+          </div>
+        </div>
+        <div class="list-song" @scroll="handerPlScroll">
+          <div class="list-song-item" v-for="(item, index) in playListSong" :key="index" @click="playSong(item)">
+            <div class="item-num">{{index+1}}</div>
+            <div class="item-detail">
+              <div class="song-name">{{item.name}}</div>
+              <div class="song-singer">
+                {{item.ar[0].name}}
+                <template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+              </div>
+            </div>
+            <div class="song-more" @click.stop="">
+              <i class="iconfont icon-ziyuan1"></i>
+            </div>
+          </div>
+          <pageEnd v-if="playListSong.length"></pageEnd>
+        </div>
+      </div>
     </div>
-    <div v-if="playListDate.name">
-      <pageEnd></pageEnd>
-    </div>
+    <!-- 弹出详细信息 -->
     <transition name="show-descript" mode="out-in">
-      <div class="playlist-descript" v-show="showDes">
+      <div class="playlist-descript" v-show="showDes" @touchstart.stop="tStart" @touchend.stop="tEnd">
         <div class="des-bg">
           <img v-lazy="playListDate.coverImgUrl" alt="">
         </div>
-        <div class="des-main"  @touchmove.prevent="">
+        <div class="des-main">
           <div class="descript-header">
             <i class="des-close iconfont icon-chacha" @click="toggleDes"></i>
             <img v-lazy="playListDate.coverImgUrl" alt="" class="descript-img">
@@ -70,36 +101,159 @@
       return {
         playListDate: {},
         listId: 0,
-        showDes: false
+        showDes: false,
+        playListTitle: '歌单',
+        playListSong: [],
+        start: null,
+        end: null
       }
     },
     computed: {
       playListId() {
         return this.$route.params.playlist_id
+      },
+      navig() {
+        const name = window.navigator.appVersion;
+        let result = false;
+        if (/mobile/i.test(name) && /chrome/i.test(name)) {
+          result = true;
+        }
+        return result;
       }
+    },
+    filters: {
+      formatNum(num) {
+        const number = parseInt(num)
+        if (number > 100000000) {
+          return (number / 100000000).toFixed(2) + '亿'
+        } else if (number > 100000) {
+          return (number / 10000).toFixed(1) + '万'
+        } else {
+          return number;
+        }
+      }
+    },
+    mounted() {
+      window.addEventListener('touchstart', this.handerTouchStart, false);
+      window.addEventListener('touchmove', this.handerTouchMove, false);
+      window.addEventListener('touchend', this.handerTouchEnd, false)
+      // 触摸判断滑动方向, 滚动添加css属性
+      window.addEventListener('scroll', this.handerScroll, false);
     },
     components: {
       pageEnd: () => import('@/components/PageEnd.vue')
     },
     activated() {
-      this.listId = this.playListId;
-      // console.log('this.listId', this.listId)
+      this.listId = parseInt(this.playListId);
     },
     methods: {
+      playAll() {
+        if (this.playListSong.length) {
+          this.$store.dispatch('setPlayShow', this.playListSong)
+        }
+      },
+      handerTouchEnd(event) {
+        var endY = event.changedTouches[0].clientY;
+        var playlist = this.$refs.playlistSong;
+        var title = this.$refs.headerTitle;
+        if (playlist.getBoundingClientRect().top < playlist.offsetTop && playlist.getBoundingClientRect().top > title.offsetHeight) {
+          if (endY < this.start) {
+            window.scrollTo({
+              top: playlist.offsetTop - title.offsetHeight,
+              behavior: 'smooth'
+            })
+          }
+        }
+      },
+      handerTouchMove(event) {
+        this.end = event.changedTouches[0].clientY;
+        // console.log('move')
+        var playlist = this.$refs.playlistSong;
+        var title = this.$refs.headerTitle;
+        // console.log('===', Math.abs(this.start - this.end))
+        if (this.end - this.start < 0 && playlist.getBoundingClientRect().top === title.offsetHeight && playlist.querySelector('.list-song').style.overflowY === '') {
+          playlist.querySelector('.list-song').style.overflowY = 'scroll'
+          // setTimeout(() => {
+          playlist.querySelector('.list-song').scrollTo({
+            top: Math.abs(this.start - this.end) * 5,
+            behavior: 'smooth'
+          })
+          // }, 0)
+        }
+      },
+      handerTouchStart(event) {
+        this.start = event.changedTouches[0].clientY
+      },
+      handerScroll() {
+        this.$nextTick(() => {
+          var playlist = this.$refs.playlistSong;
+          var title = this.$refs.headerTitle;
+          // var content = this.$refs.content;
+          var sTop = document.body.scrollTop || document.documentElement.scrollTop;
+          var winH = document.body.clientHeight || document.documentElement.clientHeight
+          //
+          if (sTop <= playlist.offsetTop - title.offsetHeight) {
+            title.style.opacity = ((sTop) / (playlist.offsetTop - title.offsetHeight)).toFixed(2)
+            this.playListTitle = this.playListDate.name;
+            playlist.querySelector('.list-song').style.overflowY = ''
+          }
+
+          if (playlist.getBoundingClientRect().top <= title.offsetHeight + 80) {
+            playlist.style.overflow = 'hidden';
+            playlist.style.height = winH - title.offsetHeight + 'px';
+            playlist.querySelector('.list-song').style.height = winH - title.offsetHeight - playlist.querySelector('.list-title').offsetHeight + 'px';
+            playlist.querySelector('.list-song').style.overflowY = 'scroll'
+          } else {
+            playlist.querySelector('.list-song').style.overflowY = ''
+          }
+        })
+      },
+      handerPlScroll() {
+        var playlist = this.$refs.playlistSong;
+        // 滚动列表时, 检测到上滑并且列表到顶, 去除scroll
+        if (this.end - this.start > 0 && playlist.querySelector('.list-song').scrollTop === 0) {
+          // playlist.querySelector('.list-song').style.overflowY = ''
+        }
+      },
+      handerPlTM(event) {},
+      tStart(event) {
+        this.$refs['pl-cntent'].style.overflowY = 'hidden'
+        event.stopPropagation();
+      },
+      tEnd(event) {
+        this.$refs['pl-cntent'].style.overflowY = ''
+        event.stopPropagation();
+      },
       toggleDes() {
         this.showDes = !this.showDes;
       },
       goBack() {
         this.$router.back()
       },
+      getIds(trackIds) {
+        const ids = [];
+        if (Array.isArray(trackIds)) {
+          for (var i = 0, len = trackIds.length; i < len; i++) {
+            ids.push(trackIds[i].id)
+          }
+          return ids.join(',')
+        }
+      },
       getPlayList() {
         this.playListDate = [];
+        this.playListSong = [];
         this.$loading.show();
         api.PlayListDetail(this.$route.params.playlist_id)
           .then(res => {
             if (res.code === api.STATUS) {
               this.playListDate = res.playlist
-              this.$loading.hide()
+              api.MusicDetail(this.getIds(res.playlist.trackIds))
+                .then(res => {
+                  // 只留100首
+                  this.playListSong = res.songs.slice(0, 100);
+                  // console.log(this.playListSong)
+                  this.$loading.hide()
+                })
             }
           })
           .catch(err => {
@@ -110,373 +264,15 @@
       },
       playSong(song) {
         this.$store.dispatch('setPlayShow', song)
-      },
-      showDescript(event) {}
+      }
     },
     watch: {
-      listId() {
-        // console.log('this.$route.params.playlist_id', this.listId)
+      listId(newV, oldV) {
         this.getPlayList();
       }
     }
   }
 </script>
 <style lang="scss" scoped>
-  @import '@/styles/variable.scss';
-  @import '@/styles/mixin.scss';
-
-  .playlist-content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    height: 100%;
-    z-index: 15;
-    background-color: #fff;
-
-    .playlist-header {
-      .playlist-header-title {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: .45rem;
-        display: flex;
-        align-items: center;
-        padding: 0 .15rem;
-        z-index: 10;
-        background: rgba(247, 247, 247, .8);
-
-        .iconfont {
-          color: black;
-          font-size: .24rem;
-        }
-
-        .title-text {
-          padding-left: .15rem;
-          width: 3.5rem;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-          padding-bottom: .02rem;
-          font-size: .16rem;
-        }
-      }
-    }
-
-    .title-descript {
-      padding: 0.85rem 0;
-      display: flex;
-      margin-bottom: -.5rem;
-      position: relative;
-      background: rgba(173, 173, 173, 0.3);
-
-      .mask {
-        position: absolute;
-        height: 100%;
-        overflow: hidden;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-        filter: blur(50px);
-
-        img {
-          width: 100%;
-          transform: scale(1.5);
-        }
-      }
-
-      .descript-img {
-        width: 1.2rem;
-        height: 1.2rem;
-        overflow: hidden;
-        border-radius: .05rem;
-        margin-left: 0.2rem;
-
-        img {
-          width: 100%;
-        }
-      }
-
-      .descript-text {
-        width: 2rem;
-        flex: 1 0;
-        padding: 0 .2rem;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-
-        .descript-name {
-          color: #191919;
-          font-weight: bold;
-          font-size: .16rem;
-        }
-
-        .descript-creator {
-          font-size: .12rem;
-          padding-top: .1rem;
-          color: #f1f1f1;
-        }
-
-        .descript-elipse {
-          padding-top: .1rem;
-          font-size: .14rem;
-          color: #2d2d2d;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-        }
-      }
-    }
-
-    .list-content {
-      padding: 0.05rem .13rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      background: #fff;
-      border-radius: .2rem .2rem 0 0;
-      box-shadow: -1px -5px 5px rgba(128, 128, 128, .3);
-
-      .list-content-item {
-        width: 1.1rem;
-        padding-bottom: 0.2rem;
-      }
-
-      .list-content-title {
-        display: flex;
-        justify-content: space-between;
-        padding: .15rem 0;
-        position: relative;
-        width: 100%;
-
-        .diaodai {
-          position: absolute;
-          width: .1rem;
-          height: .1rem;
-          background: #525252;
-          border-radius: 50%;
-
-          &:after {
-            content: '';
-            position: absolute;
-            height: .2rem;
-            width: 0.05rem;
-            background: #ffffff;
-            left: 50%;
-            transform: translate(-50%);
-            top: -.13rem;
-            border-radius: .03rem;
-          }
-        }
-
-        .diaodai.one {
-          left: .5rem;
-          top: 0px;
-        }
-
-        .diaodai.two {
-          right: .5rem;
-          top: 0;
-        }
-
-        .title-text {
-          color: #383838;
-          font-size: .16rem;
-        }
-      }
-
-      .playlist-song-item {
-        display: flex;
-        align-items: center;
-        padding: .06rem 0;
-        flex: 1 0 auto;
-
-        .song-num {
-          width: 0.3rem;
-          display: flex;
-          justify-content: center;
-          padding: 0 .03rem;
-          font-size: .16rem;
-        }
-
-        .song-detail {
-          display: flex;
-          flex-direction: column;
-          width: 2.8rem;
-          padding-left: .15rem;
-
-          .song-name {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            padding: .02rem 0;
-            font-size: .16rem;
-          }
-
-          .song-singer {
-            font-size: .12rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: grey;
-            padding: .02rem 0;
-          }
-        }
-      }
-    }
-
-    // .show-descript-enter-active, .show-descript-leave-active {
-    //   transition: all .05s;
-    // }
-    // .show-descript-enter, .show-descript-leave-to {
-    //   transform: scale(0) ;
-    // }
-
-    .show-descript-enter-active {
-      animation: bounce-in .5s;
-    }
-
-    .show-descript-leave-active {
-      animation: bounce-out .5s;
-    }
-
-    @keyframes bounce-in {
-      0% {
-        transform: scale(0);
-        opacity: 0;
-      }
-
-      30% {
-        transform: scale(1.1);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    @keyframes bounce-out {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      30% {
-        transform: scale(1.1);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(0);
-        opacity: 0;
-      }
-    }
-
-    .playlist-descript {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 30;
-      @include bf(column);
-
-      .des-bg {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        @include bf();
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        z-index: -1;
-
-        img {
-          filter: blur(30px);
-          transform: scale(1.5);
-          height: 100%;
-        }
-      }
-
-      .des-main {
-        background: rgba(56, 56, 56, 0.43);
-        height: 100%;
-
-        .descript-header {
-          position: relative;
-          @include bf(column);
-          align-items: center;
-          padding-top: .6rem;
-
-          .des-close {
-            position: absolute;
-            right: .2rem;
-            top: .2rem;
-            @include fz(.24rem);
-          }
-
-          .descript-img {
-            width: 53%;
-            border-radius: .05rem;
-          }
-
-          .descript-title {
-            position: relative;
-            text-align: center;
-            padding: .2rem;
-            width: 70%;
-            @include elip;
-            @include fz($weight: bold);
-
-            &:after {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              content: '';
-              height: .01rem;
-              width: 100%;
-              background-image: linear-gradient(45deg, transparent, #fff 35%, #fff 65%, transparent);
-              ;
-            }
-          }
-        }
-
-        .descript-content {
-          padding: .1rem .25rem 0 .25rem;
-          @include fz($size: .12rem);
-
-          .des-tag {
-            padding: .05rem 0 .15rem;
-            .tag-title {
-              margin-right: .09rem;
-            }
-            .tags {
-              display: inline-block;
-              padding: 0.04rem .08rem;
-              margin: 0 .05rem;
-              background-color: rgba(193, 185, 185, 0.3);
-              border-radius: .1rem;
-            }
-          }
-
-          .des-text {
-            line-height: 1.5;
-            height: 2.6rem;
-            overflow: scroll;
-          }
-        }
-      }
-    }
-  }
+  @import '@/styles/PlayList.scss';
 </style>

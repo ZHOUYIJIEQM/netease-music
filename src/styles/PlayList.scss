@@ -1,0 +1,392 @@
+@import '@/styles/mixin.scss';
+$title-height: .5rem;
+
+.playlist-content {
+  z-index: 10;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  .content {
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+
+    // 歌单头部
+    .playlist-header {
+      position: relative;
+      height: 2.9rem;
+      margin-bottom: -.2rem;
+      z-index: -1;
+      overflow: hidden;
+      background-image: linear-gradient(to bottom, rgb(134, 134, 134) 3%, rgba(53, 53, 53, 0.9));
+
+      .header-bgi {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        @include bf();
+        justify-content: center;
+        align-items: center;
+
+        .bgimage {
+          width: 100%;
+        }
+
+        .black {
+          filter: brightness(0.6);
+        }
+
+        .mask {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0, 0, 0, 0.57), rgba(132, 131, 131, 0.45));
+        }
+      }
+
+      .header-title {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: $title-height;
+        background: transparent;
+        @include bf();
+        align-items: center;
+        z-index: 30;
+
+        .title-bgi {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          opacity: 0;
+          z-index: -1;
+
+          img {
+            width: 100%;
+            position: absolute;
+            bottom: -.2rem;
+            left: 0;
+            filter: brightness(0.8);
+          }
+        }
+
+        .icon-fanhui {
+          @include fz(.22rem);
+          margin-left: .1rem;
+          padding: .1rem .05rem;
+        }
+
+        .title-text {
+          width: 80%;
+          margin-left: .15rem;
+          @include fz($size: .18rem, $color: #e6e6e6);
+          @include elip;
+        }
+      }
+
+      .header-descript {
+        position: relative;
+        padding: $title-height .15rem 0;
+
+        .des-name {
+          margin-top: .25rem;
+          @include elip;
+          @include fz(.16rem, white, bold);
+        }
+
+        .des-creator {
+          padding-top: .15rem;
+          @include fz(.14rem, white, bold);
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 0.3rem;
+            height: 0.3rem;
+            border-radius: 50%;
+            margin-right: .1rem;
+          }
+        }
+
+        .des-descript {
+          @include fz(.12rem, #eaeaea, $line-height: 1.5);
+          padding-top: .15rem;
+          @include twoelip;
+        }
+      }
+
+      .header-icon {
+        position: relative;
+        margin-top: .3rem;
+        color: #ececec;
+        @include bf();
+
+        .box {
+          flex: 1 0;
+          @include bf(column);
+          align-items: center;
+
+          .iconfont {
+            @include fz(.22rem, #f3f3f3);
+          }
+
+          span {
+            padding-top: .08rem;
+            @include fz(.12rem, #e2e2e2);
+          }
+        }
+      }
+    }
+
+    // 歌单播放列表
+    .playlist-song {
+      background: white;
+      border-radius: .2rem .2rem 0 0;
+      // position: relative;
+      width: 100%;
+      min-height: 6rem;
+      box-shadow: 0px -1px 5px #313131;
+      z-index: 15;
+
+      .list-title {
+        padding: 0 .1rem;
+        @include bf();
+        align-items: center;
+        justify-content: space-between;
+
+        .play-all {
+          @include fz(.16rem, black);
+          padding: .1rem 0;
+          display: flex;
+          align-items: center;
+
+          .iconfont {
+            @include fz(.24rem, black);
+            margin-right: .1rem;
+          }
+
+          .text {
+            @include fz(.16rem, black);
+          }
+
+          .count {
+            @include fz(.14rem, grey);
+          }
+        }
+
+        .collect {
+          padding: .1rem .05rem;
+          background: #ea2a2a;
+          border-radius: .3rem;
+          @include fz(.12rem, white);
+          max-width: 1.1rem;
+          @include elip;
+        }
+      }
+
+      .list-song {
+        padding: .05rem 0;
+
+        .list-song-item {
+
+          @include bf();
+          padding: .05rem 0;
+          align-items: center;
+
+          .item-num,
+          .song-more {
+            width: .5rem;
+            text-align: center;
+            @include fz(.16rem, black);
+          }
+
+          .item-detail {
+            flex: 1 0 75%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            div {
+              @include elip;
+            }
+
+            .song-name {
+              @include fz(.16rem, black, $line-height: 1.5);
+            }
+
+            .song-singer {
+              @include fz(.12rem, grey, $line-height: 1.5);
+            }
+          }
+
+          .song-more {
+            .iconfont {
+              @include fz(.16rem, #585757, bold);
+            }
+          }
+        }
+
+        .list-song-item.choose {
+          background: #e8e8e8;
+        }
+      }
+    }
+
+
+  }
+
+  // 歌单详情弹出层
+  .playlist-descript {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    @include bf(column);
+
+    .des-bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      @include bf();
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      z-index: -1;
+
+      img {
+        filter: blur(30px);
+        transform: scale(1.5);
+        height: 100%;
+      }
+    }
+
+    .des-main {
+      background: rgba(56, 56, 56, 0.43);
+      height: 100%;
+
+      .descript-header {
+        position: relative;
+        @include bf(column);
+        align-items: center;
+        padding-top: .6rem;
+
+        .des-close {
+          position: absolute;
+          right: .2rem;
+          top: .2rem;
+          @include fz(.24rem);
+        }
+
+        .descript-img {
+          width: 53%;
+          border-radius: .05rem;
+        }
+
+        .descript-title {
+          position: relative;
+          text-align: center;
+          padding: .2rem;
+          width: 70%;
+          @include elip;
+          @include fz($weight: bold);
+
+          &:after {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            content: '';
+            height: .01rem;
+            width: 100%;
+            background-image: linear-gradient(45deg, transparent, #fff 35%, #fff 65%, transparent);
+            ;
+          }
+        }
+      }
+
+      .descript-content {
+        padding: .1rem .25rem 0 .25rem;
+        @include fz($size: .12rem);
+
+        .des-tag {
+          padding: .05rem 0 .15rem;
+
+          .tag-title {
+            margin-right: .09rem;
+          }
+
+          .tags {
+            display: inline-block;
+            padding: 0.04rem .08rem;
+            margin: 0 .05rem;
+            background-color: rgba(193, 185, 185, 0.3);
+            border-radius: .1rem;
+          }
+        }
+
+        .des-text {
+          line-height: 1.5;
+          height: 2.6rem;
+          overflow: scroll;
+        }
+      }
+    }
+  }
+
+  .show-descript-enter-active {
+    animation: bounce-in .5s;
+  }
+
+  .show-descript-leave-active {
+    animation: bounce-out .5s;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    30% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce-out {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    30% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+}
