@@ -137,8 +137,8 @@
         top: -.02rem;
       }
       .inner {
-        width: 1rem;
-        height: 1rem;
+        width: .3rem;
+        height: .3rem;
         position: absolute;
         top: 50%;
         left: 50%;
