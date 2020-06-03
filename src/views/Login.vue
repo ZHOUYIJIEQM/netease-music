@@ -33,7 +33,7 @@
     },
     methods: {
       goBack() {
-        this.$router.push('/')
+        this.$router.push({ name: 'Home' })
       },
 
       login() {
@@ -71,6 +71,8 @@
 </script>
 <style lang="scss" socped>
   .login-page {
+    position: fixed;
+    width: 100%;
     height: 100%;
     background-color: #dc2c1f;
     display: flex;

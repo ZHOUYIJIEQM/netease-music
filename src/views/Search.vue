@@ -334,6 +334,7 @@
           .song-num {
             width: .35rem;
             text-align: center;
+            font-size: .14rem;
           }
 
           .song-item {

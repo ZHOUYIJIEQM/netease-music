@@ -8,6 +8,9 @@
       <div class="song-name">{{songItemData.name}}</div>
       <div class="album-name">{{songItemData.artists[0].name}} - {{songItemData.album.name}}</div>
     </div>
+    <div class="song-more">
+      <i class="iconfont icon-ziyuan1"></i>
+    </div>
   </div>
 </template>
 <script>
@@ -31,10 +34,11 @@
   .song-list-item {
     display: flex;
     padding: .1rem 0;
+    align-items: center;
 
     .song-item-pic {
-      width: .5rem;
-      height: .5rem;
+      width: .45rem;
+      height: .45rem;
       overflow: hidden;
       border-radius: .05rem;
       flex-shrink: 0;
@@ -55,9 +59,8 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding: .03rem 0;
         font-size: .16rem;
-        line-height: 1;
+        line-height: 1.3;
       }
 
       .album-name {
@@ -65,11 +68,15 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding: .03rem 0;
         font-size: .14rem;
         color: #505050;
-        line-height: 1;
+        line-height: 1.3;
       }
+    }
+
+    .song-more {
+      color: #313131;
+      font-size: .2rem;
     }
   }
 </style>

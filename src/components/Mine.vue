@@ -71,7 +71,7 @@
         <div class="recommendList-title" v-if="!loginStatus">推荐歌单</div>
         <div class="recommendList-title" v-else>用户歌单</div>
         <div class="loading-postion" v-if="!userPlayList.length">
-          <loading :show="true"></loading>
+          <loading :isShow="true"></loading>
         </div>
         <div class="recommendList-List">
           <div class="recommendList-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlayListDetail(item.id)">

@@ -41,6 +41,12 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 400:
           console.log(error.response.statusText)
+          VUE.$Toast({ message: '操作无效', time: 1000 });
+          break;
+        case 401:
+          VUE.$loading.hide();
+          VUE.$Toast({ message: '操作无效', time: 1000 });
+          console.log(error.response);
           break;
         case 301:
           VUE.$Toast({ message: '需要登录', time: 1000 });
@@ -98,7 +104,7 @@ export function post(url, params) {
   })
 }
 
-// 要加上timestamp, 不然同个接口请求的内容一直是一样的, 写在post参数的timestamp貌似没起作用, 重新补回url后面
+// 加上timestamp, 不然同个接口请求的内容一直是一样的, 写在post参数的timestamp貌似没起作用, 重补回url后面
 export default {
   STATUS: 200,
   /**
@@ -216,5 +222,28 @@ export default {
     return post(`/search?timestamp=${Date.now()}`, { ...params });
     // return post('/search', { ...params, ...{ timestamp: Date.now() } });
     // 写在post参数的timestamp貌似没起作用
+  },
+  /**
+   * 获取电台轮播
+   * @return {[type]} [description]
+   */
+  rdBanner() {
+    return get(`/dj/banner?timestamp=${Date.now()}`);
+  },
+  /**
+   * 热门电台节目
+   * @return {[type]} [description]
+   */
+  rdToplist() {
+    return get(`/dj/toplist/popular?timestamp=${Date.now()}`);
+  },
+  /**
+   * 收藏/取消歌单
+   * @param  {num} type 1:收藏 2:取消
+   * @param  {num} id   歌单id
+   * @return {[type]}      [description]
+   */
+  collectPlayList(type, id) {
+    return get(`/playlist/subscribe?t=${type}&id=${id}&timestamp=${Date.now()}`)
   }
 }

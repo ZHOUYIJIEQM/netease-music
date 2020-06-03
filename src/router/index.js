@@ -69,16 +69,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    // const isLogin = window.localStorage.getItem('isLogin') === 'true' ? true : false;
-    const isLogin = window.localStorage.getItem('isLogin') === 'true';
+    const isLogin = window.localStorage.getItem('token')
     if (isLogin) {
-      // if (store.state.isLogin) {
       next();
     } else {
-      alert('需要登录')
-      next({ name: 'Login' })
+      confirm('需要登录!') && next({ name: 'Login' })
     }
-    // next()
   } else {
     next()
   }

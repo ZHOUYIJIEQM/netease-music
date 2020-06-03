@@ -4,7 +4,7 @@
   flex-wrap: $wrap;
 }
 
-@mixin fz($size: .16rem, $color: white, $weight: normal, $line-height: 1) {
+@mixin fz($size: .16rem, $color: white, $weight: normal, $line-height: 1.2) {
   font-size: $size;
   font-weight: $weight;
   color: $color;

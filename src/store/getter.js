@@ -11,6 +11,7 @@ const getter = {
     }
     return result;
   },
+  token: state => state.token,
   fullScreen: state => state.fullScreen,
   showPlayer: state => state.showPlayer,
   playing: state => state.playing,

@@ -123,7 +123,7 @@
     methods: {
       goPage(page) {
         // console.log('page:', page)
-        if (page === 'FMMusic' || page === 'RadioStation') {
+        if (page === 'FMMusic') {
           this.$Toast({ message: '功能未开发!', time: 2000 })
         } else {
           this.$router.push({ name: page })

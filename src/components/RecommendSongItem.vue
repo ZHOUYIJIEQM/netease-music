@@ -4,8 +4,8 @@
     <div class="song-item">
       <!-- <img :src="songItem.picUrl" alt="" class="list-pic" /> -->
       <img v-lazy="songItem.picUrl+'?param=600y600'" alt="" class="list-pic" />
-      <div class="play-count" v-if="songItem.playCount">{{songItem.playCount|formatNum}}</div>
-      <div class="play-count" v-else-if="songItem.playcount">{{songItem.playcount|formatNum}}</div>
+      <div class="play-count" v-if="songItem.playcount">{{songItem.playcount|formatNum}}</div>
+      <div class="play-count" v-else-if="songItem.playCount">{{songItem.playCount|formatNum}}</div>
     </div>
     <div class="song-item-name">{{songItem.name}}</div>
   </div>
@@ -32,10 +32,14 @@
 
     methods: {
       goPlayList(id) {
-        this.$router.push({
-          name: 'PlayList',
-          params: { playlist_id: id }
-        })
+        if (this.songItem.playcount || this.songItem.playCount) {
+          this.$router.push({
+            name: 'PlayList',
+            params: { playlist_id: id }
+          })
+        } else {
+          this.$Toast({ message: '电台未开发!', time: 1500 })
+        }
       }
     }
   }

@@ -1,0 +1,146 @@
+@import '@/styles/mixin.scss';
+
+.RadioStation-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  background-color: #fff;
+  z-index: 30;
+
+  &>.header {
+    @include bf;
+    align-items: center;
+    height: .45rem;
+    @include fz(.18rem, black);
+
+    .icon-fanhui {
+      @include fz(.24rem, black);
+      padding: .1rem
+    }
+  }
+
+  .content {
+    .banner-outer {
+      margin: .03rem auto 0;
+      overflow: hidden;
+      min-height: 1.3rem;
+
+      .banner-box {
+        .banner-item {
+          .item-inner {
+            font-size: 0;
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            border-radius: .05rem;
+            overflow: hidden;
+
+            .banner-pic {
+              width: 100%;
+            }
+
+            .banner-text {
+              font-size: .14rem;
+              color: white;
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              padding: .03rem .06rem;
+              background-color: rgba(234, 37, 33, 0.78);
+              border-radius: .05rem 0 0 0;
+            }
+          }
+        }
+      }
+    }
+
+    .RadioStation-recommend {
+      display: flex;
+      justify-content: center;
+      padding: .15rem 0;
+
+      .icon {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        .icon-font {
+          width: .43rem;
+          height: .43rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: red;
+          background-image: linear-gradient(to right, #ff8686 0%, #ef2c2c 63%, #e80000 85%);
+        }
+
+        i {
+          font-size: .25rem;
+          color: white;
+        }
+
+        .icon-text {
+          font-size: .12rem;
+          padding: 8px 0;
+          text-align: center;
+        }
+      }
+    }
+
+    .rd-toplist {
+
+      .header {
+        font-size: .16rem;
+        padding: .1rem 0;
+        width: 90%;
+        margin: 0 auto;
+      }
+
+      .main-content {
+        padding: .1rem;
+        .item-list {
+          display: flex;
+          flex-wrap: wrap;
+          // justify-content: space-between;
+
+          .item {
+            flex: 0 0 33.33%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0 .05rem .1rem .05rem;
+
+            .pic {
+              overflow: hidden;
+              border-radius: .05rem;
+              font-size: 0;
+              width: 100%;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            .nickname {
+              padding: .05rem 0;
+              @include elip;
+              @include fz(.14rem, black);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .fadeIn-enter-active, .fadeIn-leave-active {
+    transition: opacity .5s;
+  }
+  .fadeIn-enter, .fadeIn-leave-to {
+    opacity: 0;
+  }
+}

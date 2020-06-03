@@ -153,7 +153,7 @@
         this.showPlayList = !this.showPlayList;
       },
       changeSong() {
-        this.$Toast({ message: '播放列表待开发', time: 2000 })
+        this.$Toast({ message: '待开发', time: 2000 })
       },
       togglePlayer() {
         if (this.fullScreen) {
@@ -170,7 +170,12 @@
         this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
       },
       end() {
-        this.$store.commit('SETPLAYING', !this.$refs.audio.paused)
+        if (this.currentIndex + 1 >= this.playList.length) {
+          this.$Toast({ message: '后面没有了哦!', time: 1000 })
+          this.$store.commit('SETPLAYING', false)
+        } else {
+          this.$store.commit('SETCURRENTINDEX', this.currentIndex + 1)
+        }
       },
       error() {
         var timer = null;
@@ -178,7 +183,7 @@
         timer = setTimeout(() => {
           this.$Toast({ message: '无法播放收费歌曲！', time: 3000 })
           this.$loading.hide();
-          this.togglePlayer();
+          // this.togglePlayer();
           this.clickPlayStatus();
         }, 2000)
       },
@@ -258,7 +263,7 @@
             if (res.data[0].url !== null) {
               this.$refs.audio.src = res.data[0].url;
             } else {
-              this.$Toast({ message: '可能是vip歌曲, 获取的音频地址为null, 正尝试其它获取方式。 音乐可能无法播放！', time: 6000 })
+              this.$Toast({ message: '可能是vip歌曲, 获取的音频地址为null, 正尝试其它获取方式。 音乐可能无法播放！', time: 3000 })
               this.$refs.audio.src = `https://music.163.com/song/media/outer/url?id=${id}.mp3`
             }
           })

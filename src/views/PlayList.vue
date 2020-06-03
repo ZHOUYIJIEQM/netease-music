@@ -2,25 +2,25 @@
   <!-- 歌单详情 -->
   <div class="playlist-content" ref="pl-cntent">
     <div class="content" ref="content" v-if="playListDate.coverImgUrl">
+      <div class="header-title">
+        <div class="title-bgi" ref='headerTitle'>
+          <img :class="{black: !playListDate.backgroundCoverUrl}" v-lazy="playListDate.backgroundCoverUrl || playListDate.coverImgUrl" alt="">
+        </div>
+        <i class="iconfont icon-fanhui" @click="goBack"></i>
+        <span class="title-text">{{playListTitle}}</span>
+      </div>
       <div class="playlist-header">
         <div class="header-bgi">
           <img class="bgimage" :class="{black: !playListDate.backgroundCoverUrl}" v-lazy="(playListDate.backgroundCoverUrl || playListDate.coverImgUrl) " alt="">
           <!-- <div class="mask"></div> -->
         </div>
-        <div class="header-title">
-          <div class="title-bgi" ref='headerTitle'>
-            <img :src="playListDate.backgroundCoverUrl || playListDate.coverImgUrl" alt="">
-          </div>
-          <i class="iconfont icon-fanhui" @click="goBack"></i>
-          <span class="title-text">{{playListTitle}}</span>
-        </div>
         <div class="header-descript" @click="toggleDes">
           <div class="des-name">{{playListDate.name}}</div>
           <div class="des-creator">
-            <img :src="playListDate.creator.avatarUrl" alt="">
+            <img v-lazy="playListDate.creator.avatarUrl" alt="">
             <span>{{playListDate.creator.nickname}}</span>
           </div>
-          <div class="des-descript" v-html="playListDate.description.replace(/\n/g, '<br/>')"></div>
+          <div class="des-descript" v-html="playListDate.description && playListDate.description.replace(/\n/g, '<br/>')"></div>
         </div>
         <div class="header-icon">
           <div class="box" @click="$Toast({message:'功能未开发!', time: 500})">
@@ -35,31 +35,36 @@
             <i class="comment iconfont icon-xiazai1"></i>
             <span class="comment-count">下载</span>
           </div>
-          <div class="box">
+          <div class="box" @click="$Toast({message:'功能未开发!', time: 500})">
             <i class="comment iconfont icon-show_duoxuan"></i>
             <span class="comment-count">多选</span>
           </div>
         </div>
       </div>
       <div class="playlist-song" ref="playlistSong">
-        <div class="list-title">
-          <div class="play-all" @click="playAll">
-            <i class="iconfont icon-bofang"></i>
-            <span class="text">播放全部</span>
-            <span class="count">(共{{playListDate.trackCount}}首)</span>
+        <div class="list-title border" ref="listTitle">
+          <div class="plt-img">
+            <img :class="{black: !playListDate.backgroundCoverUrl}" v-lazy="playListDate.backgroundCoverUrl || playListDate.coverImgUrl" alt="">
           </div>
-          <div class="collect">
-            + 收藏 ({{playListDate.subscribedCount|formatNum}})
+          <div class="list-title-box">
+            <div class="play-all" @click="playAll">
+              <i class="iconfont icon-bofang"></i>
+              <span class="text">播放全部</span>
+              <span class="count">(共{{playListDate.trackCount}}首)</span>
+            </div>
+            <div class="collect" @click="collectPl">
+              {{cltext}} ({{playListDate.subscribedCount|formatNum}})
+            </div>
           </div>
         </div>
-        <div class="list-song" @scroll="handerPlScroll">
+        <div class="list-song">
           <div class="list-song-item" v-for="(item, index) in playListSong" :key="index" @click="playSong(item)">
             <div class="item-num">{{index+1}}</div>
             <div class="item-detail">
               <div class="song-name">{{item.name}}</div>
               <div class="song-singer">
                 {{item.ar[0].name}}
-                <template v-if="item.ar.length>1">/{{item.ar[1].name}}</template>-{{item.al.name}}
+                <template v-if="item.ar.length>1">/ {{item.ar[1].name}}</template> - {{item.al.name}}
               </div>
             </div>
             <div class="song-more" @click.stop="">
@@ -92,6 +97,7 @@
         </div>
       </div>
     </transition>
+    <toTop></toTop>
   </div>
 </template>
 <script>
@@ -104,6 +110,7 @@
         showDes: false,
         playListTitle: '歌单',
         playListSong: [],
+        cltext: '收藏',
         start: null,
         end: null
       }
@@ -134,13 +141,14 @@
       }
     },
     mounted() {
-      window.addEventListener('touchstart', this.handerTouchStart, false);
-      window.addEventListener('touchmove', this.handerTouchMove, false);
-      window.addEventListener('touchend', this.handerTouchEnd, false)
-      // 触摸判断滑动方向, 滚动添加css属性
-      window.addEventListener('scroll', this.handerScroll, false);
+      // 改为滚动到指定位置 添加定位fix属性, 制作类似sticky效果 https://zzp-ui.zezeping.com/sticky
+      window.addEventListener('scroll', this.handerScroll, true);
+    },
+    beforeDestroy() {
+      window.removeEventListener('scroll', this.handerScroll);
     },
     components: {
+      toTop: () => import('@/components/GoTop.vue'),
       pageEnd: () => import('@/components/PageEnd.vue')
     },
     activated() {
@@ -152,76 +160,64 @@
           this.$store.dispatch('setPlayShow', this.playListSong)
         }
       },
-      handerTouchEnd(event) {
-        var endY = event.changedTouches[0].clientY;
-        var playlist = this.$refs.playlistSong;
-        var title = this.$refs.headerTitle;
-        if (playlist.getBoundingClientRect().top < playlist.offsetTop && playlist.getBoundingClientRect().top > title.offsetHeight) {
-          if (endY < this.start) {
-            window.scrollTo({
-              top: playlist.offsetTop - title.offsetHeight,
-              behavior: 'smooth'
-            })
-          }
-        }
-      },
-      handerTouchMove(event) {
-        this.end = event.changedTouches[0].clientY;
-        // console.log('move')
-        var playlist = this.$refs.playlistSong;
-        var title = this.$refs.headerTitle;
-        // console.log('===', Math.abs(this.start - this.end))
-        if (this.end - this.start < 0 && playlist.getBoundingClientRect().top === title.offsetHeight && playlist.querySelector('.list-song').style.overflowY === '') {
-          playlist.querySelector('.list-song').style.overflowY = 'scroll'
-          // setTimeout(() => {
-          playlist.querySelector('.list-song').scrollTo({
-            top: Math.abs(this.start - this.end) * 5,
-            behavior: 'smooth'
+      collectPl() {
+        this.$loading.show();
+        let type = 1;
+        api.PlayListDetail(this.$route.params.playlist_id)
+          .then(res => {
+            console.log('收藏状态', this.playListDate.subscribed)
+            if (res.playlist.subscribed) {
+              type = 2;
+            }
+            api.collectPlayList(type, this.playListDate.id)
+              .then(res => {
+                if (res.code === 200) {
+                  this.$loading.hide();
+                  this.cltext = type === 2 ? '收藏' : '已收藏'
+                }
+              })
           })
-          // }, 0)
-        }
-      },
-      handerTouchStart(event) {
-        this.start = event.changedTouches[0].clientY
       },
       handerScroll() {
-        this.$nextTick(() => {
-          var playlist = this.$refs.playlistSong;
-          var title = this.$refs.headerTitle;
-          // var content = this.$refs.content;
-          var sTop = document.body.scrollTop || document.documentElement.scrollTop;
-          var winH = document.body.clientHeight || document.documentElement.clientHeight
-          //
-          if (sTop <= playlist.offsetTop - title.offsetHeight) {
-            title.style.opacity = ((sTop) / (playlist.offsetTop - title.offsetHeight)).toFixed(2)
-            this.playListTitle = this.playListDate.name;
-            playlist.querySelector('.list-song').style.overflowY = ''
-          }
-
-          if (playlist.getBoundingClientRect().top <= title.offsetHeight + 80) {
-            playlist.style.overflow = 'hidden';
-            playlist.style.height = winH - title.offsetHeight + 'px';
-            playlist.querySelector('.list-song').style.height = winH - title.offsetHeight - playlist.querySelector('.list-title').offsetHeight + 'px';
-            playlist.querySelector('.list-song').style.overflowY = 'scroll'
-          } else {
-            playlist.querySelector('.list-song').style.overflowY = ''
-          }
-        })
-      },
-      handerPlScroll() {
+        var sTop = document.body.scrollTop || document.documentElement.scrollTop;
         var playlist = this.$refs.playlistSong;
-        // 滚动列表时, 检测到上滑并且列表到顶, 去除scroll
-        if (this.end - this.start > 0 && playlist.querySelector('.list-song').scrollTop === 0) {
-          // playlist.querySelector('.list-song').style.overflowY = ''
+        var plTitle = this.$refs.listTitle;
+        var plSong = this.$refs.playlistSong.querySelector('.list-song');
+        var title = this.$refs.headerTitle;
+        if (sTop >= playlist.offsetTop - title.offsetHeight) {
+          plTitle.className = 'list-title sticky';
+          plSong.className = 'list-song list-song-top';
+          this.playListTitle = this.playListDate.name;
+        } else {
+          plTitle.className = 'list-title border';
+          plSong.className = 'list-song';
+          this.playListTitle = '歌单';
+        }
+        if (sTop >= 0 && sTop <= playlist.offsetTop) {
+          title.style.opacity = ((sTop) / (playlist.offsetTop - title.offsetHeight)).toFixed(2);
+        } else {
+          title.style.opacity = 1;
         }
       },
-      handerPlTM(event) {},
+      // window.scrollTo 回调
+      scrollToCallback(toTop, callback) {
+        window.scrollTo({
+          top: toTop,
+          behavior: 'smooth'
+        })
+        window.onscroll = e => {
+          const winTop = document.body.scrollTop || document.documentElement.scrollTop;
+          if (winTop >= toTop - 60) {
+            callback && callback()
+          }
+        }
+      },
       tStart(event) {
-        this.$refs['pl-cntent'].style.overflowY = 'hidden'
+        this.$refs['pl-cntent'].style.position = 'fixed'
         event.stopPropagation();
       },
       tEnd(event) {
-        this.$refs['pl-cntent'].style.overflowY = ''
+        this.$refs['pl-cntent'].style.position = ''
         event.stopPropagation();
       },
       toggleDes() {
@@ -247,11 +243,11 @@
           .then(res => {
             if (res.code === api.STATUS) {
               this.playListDate = res.playlist
+              this.cltext = res.playlist.subscribed ? '已收藏' : '收藏'
               api.MusicDetail(this.getIds(res.playlist.trackIds))
                 .then(res => {
                   // 只留100首
                   this.playListSong = res.songs.slice(0, 100);
-                  // console.log(this.playListSong)
                   this.$loading.hide()
                 })
             }

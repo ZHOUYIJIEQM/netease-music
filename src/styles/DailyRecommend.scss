@@ -1,0 +1,90 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+$title-height: .45rem;
+.daily-recommend-content {
+  position: absolute;
+  width: 100%;
+  z-index: 30;
+  .recommend-header {
+    height: $title-height;
+    width: 100%;
+    @include bf;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    i {
+      @include fz(.24rem, white);
+      padding: .15rem;
+    }
+    span {
+      @include fz(.16rem, white);
+    }
+  }
+  .header-pic {
+    height: 2rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: -.2rem;
+    img {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%) scale(1.2);
+      // filter: blur(1px);
+    }
+    .date {
+      position: absolute;
+      bottom: .35rem;
+      left: .2rem;
+      @include fz(.35rem, white);
+      
+      .month {
+        font-size: .2rem;
+      }
+
+      .history {
+        @include fz(.14rem, black, normal, 1);
+        padding: .05rem;
+        background-color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        border-radius: .3rem;
+      }
+    }
+  }
+  .song-title {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: .45rem;
+    width: 100%;
+    padding: 0 .15rem;
+    z-index: 2;
+    background: white;
+    border-radius: .2rem .2rem 0 0;
+    .play-all {
+      display: flex;
+      align-items: center;
+      i {
+        @include fz(.24rem, black);
+        padding-right: .1rem;
+      }
+    }
+    span {
+      @include fz(.16rem, black);
+    }
+  }
+  .fix {
+    position: fixed;
+  }
+  .song-content {
+    position: relative;
+    z-index: -1;
+    background: white;
+    padding-left: .15rem;
+    padding-right: .15rem;
+  }
+}

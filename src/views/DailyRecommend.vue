@@ -1,193 +1,147 @@
 <template>
-  <!-- 每日推荐 -->
   <div class="daily-recommend-content">
-    <div class="recommend-header">
-      <img class="header-bg" :src="headerBg" alt="">
-      <div class="recommend-header-title">
-        <i class="iconfont icon-fanhui" @click="goBack()"></i>
-      </div>
-      <div class="recommend-header-date">
-        <div>
-          <span class="date">{{today.getDate()}}</span>
-          <span>/</span>
-          <span class="month">{{today.getMonth()+1}}</span>
-        </div>
-        <div class="history">历史推荐</div>
-      </div>
-      <div class="mask"></div>
+    <div class="recommend-header" ref="header">
+      <i class="iconfont icon-fanhui" @click="goBack()"></i>
+      <transition name="fadeIn">
+        <span v-show="showTitle">每日推荐</span>
+      </transition>
     </div>
-    <div class="recommend-content">
-      <div class="recommend-content-title">
-        <div class="diaodai one"></div>
-        <div class="diaodai two"></div>
-        <div class="title-text one">播放全部</div>
-        <div class="title-text two">多选</div>
-      </div>
-      <div class="recommend-song-list">
-        <div v-for="(item, index) in recommendList" :key="index">
-          <songItem :songItemData="item"></songItem>
+    <div class="header-pic" ref="headerPic">
+      <img v-lazy="headerPic" alt="">
+      <transition name="fadeIn">
+        <div class="date" v-if="recommendList.length" v-show="!showTitle">
+          <div class="date-box">
+            <span class="day">{{date}}</span>
+            <span class="month">/{{month}}</span>
+          </div>
+          <div class="history">历史日推</div>
         </div>
+      </transition>
+    </div>
+    <div class="song-title" ref="songListTitle">
+      <template v-if="recommendList.length">
+        <div class="play-all" @click="playAll">
+          <i class="iconfont icon-bofang"></i>
+          <span>播放全部</span>
+        </div>
+        <span class="select">多选</span>
+      </template>
+    </div>
+    <div class="song-content" ref="songListContent">
+      <div v-for="(item, index) in recommendList" :key="index">
+        <songItem :songItemData="item"></songItem>
       </div>
     </div>
     <pageEnd v-if="recommendList.length"></pageEnd>
   </div>
 </template>
 <script>
-  import api from '@/api/index.js'
+  import api from '@/api/index.js';
   export default {
     data() {
       return {
+        showTitle: false,
         recommendList: [],
-        headerBg: '',
-        today: new Date()
+        playListSong: [],
+        today: new Date(),
+        headerPic: '',
+        scrollT: 0
       }
     },
     components: {
       songItem: () => import('@/components/PlayListItem.vue'),
       pageEnd: () => import('@/components/PageEnd.vue')
     },
-    created() {
-      this.$loading.show();
-      api.RecommendMusic()
-        .then(res => {
-          if (res.code === api.STATUS) {
-            // console.log('每日推荐', res)
-            this.$loading.hide();
-            this.recommendList = res.recommend;
-            this.headerBg = res.recommend[0].album.picUrl + '?param=400y400'
-          }
-        })
+    computed: {
+      month() {
+        const Today = new Date();
+        return Today.getMonth() + 1 > 10 ? Today.getMonth() + 1 : '0' + (Today.getMonth() + 1);
+      },
+      date() {
+        const Today = new Date();
+        return Today.getDate() + 1 > 10 ? Today.getDate() : '0' + Today.getDate();
+      }
     },
     methods: {
       goBack() {
         this.$router.back()
+      },
+      handerScroll() {
+        this.$nextTick(() => {
+          const header = this.$refs.header;
+          const title = this.$refs.songListTitle;
+          const headerPic = this.$refs.headerPic;
+          const content = this.$refs.songListContent;
+          const sTop = document.body.scrollTop || document.documentElement.scrollTop;
+          // 到顶部 固定定位
+          if (sTop >= this.scrollT - header.offsetHeight) {
+            title.className = 'song-title fix';
+            title.style.top = header.offsetHeight + 'px';
+            headerPic.className = 'header-pic fix';
+            headerPic.style.top = -(this.scrollT - header.offsetHeight) + 'px';
+            content.style.paddingTop = this.scrollT + title.offsetHeight + 'px';
+          } else {
+          // 不在顶部取消固定定位
+            title.className = 'song-title'
+            title.style.top = '';
+            headerPic.className = 'header-pic';
+            headerPic.style.top = '';
+            content.style.paddingTop = '';
+          }
+          // 设置是否显示每日推荐这几个字
+          if (sTop >= this.scrollT - header.offsetHeight) {
+            this.showTitle = true;
+          } else {
+            this.showTitle = false;
+          }
+          // 滚动图片改变亮度
+          if (sTop >= 0 && sTop <= this.scrollT - header.offsetHeight) {
+            // console.log(sTop / (this.scrollT - header.offsetHeight))
+            headerPic.querySelector('img').style.filter = `brightness(${(1 - sTop / (this.scrollT - header.offsetHeight)) * 0.5 + 0.3})`
+          }
+        })
+      },
+      getIds(arr) {
+        var result = [];
+        for (var i = 0, len = arr.length; i < len; i++) {
+          result.push(arr[i].id);
+        }
+        return result.join(',');
+      },
+      playAll() {
+        this.$loading.show();
+        console.log(this.recommendList)
+        // 取得所有id, 再获取对应id的歌曲信息
+        api.MusicDetail(this.getIds(this.recommendList))
+          .then(res => {
+            this.playListSong = res.songs;
+            this.playListSong.length && this.$store.dispatch('setPlayShow', this.playListSong);
+          })
       }
+    },
+    created() {
+      this.$loading.show();
+      api.RecommendMusic()
+        .then(res => {
+          this.$loading.hide();
+          // 每日推荐
+          this.recommendList = res.recommend;
+          this.headerPic = res.recommend[0].album.picUrl + '?param=500y500';
+          console.log(this.headerPic)
+        })
+    },
+    mounted() {
+      this.$nextTick(() => {
+        console.log('this.$refs.songListTitle', this.$refs.songListTitle)
+        this.scrollT = this.$refs.songListTitle.offsetTop
+      })
+      window.addEventListener('scroll', this.handerScroll, false);
+    },
+    beforeDestory() {
+      window.removeEventListener('scroll', this.handerScroll, false)
     }
   }
 </script>
 <style lang="scss" scoped>
-  @import '@/styles/variable.scss';
-
-  .daily-recommend-content {
-    .recommend-header {
-      background-color: #d8d8d8;
-      position: relative;
-      height: 2rem;
-      overflow: hidden;
-      margin-bottom: -0.2rem;
-
-      .header-bg {
-        filter: blur(10px);
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      .mask {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(68, 68, 68, 0.3);
-        position: absolute;
-        top: 0;
-      }
-
-      .recommend-header-title {
-        position: relative;
-        height: .45rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 .15rem;
-        z-index: 100;
-
-        .iconfont {
-          color: white;
-          font-size: .24rem;
-        }
-      }
-
-      .recommend-header-date {
-        position: absolute;
-        bottom: .5rem;
-        left: .2rem;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        z-index: 100;
-
-        span {
-          padding: 0 .03rem;
-          vertical-align: bottom;
-        }
-
-        .date {
-          font-size: .3rem;
-        }
-
-        .month {
-          font-size: .2rem;
-        }
-
-        .history {
-          padding: 0.05rem;
-          background: #ffffffbd;
-          color: #3a3a3a;
-          border-radius: .2rem;
-          text-align: center;
-          font-size: .12rem;
-          margin-top: .1rem;
-        }
-      }
-    }
-
-    .recommend-content {
-      position: relative;
-      padding: 0 .15rem;
-      background: white;
-      border-radius: .2rem .2rem 0 0;
-      z-index: 100;
-      // box-shadow: 0 -2px 10px #9c9c9c;
-
-      .recommend-content-title {
-        display: flex;
-        justify-content: space-between;
-        padding: .15rem 0;
-
-        .diaodai {
-          position: absolute;
-          width: .1rem;
-          height: .1rem;
-          background: #525252;
-          border-radius: 50%;
-
-          &:after {
-            content: '';
-            position: absolute;
-            height: .15rem;
-            width: 0.05rem;
-            background: #f9f9f9;
-            left: 50%;
-            transform: translate(-50%);
-            top: -.08rem;
-            border-radius: .03rem;
-          }
-        }
-
-        .diaodai.one {
-          left: .5rem;
-          top: 0px;
-        }
-
-        .diaodai.two {
-          right: .5rem;
-          top: 0;
-        }
-
-        .title-text {
-          color: #383838;
-        }
-      }
-    }
-  }
+  @import '@/styles/DailyRecommend.scss';
 </style>

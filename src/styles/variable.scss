@@ -33,22 +33,9 @@ $grey-c: #8c8c8c;
 }
 
 
-// .fadeInRight-enter-active {
-//   animation: fadeInRight .35s;
-// }
-
-// .fadeInRight-leave-active {
-//   animation: fadeInRight .35s reverse;
-// }
-
-// @keyframes fadeInRight {
-//   0% {
-//     transform: translate3d(100%, 0, 0);
-//     // opacity: 0;
-//   }
-//   100% {
-//     transform: translate3d(0, 0, 0);
-//     opacity: 1;
-//   }
-// }
-
+.fadeIn-enter, .fadeIn-leave-to {
+  opacity: 0;
+}
+.fadeIn-enter-active, .fadeIn-leave-active {
+  transition: .35s;
+}
