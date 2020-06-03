@@ -3,7 +3,9 @@
     <div class="song-time start">{{startTime}}</div>
     <div class="progress-box" ref="progressBox">
       <div class="progress" :style="{width: progWidth+'px'}" ref="progressLine"></div>
-      <div class="slider-btn" :style="{left: btnLeft+'px'}" ref="progressBtn"></div>
+      <div class="slider-btn" :style="{left: btnLeft+'px'}" ref="progressBtn">
+        <div class="inner"></div>
+      </div>
     </div>
     <div class="song-time end">{{ endTime }}</div>
   </div>
@@ -133,6 +135,14 @@
         position: absolute;
         left: -.03rem;
         top: -.02rem;
+      }
+      .inner {
+        width: 1rem;
+        height: 1rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }
