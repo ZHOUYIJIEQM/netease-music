@@ -4,7 +4,7 @@
     <div class="progress-box" ref="progressBox">
       <div class="progress" :style="{width: progWidth+'px'}" ref="progressLine"></div>
       <div class="slider-btn" :style="{left: btnLeft+'px'}" ref="progressBtn">
-        <div class="inner"></div>
+        <!-- <div class="inner"></div> -->
       </div>
     </div>
     <div class="song-time end">{{ endTime }}</div>
@@ -122,6 +122,7 @@
       position: relative;
 
       .progress {
+        border-radius: .1rem;
         width: 0%;
         height: 100%;
         background: #3a3a3a;
@@ -135,6 +136,15 @@
         position: absolute;
         left: -.03rem;
         top: -.02rem;
+        &:after {
+          content: '';
+          width: .3rem;
+          height: .3rem;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
       .inner {
         width: .3rem;

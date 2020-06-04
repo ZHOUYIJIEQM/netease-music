@@ -89,7 +89,7 @@
             content.style.paddingTop = '';
           }
           // 设置是否显示每日推荐这几个字
-          if (sTop >= this.scrollT - header.offsetHeight) {
+          if (sTop >= this.scrollT - header.offsetHeight - 100) {
             this.showTitle = true;
           } else {
             this.showTitle = false;
@@ -97,7 +97,7 @@
           // 滚动图片改变亮度
           if (sTop >= 0 && sTop <= this.scrollT - header.offsetHeight) {
             // console.log(sTop / (this.scrollT - header.offsetHeight))
-            headerPic.querySelector('img').style.filter = `brightness(${(1 - sTop / (this.scrollT - header.offsetHeight)) * 0.5 + 0.3})`
+            headerPic.querySelector('img').style.filter = `brightness(${(1 - sTop / (this.scrollT - header.offsetHeight)) * 0.5 + 0.3}) blur(${parseFloat(sTop / (this.scrollT - header.offsetHeight).toFixed(2)) * 10}px)`
           }
         })
       },
@@ -110,7 +110,7 @@
       },
       playAll() {
         this.$loading.show();
-        console.log(this.recommendList)
+        // console.log(this.recommendList)
         // 取得所有id, 再获取对应id的歌曲信息
         api.MusicDetail(this.getIds(this.recommendList))
           .then(res => {
@@ -127,12 +127,12 @@
           // 每日推荐
           this.recommendList = res.recommend;
           this.headerPic = res.recommend[0].album.picUrl + '?param=500y500';
-          console.log(this.headerPic)
+          // console.log(this.headerPic)
         })
     },
     mounted() {
       this.$nextTick(() => {
-        console.log('this.$refs.songListTitle', this.$refs.songListTitle)
+        // console.log('this.$refs.songListTitle', this.$refs.songListTitle)
         this.scrollT = this.$refs.songListTitle.offsetTop
       })
       window.addEventListener('scroll', this.handerScroll, false);

@@ -3,6 +3,7 @@
 $title-height: .45rem;
 .daily-recommend-content {
   position: absolute;
+  top: 0;
   width: 100%;
   z-index: 30;
   .recommend-header {
@@ -33,7 +34,7 @@ $title-height: .45rem;
       position: absolute;
       top: 50%;
       transform: translate(0, -50%) scale(1.2);
-      // filter: blur(1px);
+      filter: brightness(0.8) blur(0px);
     }
     .date {
       position: absolute;

@@ -236,7 +236,7 @@
 
   .playlist-content {
     position: fixed;
-    bottom: .5rem;
+    bottom: .55rem;
     width: 2.8rem;
     left: 50%;
     margin-left: -1.4rem;
@@ -245,6 +245,7 @@
     border-radius: .1rem;
     padding: .1rem .08rem;
     font-size: .16rem;
+    box-shadow: 0px 0px 5px black;
 
     .playlist-header{
       .header-title {
@@ -289,12 +290,12 @@
 
   .playlist-enter-active,
   .playlist-leave-active {
-    transition: all .2s;
+    transition: all .25s;
   }
 
   .playlist-enter,
   .playlist-leave-to {
-    transform: translate(0, 100%);
+    transform: translate(0, 130%);
     opacity: 0;
   }
 

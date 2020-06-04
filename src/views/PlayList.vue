@@ -152,7 +152,13 @@
       pageEnd: () => import('@/components/PageEnd.vue')
     },
     activated() {
+      // console.log('actived')
       this.listId = parseInt(this.playListId);
+      if (document.body.scrollTop || document.documentElement.scrollTop <= 0) {
+        this.$refs.listTitle.className = 'list-title border';
+        this.$refs.playlistSong.querySelector('.list-song').className = 'list-song';
+        this.playListTitle = '歌单';
+      }
     },
     methods: {
       playAll() {

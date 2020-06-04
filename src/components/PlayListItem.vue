@@ -22,7 +22,8 @@
     methods: {
       playSong(song) {
         this.$loading.show()
-        api.MusicDetail(song.id)
+        console.log(song.id)
+        api.MusicDetail('' + song.id)
           .then(res => {
             this.$store.dispatch('setPlayShow', res.songs[0]);
           })
