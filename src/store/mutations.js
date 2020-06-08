@@ -44,6 +44,11 @@ const mutation = {
   // 设置播放状态
   SETPLAYING(state, playing) {
     state.playing = playing;
+  },
+  // 设置歌词
+  SETLYRIC(state, lyric) {
+    console.log('设置歌词', lyric)
+    state.lyric = lyric;
   }
 }
 

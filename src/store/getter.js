@@ -16,6 +16,7 @@ const getter = {
   showPlayer: state => state.showPlayer,
   playing: state => state.playing,
   playList: state => state.playList,
+  lyric: state => state.lyric,
   currentIndex: state => state.currentIndex
 }
 

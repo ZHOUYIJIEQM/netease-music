@@ -69,18 +69,27 @@
 
       .middle {
         position: absolute;
-        top: 1.5rem;
-        bottom: 2rem;
+        top: 1rem;
+        bottom: 1.5rem;
         width: 100%;
         display: flex;
         justify-content: center;
 
+        .songly-text {
+          position: absolute;
+          bottom: 0.7rem;
+          font-size: .18rem;
+          font-weight: bold;
+        }
+
         .cd-wrapper {
-          border: .1rem solid rgba(0, 0, 0, 0.3);
+          border: 0.1rem solid rgba(0, 0, 0, 0.3);
           height: 2.3rem;
           width: 2.3rem;
           border-radius: 50%;
           overflow: hidden;
+          position: relative;
+          top: 0.5rem;
 
           .img-roll {
             width: 100%;
@@ -92,6 +101,36 @@
             height: 100%;
             transform: scale(1.1);
           }
+        }
+
+        .lyric-area {
+          @include bf;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0);
+          overflow: hidden;
+          padding: .1rem 0 .4rem 0;
+          .lyric-text {
+            max-height: 100%;
+            overflow-y: scroll;
+            padding: .3rem 0;
+            position: relative;
+            p {
+              text-align: center;
+              @include fz($size: .15rem, $color: rgb(20, 20, 20), $weight: normal, $line-height: 1.7);
+              transition: font-size .2s;
+              &.active {
+                @include fz($size: .18rem, $color: rgb(20, 20, 20), $weight: bold, $line-height: 1.7);
+              }
+            }
+          }
+        }
+
+        .hidden {
+          visibility: hidden;
         }
       }
 
@@ -258,7 +297,7 @@
 
     .playlist-main {
       max-height: 3rem;
-      overflow: scroll;
+      overflow-y: scroll;
       .active {
         color: red;
         .singer {

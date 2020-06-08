@@ -121,7 +121,7 @@
       playSong(song) {
         // console.log('song ', song)
         this.$loading.show()
-        api.MusicDetail(song.id)
+        api.MusicDetail('' + song.id)
           .then(res => {
             this.$store.dispatch('setPlayShow', res.songs[0]);
           })

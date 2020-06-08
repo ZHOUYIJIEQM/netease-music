@@ -25,7 +25,7 @@
         <span class="active">最新</span>
       </div>
       <div class="commentArea" ref="area">
-        <div class="list">
+        <div class="list" :class="{pdbottom: paddingBottom}">
           <div class="list-item" v-for="(item, index) in commentList" :key="index">
             <div class="pic">
               <img v-lazy="item.user.avatarUrl" alt />
@@ -66,6 +66,12 @@ export default {
       end: false,
       scrollT: 0
     };
+  },
+  computed: {
+    paddingBottom() {
+      // 播放器挡住评论
+      return this.$store.getters.showPlayer;
+    }
   },
   components: {
     pageEnd: () => import('@/components/PageEnd.vue')

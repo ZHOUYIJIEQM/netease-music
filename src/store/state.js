@@ -12,7 +12,8 @@ const state = {
   fullScreen: false,
   currentIndex: 0,
   playing: false,
-  playList: []
+  playList: [],
+  lyric: null
 }
 
 export default state

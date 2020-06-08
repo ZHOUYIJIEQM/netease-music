@@ -237,9 +237,8 @@ export default {
    * @param {num} id 歌单id
    */
   MusicDetail(ids) {
-    // console.log(ids)
     // return get(`/song/detail?ids=${ids}&timestamp=${Date.now()}`)
-    return post(`/song/detail?timestamp=${Date.now()}`, { ids: ids });
+    return post(`/song/detail?timestamp=${Date.now()}`, { ids });
   },
   /**
    * 搜索 关键词
