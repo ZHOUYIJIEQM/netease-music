@@ -74,12 +74,14 @@
         width: 100%;
         display: flex;
         justify-content: center;
+        overflow: hidden;
 
         .songly-text {
           position: absolute;
           bottom: 0.7rem;
-          font-size: .18rem;
-          font-weight: bold;
+          @include fz(.18rem, black, bold, $line-height: 1.5);
+          max-width: 80%;
+          @include elip;
         }
 
         .cd-wrapper {
@@ -112,11 +114,12 @@
           height: 100%;
           background-color: rgba(255, 255, 255, 0);
           overflow: hidden;
-          padding: .1rem 0 .4rem 0;
+          padding: .1rem 0 .3rem 0;
           .lyric-text {
             max-height: 100%;
+            max-width: 70%;
             overflow-y: scroll;
-            padding: .3rem 0;
+            padding: .9rem 0 0 0;
             position: relative;
             p {
               text-align: center;

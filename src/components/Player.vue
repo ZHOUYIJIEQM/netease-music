@@ -335,24 +335,33 @@ export default {
         });
     },
     handlerLyric({ lineNum, txt }) {
-      console.log('handler lyric', lineNum, txt);
+      // console.log(this.currentLyric)
+      // console.log('handler lyric', lineNum, txt);
       this.currentLine = lineNum;
       this.nowLyric = txt;
       const halfH = this.$refs.lyricText.offsetHeight / 2;
-      if (lineNum < 6) {
-        console.log('不用滚动')
+      if (lineNum < 5) {
+        // console.log('不用滚动')
       } else {
         // this.$refs.lyricLine[lineNum - 5]
-        this.$refs.lyricText.scrollTo({
-          top: this.$refs.lyricLine[lineNum].offsetTop - halfH,
-          behavior: 'smooth'
-        });
+        if (this.$refs.lyricLine[lineNum]) {
+          this.$refs.lyricText.scrollTo({
+            top: this.$refs.lyricLine[lineNum].offsetTop - halfH,
+            behavior: 'smooth'
+          });
+        }
       }
     },
     setLyric(id) {
+      if (this.currentLyric) {
+        // console.log('清除旧的对象');
+        this.currentLyric.stop();
+        this.currentLyric = null;
+        // console.log('currentLyric', this.currentLyric)
+      }
       api.MusicLyric(id)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           let ly = '';
           if (res.lrc && res.lrc.lyric) {
             ly = res.lrc.lyric;
@@ -362,12 +371,13 @@ export default {
           this.currentLyric = new Lyric(ly, this.handlerLyric);
           if (this.currentLyric.lines.length === 0) {
             this.currentLyric = new Lyric('[00:00.00]纯音乐,请欣赏!', this.handlerLyric);
+            // console.log('---空的')
           }
           // console.log('播放状态:', this.playing)
           if (this.playing) {
             this.currentLyric.play()
           }
-          console.log('---', this.currentLyric);
+          // console.log('---', this.currentLyric);
         });
     }
   },
