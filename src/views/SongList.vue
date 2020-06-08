@@ -39,7 +39,7 @@
     },
     methods: {
       goBack() {
-        this.$router.back()
+        this.$router.go(-1)
       },
       getAllSongList() {
         this.$loading.show()

@@ -33,7 +33,7 @@
     },
     methods: {
       goBack() {
-        this.$router.back()
+        this.$router.go(-1)
       },
       handlerClick(id) {
         this.$router.push({

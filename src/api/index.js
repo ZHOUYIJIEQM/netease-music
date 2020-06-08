@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from 'axios';
 import router from '../router';
-import store from '../store'
-import Vue from 'vue'
+import store from '../store';
+import Vue from 'vue';
 
 const VUE = new Vue();
 
@@ -21,14 +21,14 @@ axios.interceptors.request.use(
   config => {
     // 需要后端有设置'Access-Control-Allow-Headers': 'Authorization'
     const token = store.state.token;
-    token && (config.headers.Authorization = token)
-    return config
+    token && (config.headers.Authorization = token);
+    return config;
   },
   error => {
-    console.log('请求错误', error)
-    return Promise.reject(error)
+    console.log('请求错误', error);
+    return Promise.reject(error);
   }
-)
+);
 
 // 响应拦截
 axios.interceptors.response.use(
@@ -40,7 +40,8 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 400:
-          console.log(error.response.statusText)
+          console.log(error.response.statusText);
+          VUE.$loading.hide();
           VUE.$Toast({ message: '操作无效', time: 1000 });
           break;
         case 401:
@@ -50,8 +51,9 @@ axios.interceptors.response.use(
           break;
         case 301:
           VUE.$Toast({ message: '需要登录', time: 1000 });
+          VUE.$loading.hide();
           router.replace({
-            path: '/Login',
+            name: 'Login',
             query: {
               redirect: router.currentRoute.fullPath
             }
@@ -64,44 +66,49 @@ axios.interceptors.response.use(
       }
     }
     // 超时处理
-    if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+    if (
+      error.code === 'ECONNABORTED' &&
+      error.message.indexOf('timeout') !== -1
+    ) {
       var newHttp = new Promise(function(resolve) {
-        console.log('请求重试')
-        resolve()
-      })
+        VUE.$Toast({ message: '请求出错重试中!', time: 1000 });
+        resolve();
+      });
       // 返回一个promise实例，同时重新发起请求，config请求配置，包扩请求头和请求参数
       return newHttp.then(function() {
-        return axios(error.config)
-      })
+        return axios(error.config);
+      });
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
 );
 
 export function get(url, params) {
   return new Promise((resolve, reject) => {
-    axios.get(url, {
+    axios
+      .get(url, {
         params: params
       })
       .then(res => {
-        resolve(res)
+        resolve(res);
       })
       .catch(err => {
-        reject(err)
-      })
-  })
+        reject(err);
+      });
+  });
 }
 
 export function post(url, params) {
   return new Promise((resolve, reject) => {
-    axios.post(url, params)
+    axios
+      .post(url, params)
       .then(res => {
-        resolve(res)
+        resolve(res);
       })
       .catch(err => {
-        reject(err)
-      })
-  })
+        reject(err);
+      });
+  });
 }
 
 // 加上timestamp, 不然同个接口请求的内容一直是一样的, 写在post参数的timestamp貌似没起作用, 重补回url后面
@@ -113,7 +120,10 @@ export default {
    */
   Login(params) {
     // return fetchGet('/login/cellphone', params, 'post');
-    return post(`/login/cellphone?timestamp=${Date.now()}`, { ...params, ...{ timestamp: Date.now() } });
+    return post(`/login/cellphone?timestamp=${Date.now()}`, {
+      ...params,
+      ...{ timestamp: Date.now() }
+    });
   },
   /**
    * 刷新登录状态
@@ -183,7 +193,10 @@ export default {
    */
   UserPlayList(uid) {
     // return fetchGet('/user/playlist', uid, 'post');
-    return post(`/user/playlist?timestamp=${Date.now()}`, { ...uid, ...{ timestamp: Date.now() } })
+    return post(`/user/playlist?timestamp=${Date.now()}`, {
+      ...uid,
+      ...{ timestamp: Date.now() }
+    });
   },
   /**
    * 获取排行榜
@@ -197,22 +210,36 @@ export default {
    */
   PlayListDetail(id) {
     // return fetchGet(`/playlist/detail?timestamp=${Date.now()}`, id, 'post')
-    return post(`/playlist/detail?timestamp=${Date.now()}`, { ...{ id }, ...{ timestamp: Date.now() } })
+    return post(`/playlist/detail?timestamp=${Date.now()}`, {
+      ...{ id },
+      ...{ timestamp: Date.now() }
+    });
   },
   /**
    * 获取歌曲url
    * @param {num} id 歌曲id
    */
   MusicUrl(id) {
-    return post(`/song/url?timestamp=${Date.now()}`, { ...{ id }, ...{ timestamp: Date.now() } });
+    return post(`/song/url?timestamp=${Date.now()}`, {
+      ...{ id },
+      ...{ timestamp: Date.now() }
+    });
+  },
+  /**
+   * 获取歌词
+   * @param {num} id 歌曲id
+   */
+  MusicLyric(id) {
+    return get(`/lyric?id=${id}&timestamp=${Date.now()}`);
   },
   /**
    * 获取歌曲详细
    * @param {num} id 歌单id
    */
   MusicDetail(ids) {
+    // console.log(ids)
     // return get(`/song/detail?ids=${ids}&timestamp=${Date.now()}`)
-    return post(`/song/detail?timestamp=${Date.now()}`, { ids: ids })
+    return post(`/song/detail?timestamp=${Date.now()}`, { ids: ids });
   },
   /**
    * 搜索 关键词
@@ -244,6 +271,16 @@ export default {
    * @return {[type]}      [description]
    */
   collectPlayList(type, id) {
-    return get(`/playlist/subscribe?t=${type}&id=${id}&timestamp=${Date.now()}`)
+    return get(
+      `/playlist/subscribe?t=${type}&id=${id}&timestamp=${Date.now()}`
+    );
+  },
+  /**
+   * 歌单评论
+   * @param {Number} id
+   */
+  PlayListComment(id, offset = 0, before = 0, limit = 15) {
+    // return get(`/comment/playlist?id=${id}&timestamp=${Date.now()}`);
+    return post(`/comment/playlist?timestamp=${Date.now()}`, { id, before, offset, limit })
   }
-}
+};

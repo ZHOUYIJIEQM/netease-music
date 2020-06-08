@@ -42,7 +42,7 @@
     bottom: .6rem;
     right: .1rem;
     transform: rotate(90deg);
-    background: #616161;
+    background: rgba(0, 0, 0, .7);
     border-radius: 50%;
     text-align: center;
     padding: .1rem;

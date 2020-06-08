@@ -23,19 +23,24 @@
 <script>
   import api from '@/api/index.js'
   export default {
+    name: 'login',
     data() {
       return {
         loginForm: {
           phone: '',
           password: ''
-        }
+        },
+        redirect: ''
       }
+    },
+    created() {
+      // console.log(this.$router)
+      this.redirect = this.$router.currentRoute.query.redirect
     },
     methods: {
       goBack() {
-        this.$router.push({ name: 'Home' })
+        this.redirect ? this.$router.push(this.redirect) : this.$router.push({ name: 'Home' })
       },
-
       login() {
         this.$loading.show();
         // const _this = this;
@@ -52,7 +57,7 @@
                 window.localStorage.setItem('token', res.token)
                 window.localStorage.setItem('isLogin', true);
                 this.$store.commit('SETUSERINFO', res);
-                this.$router.push({ name: 'Home' });
+                this.redirect ? this.$router.push(this.redirect) : this.$router.push({ name: 'Home' })
                 this.$Toast({ message: '登录成功', time: 3000 });
               } else {
                 alert(`登录失败! ${res.msg}`)

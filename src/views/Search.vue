@@ -78,14 +78,15 @@
         })
     },
     mounted() {
-      const _this = this;
-      this.$refs.searchPage.addEventListener('scroll', function(event) {
-        _this.scrllBottom()
-      }, false)
+      // const _this = this;
+      this.$refs.searchPage.addEventListener('scroll', this.scrllBottom, false)
+    },
+    beforeDestroy() {
+      this.$refs.searchPage.removeEventListener('scroll', this.scrllBottom, false)
     },
     methods: {
       goBack() {
-        this.$router.back()
+        this.$router.go(-1)
       },
       cleanQuery() {
         this.query = '';

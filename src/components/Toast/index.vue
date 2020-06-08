@@ -15,7 +15,7 @@
 <style lang='scss' scoped>
   .toastMessageBox {
     position: fixed;
-    width: 66%;
+    max-width: 66%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

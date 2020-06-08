@@ -29,6 +29,7 @@ $title-height: .45rem;
     position: relative;
     overflow: hidden;
     margin-bottom: -.2rem;
+    background: white;
     img {
       width: 100%;
       position: absolute;
@@ -87,5 +88,6 @@ $title-height: .45rem;
     background: white;
     padding-left: .15rem;
     padding-right: .15rem;
+    min-height: 5rem;
   }
 }

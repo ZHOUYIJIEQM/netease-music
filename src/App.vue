@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <transition name="turnpage"> -->
     <transition :name="transitionName" :mode="modeName">
-      <keep-alive>
+      <keep-alive exclude="login,PlayListComment">
         <router-view class="view"></router-view>
       </keep-alive>
     </transition>
@@ -43,7 +43,7 @@
 </script>
 <style lang="scss">
   // .view {
-  //   transition: all .1s linear;
+  //   transition: all .15s linear;
   // }
   .slide-left-enter,
   .slide-right-leave-active {

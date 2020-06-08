@@ -1,0 +1,183 @@
+@import '@/styles/mixin.scss';
+$height: 0.45rem;
+.plcomment-content {
+  position: absolute;
+  top: 0;
+  z-index: 15;
+  width: 100%;
+  min-height: 100%;
+  background: #f7f7f7;
+  .comment-title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    line-height: $height;
+    width: 100%;
+    height: $height;
+    background-color: #fff;
+    i {
+      padding: 0.05rem 0.05rem 0.05rem 0.1rem;
+      @include fz(0.22rem, black);
+    }
+    .title {
+      padding-left: 0.1rem;
+      @include fz(0.18rem, black);
+    }
+  }
+  .songlist {
+    height: 1.25rem;
+    background-color: #fff;
+    padding: 0.1rem 0.15rem;
+    padding-top: 0.55rem;
+    margin-bottom: 0.05rem;
+    @include bf;
+    .pic {
+      width: .6rem;
+      height: .6rem;
+      border-radius: 0.05rem;
+      overflow: hidden;
+      font-size: 0;
+      img {
+        width: 100%;
+      }
+    }
+    .des {
+      flex: 1 0;
+      @include bf(column);
+      @include fz($color: black);
+      justify-content: center;
+      padding-left: 0.15rem;
+      overflow: hidden;
+      .title {
+        @include fz($color: black, $line-height: 1.8);
+        @include elip;
+      }
+      .creator {
+        @include fz(0.14rem, $color: grey);
+        span {
+          color: #226ad8;
+        }
+      }
+    }
+  }
+  .nav {
+    width: 100%;
+    height: .3rem;
+    // margin-top: 0.05rem;
+    background-color: #fff;
+    padding: 0.05rem 0.15rem;
+    display: flex;
+    .area {
+      flex: 1 0;
+      text-align: left;
+    }
+    span {
+      font-size: 0.14rem;
+      width: 0.4rem;
+      line-height: 1.5;
+      text-align: center;
+      color: grey;
+    }
+    .active {
+      color: black;
+    }
+  }
+  .fix {
+    position: fixed;
+    border-top: 2px solid #f3f3f3;
+    top: $height;
+  }
+  .top {
+    padding-top: .3rem;
+  }
+  .commentArea {
+    // margin-top: .05rem;
+    background-color: #fff;
+    .nav {
+      padding: 0.05rem 0.15rem;
+      display: flex;
+      .area {
+        flex: 1 0;
+        text-align: left;
+      }
+      span {
+        font-size: 0.14rem;
+        width: 0.4rem;
+        line-height: 1.5;
+        text-align: center;
+        color: grey;
+      }
+      .active {
+        color: black;
+      }
+    }
+    .list-item {
+      padding: 0.1rem 0;
+      display: flex;
+      .pic {
+        overflow: hidden;
+        width: 0.6rem;
+        display: flex;
+        justify-content: center;
+        img {
+          width: 0.4rem;
+          height: 0.4rem;
+          border-radius: 50%;
+        }
+      }
+      .comment {
+        flex: 1 0;
+        overflow: hidden;
+        @include bf(column);
+        @include fz(0.12rem, grey);
+        border-bottom: 1px solid #ececec;
+        .name {
+          height: 0.15rem;
+          line-height: 0.15rem;
+          color: #525050;
+        }
+        .date {
+          padding: 0.02rem 0 0.08rem;
+        }
+        .content {
+          margin-bottom: 0.1rem;
+          padding-right: 0.3rem;
+          color: #2b2a2a;
+          &.noactive {
+            @include twoelip;
+          }
+        }
+      }
+      .liked {
+        width: .6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #ececec;
+        padding: 0 .15rem 0 0;
+        .inner {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          span {
+            @include fz(.10rem, rgb(168, 168, 168));
+            padding: .1rem;
+          }
+          i{
+            @include fz(.2rem, #4c4c4c)
+          }
+        }
+      }
+      &:last-child .comment {
+        border-bottom: 0px;
+      }
+      &:last-child .liked {
+        border-bottom: 0px;
+      }
+    }
+  }
+}

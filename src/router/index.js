@@ -43,6 +43,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayList.vue')
   },
   {
+    path: '/Home/PlayList/PlayListComment/:playlist_id',
+    name: 'PlayListComment',
+    component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayListComment.vue')
+  },
+  {
     path: '/Home/LeaderBoard',
     name: 'LeaderBoard',
     component: () => import(/* webpackChunkName: "LeaderBoard" */ '@/views/LeaderBoard.vue')
@@ -73,7 +78,7 @@ router.beforeEach((to, from, next) => {
     if (isLogin) {
       next();
     } else {
-      confirm('需要登录!') && next({ name: 'Login' })
+      confirm('需要登录!') && next({ name: 'Login', query: { redirect: to.fullPath } })
     }
   } else {
     next()

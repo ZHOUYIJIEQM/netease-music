@@ -1,5 +1,5 @@
-@import '@/styles/mixin.scss';
-$title-height: .5rem;
+@import "@/styles/mixin.scss";
+$title-height: 0.5rem;
 
 .playlist-content {
   z-index: 10;
@@ -11,7 +11,7 @@ $title-height: .5rem;
     width: 100%;
     z-index: -1;
     position: absolute;
-    
+
     // 固定头部
     .header-title {
       position: fixed;
@@ -37,22 +37,22 @@ $title-height: .5rem;
         img {
           width: 100%;
           position: absolute;
-          bottom: -.2rem;
+          bottom: -0.2rem;
           left: 0;
-          filter: brightness(.65);
+          filter: brightness(0.65);
         }
       }
 
       .icon-fanhui {
-        @include fz(.22rem);
-        margin-left: .1rem;
-        padding: .1rem .05rem;
+        @include fz(0.22rem);
+        margin-left: 0.1rem;
+        padding: 0.1rem 0.05rem;
       }
 
       .title-text {
         width: 80%;
-        margin-left: .15rem;
-        @include fz($size: .18rem, $color: #e6e6e6);
+        margin-left: 0.15rem;
+        @include fz($size: 0.18rem, $color: #e6e6e6);
         @include elip;
       }
     }
@@ -61,13 +61,17 @@ $title-height: .5rem;
     .playlist-header {
       position: relative;
       height: 2.9rem;
-      margin-bottom: -.2rem;
+      margin-bottom: -0.2rem;
       z-index: -1;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      background-image: linear-gradient(to bottom, rgb(134, 134, 134) 3%, rgba(53, 53, 53, 0.9));
+      background-image: linear-gradient(
+        to bottom,
+        rgb(134, 134, 134) 3%,
+        rgba(53, 53, 53, 0.9)
+      );
 
       .header-bgi {
         position: absolute;
@@ -93,24 +97,28 @@ $title-height: .5rem;
           right: 0;
           bottom: 0;
           left: 0;
-          background: linear-gradient(to bottom, rgba(0, 0, 0, 0.57), rgba(132, 131, 131, 0.45));
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.57),
+            rgba(132, 131, 131, 0.45)
+          );
         }
       }
 
       .header-descript {
         position: relative;
-        padding: .4rem .15rem 0;
+        padding: 0.4rem 0.15rem 0;
         flex: 1 0 auto;
 
         .des-name {
-          padding-top: .25rem;
+          padding-top: 0.25rem;
           @include elip;
-          @include fz(.16rem, white, bold);
+          @include fz(0.16rem, white, bold);
         }
 
         .des-creator {
-          padding-top: .15rem;
-          @include fz(.14rem, white, bold);
+          padding-top: 0.15rem;
+          @include fz(0.14rem, white, bold);
           display: flex;
           align-items: center;
 
@@ -118,13 +126,13 @@ $title-height: .5rem;
             width: 0.3rem;
             height: 0.3rem;
             border-radius: 50%;
-            margin-right: .1rem;
+            margin-right: 0.1rem;
           }
         }
 
         .des-descript {
-          @include fz(.12rem, #eaeaea, $line-height: 1.5);
-          padding-top: .15rem;
+          @include fz(0.12rem, #eaeaea, $line-height: 1.5);
+          padding-top: 0.15rem;
           @include twoelip;
         }
       }
@@ -133,7 +141,7 @@ $title-height: .5rem;
         position: relative;
         color: #ececec;
         @include bf();
-        padding-bottom: .2rem;
+        padding-bottom: 0.2rem;
         height: 1rem;
 
         .box {
@@ -143,12 +151,12 @@ $title-height: .5rem;
           justify-content: center;
 
           .iconfont {
-            @include fz(.22rem, #f3f3f3);
+            @include fz(0.22rem, #f3f3f3);
           }
 
           span {
-            padding-top: .08rem;
-            @include fz(.12rem, #e2e2e2);
+            padding-top: 0.08rem;
+            @include fz(0.12rem, #e2e2e2);
           }
         }
       }
@@ -156,7 +164,7 @@ $title-height: .5rem;
 
     // 歌单播放列表
     .playlist-song {
-      border-radius: .2rem .2rem 0 0;
+      border-radius: 0.2rem 0.2rem 0 0;
       position: relative;
       width: 100%;
       min-height: 7rem;
@@ -170,44 +178,44 @@ $title-height: .5rem;
         bottom: 0;
         z-index: -1;
       }
-      
+
       .list-title {
         position: relative;
         overflow: hidden;
         width: 100%;
         background: white;
         .list-title-box {
-          padding: .03rem .1rem;
+          padding: 0.03rem 0.1rem;
           @include bf();
           align-items: center;
-          border-radius: .2rem .2rem 0 0;
+          border-radius: 0.2rem 0.2rem 0 0;
           justify-content: space-between;
           background: white;
           .play-all {
-            @include fz(.16rem, black);
-            padding: .1rem 0;
+            @include fz(0.16rem, black);
+            padding: 0.1rem 0;
             display: flex;
             align-items: center;
 
             .iconfont {
-              @include fz(.24rem, black);
-              margin-right: .1rem;
+              @include fz(0.24rem, black);
+              margin-right: 0.1rem;
             }
 
             .text {
-              @include fz(.16rem, black);
+              @include fz(0.16rem, black);
             }
 
             .count {
-              @include fz(.14rem, grey);
+              @include fz(0.14rem, grey);
             }
           }
 
           .collect {
-            padding: .12rem .05rem;
+            padding: 0.12rem 0.05rem;
             background: #ea2a2a;
-            border-radius: .3rem;
-            @include fz(.12rem, white);
+            border-radius: 0.3rem;
+            @include fz(0.12rem, white);
             width: 1.1rem;
             @include elip;
             text-align: center;
@@ -216,7 +224,7 @@ $title-height: .5rem;
         .plt-img {
           position: absolute;
           width: 100%;
-          height: .2rem;
+          height: 0.2rem;
           left: 0;
           top: 0;
           z-index: -1;
@@ -224,34 +232,32 @@ $title-height: .5rem;
             width: 100%;
             position: absolute;
             bottom: 0px;
-            filter: brightness(.65);
+            filter: brightness(0.65);
           }
         }
       }
 
       .sticky {
         position: fixed;
-        top: .5rem;
+        top: 0.5rem;
       }
       .border {
-        border-radius: .2rem .2rem 0 0;
+        border-radius: 0.2rem 0.2rem 0 0;
       }
 
-
       .list-song {
-        padding: .05rem 0;
+        padding: 0.05rem 0;
 
         .list-song-item {
-
           @include bf();
-          padding: .05rem 0;
+          padding: 0.05rem 0;
           align-items: center;
 
           .item-num,
           .song-more {
-            width: .5rem;
+            width: 0.5rem;
             text-align: center;
-            @include fz(.14rem, #565656);
+            @include fz(0.14rem, #565656);
           }
 
           .item-detail {
@@ -266,17 +272,17 @@ $title-height: .5rem;
             }
 
             .song-name {
-              @include fz(.16rem, black, $line-height: 1.5);
+              @include fz(0.16rem, black, $line-height: 1.5);
             }
 
             .song-singer {
-              @include fz(.12rem, grey, $line-height: 1.5);
+              @include fz(0.12rem, grey, $line-height: 1.5);
             }
           }
 
           .song-more {
             .iconfont {
-              @include fz(.16rem, #585757, bold);
+              @include fz(0.16rem, #585757, bold);
             }
           }
         }
@@ -286,11 +292,9 @@ $title-height: .5rem;
         }
       }
       .list-song-top {
-        padding-top: .54rem;
+        padding-top: 0.59rem;
       }
     }
-
-
   }
 
   // 歌单详情弹出层
@@ -332,24 +336,24 @@ $title-height: .5rem;
         position: relative;
         @include bf(column);
         align-items: center;
-        padding-top: .6rem;
+        padding-top: 0.6rem;
 
         .des-close {
           position: absolute;
-          right: .2rem;
-          top: .2rem;
-          @include fz(.24rem);
+          right: 0.2rem;
+          top: 0.2rem;
+          @include fz(0.24rem);
         }
 
         .descript-img {
           width: 53%;
-          border-radius: .05rem;
+          border-radius: 0.05rem;
         }
 
         .descript-title {
           position: relative;
           text-align: center;
-          padding: .2rem;
+          padding: 0.2rem;
           width: 70%;
           @include elip;
           @include fz($weight: bold);
@@ -358,32 +362,37 @@ $title-height: .5rem;
             position: absolute;
             bottom: 0;
             left: 0;
-            content: '';
-            height: .01rem;
+            content: "";
+            height: 0.01rem;
             width: 100%;
-            background-image: linear-gradient(45deg, transparent, #fff 35%, #fff 65%, transparent);
-            ;
+            background-image: linear-gradient(
+              45deg,
+              transparent,
+              #fff 35%,
+              #fff 65%,
+              transparent
+            );
           }
         }
       }
 
       .descript-content {
-        padding: .1rem .25rem 0 .25rem;
-        @include fz($size: .12rem);
+        padding: 0.1rem 0.25rem 0 0.25rem;
+        @include fz($size: 0.12rem);
 
         .des-tag {
-          padding: .05rem 0 .15rem;
+          padding: 0.05rem 0 0.15rem;
 
           .tag-title {
-            margin-right: .09rem;
+            margin-right: 0.09rem;
           }
 
           .tags {
             display: inline-block;
-            padding: 0.04rem .08rem;
-            margin: 0 .05rem;
+            padding: 0.04rem 0.08rem;
+            margin: 0 0.05rem;
             background-color: rgba(193, 185, 185, 0.3);
-            border-radius: .1rem;
+            border-radius: 0.1rem;
           }
         }
 
@@ -397,11 +406,11 @@ $title-height: .5rem;
   }
 
   .show-descript-enter-active {
-    animation: bounce-in .5s;
+    animation: bounce-in 0.5s;
   }
 
   .show-descript-leave-active {
-    animation: bounce-out .5s;
+    animation: bounce-out 0.5s;
   }
 
   @keyframes bounce-in {
