@@ -11,7 +11,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "create-keyframe-animation": "^0.1.0",
-    "lyric-parser": "^1.0.1",
+    "lyric-parser": "git+https://github.com/Palereed/lyric-parser.git",
     "swiper": "^5.4.2",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",

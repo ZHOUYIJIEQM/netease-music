@@ -36,7 +36,7 @@
             </div>
             <div class="songly-text"  :class="{hidden: showLyric}">{{nowLyric}}</div>
             <div class="lyric-area" ref="lyricArea" :class="{hidden: !showLyric}">
-              <div class="lyric-text" ref="lyricText" v-if="currentLyric">
+              <div class="lyric-text" ref="lyricText" v-if="currentLyric" @scroll="handlerLyricScroll">
                 <p
                   ref="lyricLine"
                   v-for="(item, index) in currentLyric.lines"
@@ -148,6 +148,8 @@ export default {
       currentLine: 0,
       lyricText: null,
       nowLyric: '',
+      lyricScroll: 0,
+      scrollTimer: null,
       showPlayList: false
     };
   },
@@ -342,9 +344,11 @@ export default {
       const halfH = this.$refs.lyricText.offsetHeight / 2;
       if (lineNum < 5) {
         // console.log('不用滚动')
+        this.lyricScroll = 0;
       } else {
         // this.$refs.lyricLine[lineNum - 5]
         if (this.$refs.lyricLine[lineNum]) {
+          this.lyricScroll = this.$refs.lyricLine[lineNum].offsetTop - halfH;
           this.$refs.lyricText.scrollTo({
             top: this.$refs.lyricLine[lineNum].offsetTop - halfH,
             behavior: 'smooth'
@@ -371,7 +375,10 @@ export default {
           this.currentLyric = new Lyric(ly, this.handlerLyric);
           if (this.currentLyric.lines.length === 0) {
             this.currentLyric = new Lyric('[00:00.00]纯音乐,请欣赏!', this.handlerLyric);
+            this.nowLyric = '纯音乐,请欣赏!'
             // console.log('---空的')
+          } else {
+            this.nowLyric = this.currentLyric.lines[0].txt;
           }
           // console.log('播放状态:', this.playing)
           if (this.playing) {
@@ -379,6 +386,16 @@ export default {
           }
           // console.log('---', this.currentLyric);
         });
+    },
+    handlerLyricScroll() {
+      this.scrollTimer && clearTimeout(this.scrollTimer);
+      this.scrollTimer = setTimeout(() => {
+        // console.log('scollback')
+        this.$refs.lyricText.scrollTo({
+          top: this.lyricScroll,
+          behavior: 'smooth'
+        });
+      }, 300)
     }
   },
   mounted() {
