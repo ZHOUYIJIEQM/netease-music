@@ -177,14 +177,26 @@
     transition: all .4s;
 
     .header,
-    .bottom {
-      transition: all .4s cubic-bezier(.16, .68, .73, .99);
+    .bottom,
+    .songly-text,
+    .lyric-area {
+      transition: all .4s ease-out;
     }
+
   }
 
   .normal-enter,
   .normal-leave-to {
     opacity: 0;
+
+    .lyric-area {
+      opacity: 0;
+    }
+
+    .songly-text {
+      transform: translate3d(0, 500%, 0);
+      opacity: 0;
+    }
 
     .header {
       transform: translate3d(0, -150%, 0);
