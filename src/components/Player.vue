@@ -281,7 +281,7 @@ export default {
       if (!this.isMove) {
         this.currentTime = this.$refs.audio.currentTime;
       }
-      // this.currentLyric.seek(this.currentTime * 1000)
+      this.currentLyric && this.currentLyric.seek(this.currentTime * 1000)
     },
     changeTime(timeP, isMove) {
       this.$refs.audio.currentTime = timeP;
