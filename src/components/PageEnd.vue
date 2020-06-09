@@ -1,11 +1,16 @@
 <template>
   <div class="end">
-    <span>到底啦~</span>
+    <span>{{content}}</span>
   </div>
 </template>
 <script>
   export default {
-
+    props: {
+      content: {
+        type: String,
+        default: '到底啦!~'
+      }
+    }
   }
 </script>
 <style lang="scss" scoped>

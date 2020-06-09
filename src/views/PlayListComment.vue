@@ -42,7 +42,7 @@
               </div>
             </div>
           </div>
-          <pageEnd v-if="end"></pageEnd>
+          <pageEnd v-if="end" :content="commentTip"></pageEnd>
         </div>
       </div>
     </template>
@@ -64,6 +64,7 @@ export default {
       isLoading: false,
       timer: null,
       end: false,
+      commentTip: '暂无更多评论',
       scrollT: 0
     };
   },
@@ -80,7 +81,7 @@ export default {
     formatTime(time) {
       const Time = new Date(time);
       const Month =
-        Time.getMonth() + 1 > 10 ? Time.getMonth() : '0' + Time.getMonth();
+        Time.getMonth() + 1 > 10 ? Time.getMonth() : '0' + (Time.getMonth() + 1);
       const date = Time.getDate() > 10 ? Time.getDate() : '0' + Time.getDate();
       return `${Month}月${date}日`;
     }
@@ -89,12 +90,13 @@ export default {
     Promise.all([
       this.getComments(this.$route.params.playlist_id, this.offset),
       this.getList(this.$route.params.playlist_id)
-    ]).then(res => {
+    ])
+    .then(res => {
       this.$loading.hide();
       this.comments = res[0];
       this.commentList.push(...res[0].comments);
-      this.before = res[0].comments[res[0].comments.length - 1].time;
-      // console.log(res[0].comments)
+      res[0].comments[res[0].comments.length - 1] ? (this.before = res[0].comments[res[0].comments.length - 1].time) : (this.commentTip = '暂无评论')
+
       // console.log(this.before)
       this.songList = res[1].playlist;
       this.show = true;
@@ -103,8 +105,12 @@ export default {
         this.scrollT = this.$refs.nav.offsetTop;
         this.headerHeight = this.$refs.header.offsetHeight;
         this.end = this.comments.total <= this.limit;
-      });
-    });
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      this.show = true;
+    })
   },
   mounted() {
     window.addEventListener('scroll', this.handlerScroll, false);
