@@ -126,7 +126,7 @@
               @include fz($size: .15rem, $color: rgb(20, 20, 20), $weight: normal, $line-height: 1.7);
               transition: font-size .2s;
               &.active {
-                @include fz($size: .18rem, $color: rgb(20, 20, 20), $weight: bold, $line-height: 1.7);
+                @include fz($size: .16rem, $color: rgb(20, 20, 20), $weight: bold, $line-height: 1.7);
               }
             }
           }
