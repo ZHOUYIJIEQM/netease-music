@@ -338,7 +338,7 @@ export default {
     },
     handlerLyric({ lineNum, txt }) {
       // console.log(this.currentLyric)
-      console.log('handler lyric', lineNum, txt);
+      // console.log('handler lyric', lineNum, txt);
       this.currentLine = lineNum;
       this.nowLyric = txt;
       const halfH = this.$refs.lyricText.offsetHeight / 3;
