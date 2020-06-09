@@ -81,8 +81,8 @@ export default {
     formatTime(time) {
       const Time = new Date(time);
       const Month =
-        Time.getMonth() + 1 > 10 ? Time.getMonth() : '0' + (Time.getMonth() + 1);
-      const date = Time.getDate() > 10 ? Time.getDate() : '0' + Time.getDate();
+        Time.getMonth() + 1 >= 10 ? Time.getMonth() : '0' + (Time.getMonth() + 1);
+      const date = Time.getDate() >= 10 ? Time.getDate() : '0' + Time.getDate();
       return `${Month}月${date}日`;
     }
   },
