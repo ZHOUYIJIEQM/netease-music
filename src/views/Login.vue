@@ -39,7 +39,7 @@
     },
     methods: {
       goBack() {
-        this.redirect ? this.$router.push(this.redirect) : this.$router.push({ name: 'Home' })
+        this.redirect ? this.$router.replace(this.redirect) : this.$router.push({ name: 'Home' })
       },
       login() {
         this.$loading.show();

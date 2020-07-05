@@ -184,6 +184,7 @@ export default {
   },
   activated() {
     // console.log('activated')
+    console.log(this.$router)
     this.listId = parseInt(this.playListId);
     if (
       (document.body.scrollTop || document.documentElement.scrollTop <= 0) &&

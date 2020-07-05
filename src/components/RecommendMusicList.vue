@@ -116,6 +116,7 @@
           justify-content: center;
           flex-basis: 75%;
           overflow: hidden;
+          line-height: 1.3;
 
           .music-item-name {
             font-size: .16rem;
