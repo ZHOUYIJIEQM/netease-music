@@ -1,96 +1,27 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '@/store/index.js'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: '/Home'
-  },
-  {
-    path: '/Home',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "Home" */ '@/views/Home.vue')
+    component: Home
   },
   {
-    path: '/Home/Search',
-    name: 'Search',
-    component: () => import(/* webpackChunkName: "Search" */ '@/views/Search.vue')
-  },
-  {
-    path: '/Home/Login',
-    name: 'Login',
-    component: () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue')
-  },
-  {
-    path: '/Home/DailyRecommend',
-    name: 'DailyRecommend',
-    component: () => import(/* webpackChunkName: "DailyRecommend" */ '@/views/DailyRecommend.vue'),
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/Home/SongList',
-    name: 'SongList',
-    component: () => import(/* webpackChunkName: "SongList" */ '@/views/SongList.vue')
-  },
-  {
-    path: '/Home/PlayList/:playlist_id',
-    name: 'PlayList',
-    component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayList.vue')
-  },
-  {
-    path: '/Home/PlayList/PlayListComment/:playlist_id',
-    name: 'PlayListComment',
-    component: () => import(/* webpackChunkName: "PlayList" */ '@/views/PlayListComment.vue')
-  },
-  {
-    path: '/Home/LeaderBoard',
-    name: 'LeaderBoard',
-    component: () => import(/* webpackChunkName: "LeaderBoard" */ '@/views/LeaderBoard.vue')
-  },
-  {
-    path: '/Home/RadioStation',
-    name: 'RadioStation',
-    component: () => import(/* webpackChunkName: "RadioStation" */ '@/views/RadioStation.vue')
-  },
-  {
-    path: '/Home/FMMusic',
-    name: 'FMMusic',
-    component: () => import(/* webpackChunkName: "FMMusic" */ '@/views/FMMusic.vue'),
-    meta: {
-      requiresAuth: true
-    }
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
 
 const router = new VueRouter({
-  routes,
-  scrollBehavior
+  routes
 })
-
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    const isLogin = window.localStorage.getItem('token')
-    if (isLogin) {
-      next();
-    } else {
-      confirm('需要登录!') && next({ name: 'Login', query: { redirect: to.fullPath } })
-    }
-  } else {
-    next()
-  }
-});
-
-function scrollBehavior(to, from, savedPosition) {
-  if (savedPosition) {
-    return savedPosition;
-  } else {
-    return { x: 0, y: 0 };
-  }
-}
 
 export default router
