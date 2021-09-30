@@ -1,18 +1,30 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home-page">
+    <router-view></router-view>
+    <button @click="goPage('PlayList')">歌单</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  name: "HomeInclude",
+  data() {
+    return {
+      
+    }
+  },
+  methods: {
+    goPage(name) {
+      this.$router.push({name: `${name}`})
+    }
   }
-}
+};
 </script>
+
+<style lang="scss">
+@import '@/styles/variable.scss';
+.home-page {
+  min-height: 100%;
+  background-color: burlywood;
+}
+</style>

@@ -1,0 +1,49 @@
+// display: flex
+@mixin df($direction: row) {
+  display: flex
+  flex-direction: row
+}
+
+// 设置 input placeholder, caret-color
+@mixin placeholderColor($color: grey, $fontsize: .14rem, $caretc: #c50b0a) {
+  input {
+    outline: 0px
+    padding: 0
+    border: none
+    caret-color: $caretc
+  }
+  input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: $color
+    font-size: $fontsize
+  }
+  input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: $color
+    font-size: $fontsize
+  }
+  input:-ms-input-placeholder  {
+    /* Internet Explorer 10+ */
+    color: $color
+    font-size: $fontsize
+  }
+}
+
+// 毛玻璃高斯模糊
+@mixin glass($blue: .3rem, $bright: .7) {
+  .bg-outer {
+    /* .bg-outer 还得另外设置定位位置 */
+    height: 100%
+    width: 100%
+    overflow: hidden
+    .bg-inner {
+      height: 100%
+      background-size: cover
+      background-position-y: bottom
+      background-repeat: no-repeat
+      filter: blur($blue) brightness($bright)
+      transform: scale(1.5)
+    }
+  }
+}
+  
