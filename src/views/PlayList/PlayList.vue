@@ -1,10 +1,11 @@
 <template>
   <div class="playlist-page">
-    歌单 <button @click="goPage('Home')">返回首页</button>
+    <button @click="$router.push({name: 'Home'})">回首页</button>
   </div>
 </template>
 <script>
 export default {
+  name: 'PlayListInclude',
   data() {
     return {
       

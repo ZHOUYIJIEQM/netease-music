@@ -8,6 +8,9 @@ import '@/styles/reset.scss'
 import '@/utils/directive.js'
 import '@/utils/filters.js'
 
+import VuePageTransition from 'vue-page-transition'
+Vue.use(VuePageTransition)
+
 Vue.config.productionTip = false
 
 new Vue({

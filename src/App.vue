@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <transition :name="slideTrans">
-      <keep-alive :include="/.*Include$/">
-        <router-view></router-view>
-      </keep-alive>
-    </transition>
+    <keep-alive :include="/.*Include$/">
+      <transition :name="direction">
+        <router-view class="app-content"></router-view>
+      </transition>
+    </keep-alive>
   </div>
 </template>
 <script>
@@ -12,57 +12,49 @@ export default {
   name: 'App',
   data() {
     return {
-      slideTrans: ''
+      direction: ''
     }
   },
   watch: {
     $route(to, from) {
       if (to.meta.index > from.meta.index) {
-        this.slideTrans = 'slideLeft'
+        this.direction = 'page-go'
       } else {
-        this.slideTrans = 'slideRight'
+        this.direction = 'page-back'
       }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-// .slideLeft-enter, .slideRight-leave-to {
-//   opacity: 0;
-//   transform: translate(100%, 0);
-// }
-// .slideRight-enter, .slideLeft-leave-to {
-//   opacity: 0;
-//   transform: translate(-100%, 0);
-// }
-// .slideLeft-enter-active, .slideLeft-leave-active, .slideRight-enter-active, .slideRight-leave-active {
-//   transition: all .3s;
-// }
-
-.slideRight-enter-active,
-.slideRight-leave-active,
-.slideLeft-enter-active,
-.slideLeft-leave-active {
-  // will-change: transform;
-  transition: all 500ms;
-  position: absolute;
-  width:100%;
-  height:100%;
-}
-.slideRight-enter {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
-.slideRight-leave-active {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slideLeft-enter {
-  opacity: 0;
-  transform: translate3d(100%, 0, 0);
-}
-.slideLeft-leave-active {
-  opacity: 0;
-  transform: translate3d(-100%, 0, 0);
-}
+.app-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease-in-out;
+  }
+.page-go-enter-active {
+    transform: translate3d(100%, 0, 0);
+  }
+  .page-go-enter-to {
+    transform: translate3d(0, 0, 0);
+  }
+  .page-go-leave-active {
+    transform: translate3d(0, 0, 0);
+  }
+  .page-go-leave-to {
+    transform: translate3d(-100%, 0, 0);
+  }
+  .page-back-enter-active {
+    transform: translate3d(-100%, 0, 0);
+  }
+  .page-back-enter-to {
+    transform: translate3d(0, 0, 0);
+  }
+  .page-back-leave-active {
+    transform: translate3d(0, 0, 0);
+  }
+  .page-back-leave-to {
+    transform: translate3d(100%, 0, 0);
+  }
 </style>
