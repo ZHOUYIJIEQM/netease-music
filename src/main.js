@@ -8,8 +8,10 @@ import '@/styles/reset.scss'
 import '@/utils/directive.js'
 import '@/utils/filters.js'
 
-import VuePageTransition from 'vue-page-transition'
-Vue.use(VuePageTransition)
+// https://github.com/surmon-china/vue-awesome-swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 
 Vue.config.productionTip = false
 

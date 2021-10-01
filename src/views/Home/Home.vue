@@ -1,8 +1,21 @@
 <template>
   <div class="home-page">
     <div class="home-content">
-      <div v-for="(item, index) in 60" :key="index">{{item}}</div>
-      <button @click="$router.push({name: 'PlayList'})">去歌单</button>
+      <swiper 
+        class="home-swiper"
+        ref="homeSwiper"
+        :options="homeSwiperOption"
+      >
+        <swiper-slide
+          v-for="(item, index) in homeContentList"
+          :key="index"
+        >
+          <div class="slide-item-box">
+            <component :is="item.component"></component>
+          </div>
+        </swiper-slide>
+      </swiper>
+      <!-- <div v-for="(item, index) in 60" :key="index">{{item}}</div> -->
     </div>
     <div class="home-footer"></div>
   </div>
@@ -23,6 +36,10 @@ export default {
         { component: Mine },
         { component: YunVillage },
       ],
+      homeSwiperOption: {
+        initialSlide: 0,
+        resistanceRatio: 0,
+      },
       // footer 数据
       footerList: [
         {
@@ -57,17 +74,33 @@ export default {
 
 .home-page {
   height: 100%;
-  @include df(column);
+  // height: 100vh;
+  // @include df(column);
 
   .home-content {
-    flex: 1;
-    overflow: auto;
+    padding-bottom: $footerHeight;
+    height: 100%;
+    // flex: 1;
+    // overflow-y: auto;
+    .home-swiper {
+      height: 100%;
+      .slide-item-box {
+        height: 100%;
+        overflow-y: scroll;
+      }
+    }
   }
 
   .home-footer {
-    flex-basis: $footerHeight;
-    flex-shrink: 0;
+    // flex-basis: $footerHeight;
+    // flex-shrink: 0;
+    height: $footerHeight;
     background-color: rosybrown;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
   }
 }
 </style>
