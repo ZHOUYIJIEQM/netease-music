@@ -1,0 +1,324 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+
+.find-page {
+  .find-navbar {
+    .searchbox {
+      background: rgba(245, 245, 245, 0.7);
+      border-radius: 1rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #696868;
+      padding: 0 .1rem;
+      .icon-sousuo {
+        margin-right: .05rem;
+      }
+      .search-word {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .find-content {
+    &.loading {
+      min-height: calc(100vh - $navHeight);
+      background-color: #fff;
+    }
+    .top-content {
+      background-color: #fff;
+      overflow: hidden;
+      .banner-box {
+        padding-top: .06rem;
+        font-size: 0;
+        .banner-item {
+          position: relative;
+          width: 92.2266%;
+          aspect-ratio: 2.55 / 1;
+          margin: 0 auto;
+          border-radius: .1rem;
+          overflow: hidden;
+          background: $gjColor;
+          .banner-pic {
+            width: 100%;
+            height: 100%;
+          }
+          .banner-text {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: .1rem;
+            padding: .05rem;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            background-color: rgb(245, 63, 60);
+            border-top-left-radius: .1rem;
+          }
+        }
+        .swiper-pagination {
+          position: absolute;
+          bottom: .06rem;
+          width: 100%;
+        }
+      }
+      .banner-gj {
+        width: 92.2266%;
+        aspect-ratio: 2.55 / 1;
+        margin: 0 auto;
+        margin-top: .06rem;
+        background-color: $gjColor;
+        border-radius: .1rem;
+      }
+
+      .icon-list-box {
+        height: .9rem;
+        padding: .12rem .06rem;
+        background: #fff;
+        overflow-x: auto;
+        border-bottom: 1px solid rgb(240, 240, 240);
+        @include df();
+        .icon {
+          flex-shrink: 0;
+          width: .68rem;
+          @include df(column);
+          align-items: center;
+          justify-content: space-between;
+          img {
+            width: .45rem;
+            height: .45rem;
+          }
+          p {
+            font-size: .12rem;
+            color: #494949;
+          }
+        }
+      }
+    }
+    .find-data-item {
+      background-color: #fff;
+      margin-bottom: .08rem;
+      padding: .2rem 0 .12rem;
+      border-radius: .1rem;
+      color: $black;
+      .item-title {
+        padding: 0 .15rem .12rem;
+        @include df();
+        justify-content: space-between;
+        align-items: center;
+        .title {
+          font-weight: bold;
+          font-size: .17rem;
+          .title-item {
+            color: #999;
+            // &:nth-last-child(n+2) {
+            //   padding-right: .1rem;
+            // }
+            padding: 0 .1rem;
+            position: relative;
+            &::after {
+              content: '';
+              position: absolute;
+              top: 24%;
+              right: 0;
+              height: 60%;
+              border-right: 1px solid #d3d3d3;
+            }
+            &:first-child {
+              padding-left: 0;
+            }
+            &:last-child {
+              &::after {
+                content: '';
+                position: absolute;
+                top: 24%;
+                right: 0;
+                height: 60%;
+                border-right: none;
+              }
+            }
+            &.item-active {
+              color: $black;
+            }
+          }
+        }
+        .text {
+          font-size: .12rem;
+          border-radius: .5rem;
+          border: 1px solid #e6e6e6;
+          padding: .03rem .07rem;
+          // @include df();
+          // align-items: center;
+          .iconfont {
+            font-weight: bold;
+            font-size: .12rem;
+            color: #5c5c5c;
+          }
+          .icon-icon_refresh, .icon-bofang2 {
+            margin-right: .03rem;
+          }
+          .icon-jiantouyou {
+            display: inline-block;
+            width: .09rem;
+          }
+        }
+      }
+      .item-content {
+        min-height: 1.3rem;
+        position: relative;
+        .threeColumn {
+          padding: 0 .05rem 0 .15rem;
+          .list-item-box {
+            width: 32%;
+            .list-item-inner {
+              width: calc(100% - .1rem);
+              position: relative;
+              &.scroll-list {
+                padding-top: .04rem;
+              }
+              .scroll-icon {
+                position: absolute;
+                top: .06rem;
+                right: .06rem;
+                z-index: 1;
+                font-size: .18rem;
+                font-weight: bold;
+                color: #fff;
+              }
+              .scroll-play-list {
+                // 嵌套了垂直 swiper 出现 height 高度异常, 此处让高度与宽度相同
+                aspect-ratio: 1;
+                .scroll-play-list-item {
+                  .img-box {
+                    width: 100%;
+                    aspect-ratio: 1;
+                    border-radius: .1rem;
+                    overflow: hidden;
+                    margin: 0 auto;
+                    transition: all .5s;
+                    img {
+                      width: 100%;
+                    }
+                    &.transWidth {
+                      width: 86%;
+                    }
+                  }
+                }
+              }
+              .list-name-box {
+                position: relative;
+                margin-top: 0.06rem;
+                .list-name {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  color: #333;
+                  font-size: 0.12rem;
+                  line-height: 1.3;
+                  font-family: Arial, Helvetica, sans-serif;
+                }
+              }
+              &.broad-cast {
+                width: calc(100% - 0.18rem);
+              }
+            }
+          }
+        }
+        .oneMoreColumn {
+          padding: 0 .05rem 0 .15rem;
+          .oneMoreColumn-item {
+            width: 97%;
+            .oneMoreColumn-item-inner {
+              padding-right: .15rem;
+              .rcmd-song-item {
+                &:nth-child(3n+3) {
+                  .right-box {
+                    border-bottom: 0px;
+                  }
+                }
+              }
+              .hotPodcast-item {
+                @include df();
+                align-items: center;
+                .img-box {
+                  position: relative;
+                  flex-basis: .5rem;
+                  overflow: hidden;
+                  border-radius: 0.08rem;
+                  img {
+                    width: 100%;
+                  }
+                  .iconfont {
+                    font-size: .2rem;
+                    color: rgba(255, 255, 255, 0.85);
+                    position: absolute;
+                    bottom: .08rem;
+                    right: .03rem;
+                  }
+                }
+                .right-box {
+                  min-height: 0.65rem;
+                  margin-left: 0.12rem;
+                  flex: 1;
+                  overflow: hidden;
+                  border-bottom: 1px solid #f1f1f1;
+                  @include df(column);
+                  justify-content: center;
+                  .name.text-eli {
+                    font-size: .15rem;
+                    line-height: 1.5;
+                    color: #333;
+                  }
+                  .des {
+                    display: flex;
+                    .tag {
+                      padding: .01rem .02rem;
+                      font-size: 0.1rem;
+                      margin-right: 0.03rem;
+                      color: #a0a0a0;
+                      border: 1px solid #e4e4e4;
+                      border-radius: 0.02rem;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    }
+                  }
+                }
+                &:active {
+                  background-color: #f1f1f1;
+                }
+              }
+            }
+          }
+        }
+        .content-item {
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+        
+      }
+    }
+    .loading-box {
+      background-color: #fff;
+      min-height: 2rem;
+    }
+    .bottom-border {
+      border-radius: 0 0 .1rem .1rem;
+      padding-top: .2rem;
+      padding-bottom: .15rem;
+    }
+  }
+  // vant 的分割线
+  .divider {
+    margin: 0;
+    padding: .05rem .15rem;
+    border-color: #ddd;
+    font-size: 0.1rem;
+    color: #b1b1b1;
+  }
+}

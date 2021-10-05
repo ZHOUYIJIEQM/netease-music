@@ -20,3 +20,8 @@
   win.addEventListener(resizeEvt, recalc, false);
   doc.addEventListener("DOMContentLoaded", recalc, false);
 })(document, window);
+
+// 阻止弹出菜单
+window.addEventListener('contextmenu', function(e){
+  e.preventDefault();
+});

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 
 import { 
-  Slider,
   Toast,
+  Slider,
   Lazyload,
   Sticky,
   Divider, 
@@ -16,7 +16,8 @@ import {
   Dialog,
 } from 'vant';
 
-Vue.use(Toast)
+Vue
+  .use(Toast)
   .use(Slider)
   .use(Sticky)
   .use(Lazyload, {

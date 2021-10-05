@@ -24,10 +24,12 @@ Vue.filter("formatTime", function(time) {
   let gap = now - timestamp
   let oneDay = 60 * 60 * 24 * 1000
   if (gap <= oneDay * 2) {
+  // 2天内
     return moment(timestamp).calendar();
-  } else if (gap >= oneDay && gap <= oneDay * 365) {
-    return moment(timestamp).format("MMMDo")
+  } else if (gap > 2 * oneDay && gap <= oneDay * 365) {
+  // 2天以上 一年以内
+    return moment(timestamp).format("MM月DD日")
   } else {
-    return moment(timestamp).format("YYYY年MMMDo")
+    return moment(timestamp).format("YYYY年MM月DD日")
   }
 });

@@ -6,8 +6,9 @@
   </div>
 </template>
 <script>
+import { scrollPosition } from "@/mixin/scrollPosition.js";
 export default {
-  
+  mixins: [scrollPosition]
 }
 </script>
 <style lang="scss" scoped>
