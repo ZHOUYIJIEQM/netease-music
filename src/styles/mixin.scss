@@ -46,4 +46,38 @@
     }
   }
 }
-  
+
+@mixin loader($boxHeight: .12rem, $divWidth: .03rem, $divGap: .01rem, $direction: flex-end, $duration: 1.5s, $delay: -.3s, $initHeight: 10%) {
+  // 加载动画
+  .loader {
+    display: flex;
+    align-items: $direction;
+    height: $boxHeight;
+    position: relative;
+    font-size: 0;
+    &>div {
+      width: $divWidth;
+      overflow: hidden;
+      border-radius: .1rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      will-change: contents;
+      margin: 0 $divGap;
+      animation: loading $duration ease-in-out infinite;
+      animation-delay: calc(var(--x) * $delay);
+      // &:nth-child(2) {
+      //   margin: 0 .02rem;
+      // }
+    }
+    @keyframes loading {
+      0% {
+        height: $initHeight;
+      }
+      50% {
+        height: 100%;
+      }
+      100% {
+        height: $initHeight;
+      }
+    }
+  }
+}

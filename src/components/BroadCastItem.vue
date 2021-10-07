@@ -1,4 +1,5 @@
 <template>
+  <!-- 发现页 广播电台 项 -->
   <div class="broad-cast-comp">
     <div class="img-box">
       <img v-lazy="broadCastInfo.img" alt="">
@@ -51,6 +52,7 @@ export default {
     width: 80%;
     margin: 0 auto;
     margin-top: .1rem;
+    line-height: 1.3;
   }
 }
 </style>

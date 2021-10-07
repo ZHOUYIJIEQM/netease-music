@@ -115,17 +115,17 @@ export default {
     border-top: 1px solid rgb(230, 230, 230);
     @include df();
     // align-items: center;
-    padding: 0.06rem 0.23rem;
+    padding: .06rem .23rem;
     z-index: 10;
     .footer-icon {
       flex: 1;
       text-align: center;
       img {
-        width: 0.28rem;
+        width: .28rem;
         aspect-ratio: 1;
       }
       p {
-        font-size: 0.1rem;
+        font-size: .09rem;
         color: #6b6b6b;
       }
       &.active p {

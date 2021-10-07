@@ -97,10 +97,10 @@
                       :options="scrollPlayList"
                       v-if="item.scrollPlaylist.length"
                       @slideChange="scrollListChange"
-                      @transitionStart="tranStart"
-                      @transitionEnd="tranEnd"
+                      @progress="progressHandler"
+                      @setTransition="setTrans"
                     >
-                    <!-- todo: 加轮播过渡动画 -->
+                    <!-- 轮播过渡动画改善 -->
                       <swiper-slide
                         class="scroll-play-list-item"
                         v-for="(item1, index1) in item.scrollPlaylist"
@@ -178,7 +178,22 @@
             </div>
           </div>
           <div class="item-content">
-            
+            <!-- 音乐视频 -->
+            <swiper
+              class="threeColumn"
+              :options="threeColumnOptions"
+              v-if="item.list.length"
+            >
+              <swiper-slide
+                class="list-item-box"
+                v-for="(item1, index1) in item.list"
+                :key="index1"
+              >
+                <div class="list-item-inner">
+                  <MvLog :mvLogData="item1"></MvLog>
+                </div>
+              </swiper-slide>
+            </swiper>
           </div>
         </template>
 
@@ -365,19 +380,6 @@
           </div>
         </template>
 
-        <!-- <template v-if="item.type === '排行榜'">
-          <div class="item-title">
-            <div class="title">{{item.title}}</div>
-            <div class="text" v-if="item.text">
-              <span>{{item.text}}</span>
-              <span class="iconfont icon-jiantouyou"></span>
-            </div>
-          </div>
-          <div class="item-content">
-
-          </div>
-        </template> -->
-
         <template v-if="item.type === '音乐日历'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
@@ -386,8 +388,27 @@
               <span class="iconfont icon-jiantouyou"></span>
             </div>
           </div>
-          <div class="item-content">
-
+          <div class="item-content calendar">
+            <div class="get-luck">
+              <div class="left">领取你的今日好运</div>
+              <div class="right">查看运势解读<i class="iconfont icon-jiantou"></i></div>
+            </div>
+            <div class="calendar-item"
+              v-for="(item1, index1) in item.list"
+              :key="index1"
+              @click="$toast('音乐日历 未开发!')"
+            >
+              <div class="info">
+                <div class="date">
+                  <span class="time">{{item1.time}}</span>
+                  <span :class="[item1.labelText === '云村热点' ? 'hot-label' : 'normal-label']">{{item1.labelText}}</span>
+                </div>
+                <div class="event text-eli">{{item1.event}}</div>
+              </div>
+              <div class="img-box">
+                <img v-lazy="item1.img+'?param=200y200'" alt="">
+              </div>
+            </div>
           </div>
         </template>
 
@@ -399,8 +420,22 @@
               <span class="iconfont icon-jiantouyou"></span>
             </div>
           </div>
-          <div class="item-content">
-
+          <div class="item-content yunktv">
+            <swiper
+              class="threeColumn"
+              :options="threeColumnOptions"
+              v-if="item.list.length"
+            >
+              <swiper-slide
+                class="list-item-box"
+                v-for="(item1, index1) in item.list"
+                :key="index1"
+              >
+                <div class="list-item-inner">
+                  <FindKTV :ktvData="item1"></FindKTV>
+                </div>
+              </swiper-slide>
+            </swiper>
           </div>
         </template>
 
@@ -515,6 +550,13 @@ $bulletActiveColor: #fff;
   &-active {
     background-color: $bulletActiveColor;
   }
+}
+.swiper-lazy-preloader {
+  width: 0.2rem;
+  height: 0.2rem;
+  margin-left: -0.1rem;
+  margin-top: -0.1rem;
+  border-width: 0.03rem;
 }
 .van-swipe-item {
   background-color: burlywood;

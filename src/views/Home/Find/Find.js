@@ -11,6 +11,8 @@ export default {
     PlayListBlock: () => import('@/components/PlayListBlock'),
     FindSongItem: () => import('@/components/FindSongItem'),
     BroadCastItem: () => import('@/components/BroadCastItem'),
+    MvLog: () => import('@/components/MvLog'),
+    FindKTV: () => import('@/components/FindKTV'),
   },
   data() {
     return {
@@ -75,23 +77,24 @@ export default {
       },
       // 推荐歌单的第一项 轮播配置
       scrollPlayList: {
-        speed: 600,
+        speed: 500,
         // 循环
         loop: true,
         direction : 'vertical',
+        // 这个必须开启, 而 progress 默认开启
+        watchSlidesProgress : true,
         // 只有类名 swipe-handler 的元素才可以拖动
         swipeHandler : '.swipe-handler',
         // noSwiping: true,
         // 无效 可改为加 class swiper-no-swiping
-        spaceBetween: 10,
+        spaceBetween: 5,
         // 自动轮播
         autoplay: {
           // 间隔时间
-          delay: 2000,
+          delay: 2500,
           // 滑动操作离开后重新自动播放
           disableOnInteraction: false,
         },
-
       },
       // 对应下标
       scrollPlayListIndex: 0,
@@ -137,7 +140,7 @@ export default {
         // console.log(dataBlocks);
         this.extractData(dataBlocks)
         // console.log('发现页需要的数据', JSON.stringify(this.homeFindData, null, '  '));
-        // this.loading = false
+        this.loading = false
 
       } catch(error) {
         console.log(error);
@@ -189,17 +192,26 @@ export default {
     scrollListChange() {
       this.scrollPlayListIndex = this.scrollList.realIndex
     },
-    // 开始过渡
-    tranStart() {
-      // console.log('开始过渡  真实下标:', this.scrollList.realIndex, '\t活动下标:', this.scrollList.activeIndex);
-      this.scrollList.slides[this.scrollList.activeIndex-1].querySelector('.img-box').classList.add('transWidth')
-      
-    },
-    tranEnd() {
-      // console.log('结束过渡  真实下标:', this.scrollList.realIndex, '\t活动下标:', this.scrollList.activeIndex);
-      for(let i=0; i<this.scrollList.slides.length; i++) {
-        this.scrollList.slides[i].querySelector('.img-box').classList.remove('transWidth')
+    // 当Swiper的progress被改变时执行
+    progressHandler(progress) {
+      let slides = this.scrollList.slides
+      for (let i = 0; i < slides.length; i++) {
+        // 需要先设置 watchSlidesProgress: true
+        let slideProgress = slides[i].progress;
+        let scale = 1 - Math.abs(slideProgress) / 3;
+        scale = scale < 1 ? 0.75 : 1
+        slides.eq(i).transform('scale(' + scale + ')');
       }
+    },
+    // 开始过渡动画时触发
+    setTrans(transition) {
+      let slides = this.scrollList.slides
+      for (let i = 0; i < slides.length; i++) {
+				let slide = slides.eq(i)
+        // 设置切换时的动画时间
+				slide.transition(transition);
+				// slide.transition(1000);
+			}
     },
     // 提取需要的数据
     extractData(dataBlocks) {

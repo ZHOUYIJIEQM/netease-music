@@ -276,3 +276,13 @@ export function hotSearch() {
 export function searchSuggest(keywords) {
   return post(`/search/suggest`, { keywords, type: 'mobile' });
 }
+
+/**
+ * 获取mlog播放地址
+ * @param {String|Number} params 
+ * 必选参数 : id : mlog id
+ * 可选参数 : res: 分辨率 , 默认为 1080
+ */
+export function getMLog(params) {
+  return post('/mlog/url', params)
+}

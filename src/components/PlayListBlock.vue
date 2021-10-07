@@ -1,5 +1,5 @@
 <template>
-  <!-- 用于 显示歌单图片, 歌单名, 播放次数 的组件 -->
+  <!-- 发现页 用于 显示歌单图片, 歌单名, 播放次数 的组件 -->
   <div class="play-list-comp" @click="clickPlayList(playListData.id)">
     <div class="top-shadow" :style="{'background-color': topShadow.background}"></div>
     <div class="play-list-box" :style="{'top': topShadow.height}">
