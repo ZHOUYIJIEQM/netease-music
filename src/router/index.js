@@ -31,10 +31,15 @@ const routes = [
     ],
   },
   {
-    path: "/PlayList",
-    name: "PlayList",
-    component: () => import("@/views/PlayList/PlayList.vue"),
-  },
+    path: "/Login",
+    name: "Login",
+    component: () => import('@/views/Login/Login.vue')
+  }
+  // {
+  //   path: "/PlayList",
+  //   name: "PlayList",
+  //   component: () => import("@/views/PlayList/PlayList.vue"),
+  // },
 ];
 
 /**

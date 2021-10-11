@@ -178,6 +178,7 @@
               position: relative;
               &.scroll-list {
                 padding-top: .04rem;
+
               }
               .scroll-icon {
                 position: absolute;
@@ -323,7 +324,7 @@
           @include df();
           margin: 0 .15rem;
           margin-top: .15rem;
-          padding-bottom: .1rem;
+          padding-bottom: .08rem;
           border-bottom: 1px solid $greyBorder;
           &:last-child {
             border-bottom: none;

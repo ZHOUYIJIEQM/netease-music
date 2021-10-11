@@ -4,9 +4,9 @@ import router from './router'
 import store from './store'
 import '@/utils/rem.js'
 import '@/utils/vantComponents.js'
-import '@/styles/reset.scss'
 import '@/utils/directive.js'
 import '@/utils/filters.js'
+import '@/styles/reset.scss'
 
 // https://github.com/surmon-china/vue-awesome-swiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'

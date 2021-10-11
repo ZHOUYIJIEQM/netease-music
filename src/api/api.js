@@ -286,3 +286,37 @@ export function searchSuggest(keywords) {
 export function getMLog(params) {
   return post('/mlog/url', params)
 }
+
+/**
+ * @description 获取全部 mv
+ * @param {Object} 
+ * 可选参数 : 
+ * area: 地区,可选值为全部,内地,港台,欧美,日本,韩国,不填则为全部 
+ * type: 类型,可选值为全部,官方版,原生,现场版,网易出品,不填则为全部 
+ * order: 排序,可选值为上升最快,最热,最新,不填则为上升最快 
+ * limit: 取出数量 , 默认为 30 
+ * offset: 偏移数量(limit * offset), 用于分页 , 如 :( 页数 -1)*50, 其中 50 为 limit 的值 , 默认 为 0
+ */
+export function getAllMv(params={}) {
+  return post('/mv/all', params)
+}
+
+/**
+ * 获取对应 MV 数据 , 数据包含 mv 名字 , 歌手 , 发布时间 , mv 视频地址等数据其中 mv 视频 网易做了防盗链处理 , 可能不能直接播放 , 需要播放的话需要调用 'mv 地址' 接口
+ * @param {Number} id mv 的 id
+ * @returns 
+ */
+export function getMvDetail(id) {
+  return get(`/mv/detail?mvid=${id}`)
+}
+
+/**
+ * 获取 mv 播放地址
+ * @param {number} id mv id
+ * @param {*} r 分辨率
+ */
+export function mvUrl(id, r=720) {
+  return get(`/mv/url?id=${id}&r=${r}`)
+}
+
+

@@ -1,16 +1,63 @@
 <template>
+  <!-- 云村 -->
   <div class="yun-village-page">
-    <div style="padding: 1rem 0;">village</div>
-    云村暂无api
-    <div v-for="(item, index) in 60" :key="index">{{item}}</div>
+    <!-- 头部导航 -->
+    <Navbar 
+      ref="navbar" 
+      class="yun-village-navbar"
+    >
+      <template #left>
+        <i class="iconfont icon-weibiaoti12"></i>
+      </template>
+      <template #middle>
+        <div class="nav-flag">
+          <!-- todo: 改一下切换时下方红线动画 -->
+          <div 
+            class="flag-item" 
+            v-for="(item, index) in flagList"
+            :key="index"
+            :class="{'active': flagActive === index}"
+            @click="clickFlag(index)"
+          >{{item}}</div>
+        </div>
+      </template>
+      <template #right>
+        <i class="iconfont icon-zengjia"></i>
+      </template>
+    </Navbar>
+
+    <div class="yun-village-content">
+      <!-- 关注 -->
+      <div class="yun-focus" v-show="flagActive === 0">
+        <div class="yun-circle">
+          <div class="title">我的云圈 <span>(还没有加入云圈)</span></div>
+          <div class="go-circle"><span>去云圈广场逛逛</span><span class="iconfont icon-jiantou"></span></div>
+        </div>
+        <img class="tip-img" src="../../../assets/mine/yunCircle.png" alt="">
+      </div>
+      <!-- 推荐 -->
+      <div class="video-recommend" v-show="flagActive === 1">
+        <div class="video-item"
+          v-for="(item, index) in recommendVideo"
+          :key="index"
+        >
+          <!-- <div class="img-box">
+            <img :src="item.img" alt="">
+            <span class="duration">{{item.duration}}</span>
+          </div>
+          <div class="mv-info">
+            <div class="name text-eli">{{item.name}}</div>
+            <div class="playinfo">
+              <div class="count"><i class="iconfont icon-bofangsanjiaoxing"></i>{{item.playCount|formatNum}}</div>
+              <div class="tag text-eli">{{item.tag}}</div>
+            </div>
+          </div> -->
+
+          <YunRcmdMv :rcmdMv="item"></YunRcmdMv>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-<script>
-import { scrollPosition } from "@/mixin/scrollPosition.js";
-export default {
-  mixins: [scrollPosition]
-}
-</script>
-<style lang="scss" scoped>
-  
-</style>
+<script src="./YunVillage.js"></script>
+<style lang="scss" scoped src="./YunVillage.scss"></style>

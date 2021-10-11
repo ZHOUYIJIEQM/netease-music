@@ -102,3 +102,11 @@ input:-internal-autofill-selected {
 .fadeIn-enter-active, .fadeIn-leave-active {
   transition: all .5s;
 }
+
+.fadeDown-enter-active, .fadeDown-leave-active {
+  transition: all .15s ease-out;
+}
+.fadeDown-enter, .fadeDown-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(-30%);
+}

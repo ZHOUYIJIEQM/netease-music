@@ -11,7 +11,7 @@
       </span>
       <i class="iconfont icon-bofang2" v-if="playIcon"></i>
     </div>
-    <div class="play-list-name two-eli">{{playListData.name}}</div>
+    <div class="play-list-name two-eli" v-if="playListData.name.length">{{playListData.name}}</div>
   </div>
 </template>
 <script>
@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     clickPlayList(id) {
-      console.log('clickPlayList', id);
       this.$emit('clickPlayList', id)
     }
   },
@@ -62,7 +61,7 @@ export default {
     aspect-ratio: 1;
     position: absolute;
     border-radius: .1rem;
-    z-index: -1;
+    z-index: 1;
   }
 
   .play-list-box {
@@ -73,6 +72,7 @@ export default {
     font-size: 0;
     overflow: hidden;
     background: $gjColor;
+    z-index: 2;
     img {
       width: 100%;
     }

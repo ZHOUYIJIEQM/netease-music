@@ -2,9 +2,11 @@ import { scrollPosition } from "@/mixin/scrollPosition.js";
 import { arrTurnTwo } from '@/utils/globalMethods.js'
 import { homePageFind, defaultSearch } from '@/api/api'
 import moment from "moment";
+import { global } from "@/mixin/global.js";
 
 export default {
-  mixins: [scrollPosition],
+  name: 'FindInclude',
+  mixins: [scrollPosition, global],
   components: {
     Navbar: () => import('@/components/Navbar'),
     Loading: () => import('@/components/Loading'),
@@ -64,6 +66,8 @@ export default {
         lazy: {
           loadPrevNext: true,
         },
+        // observer: true, // 启动动态检查器(OB/观众/观看者)
+        // observeParents: true // 修改swiper的父元素时，自动初始化swiper
       },
       // 发现页数据
       homeFindData: [],
@@ -77,8 +81,8 @@ export default {
       },
       // 推荐歌单的第一项 轮播配置
       scrollPlayList: {
-        speed: 500,
-        // 循环
+        speed: 600,
+        // // 循环
         loop: true,
         direction : 'vertical',
         // 这个必须开启, 而 progress 默认开启
@@ -87,11 +91,13 @@ export default {
         swipeHandler : '.swipe-handler',
         // noSwiping: true,
         // 无效 可改为加 class swiper-no-swiping
-        spaceBetween: 5,
+        // spaceBetween: 5,
+        // 初始索引
+        initialSlide: 0,
         // 自动轮播
         autoplay: {
           // 间隔时间
-          delay: 2500,
+          delay: 2000,
           // 滑动操作离开后重新自动播放
           disableOnInteraction: false,
         },
@@ -111,15 +117,21 @@ export default {
     }
   },
   computed: {
-    // 获取登录状态
-    loginStatus() {
-      return this.$store.getters.loginStatus
-    },
     scrollList() {
       return this.$refs.scrollList[0].$swiper
     }
   },
   methods: {
+    // gplay() {
+    //   let banner = this.$refs.banner.$swiper
+    //   // console.log(this.$refs.banner);
+    //   banner.autoplay.start()
+    // },
+    // gpause() {
+    //   let banner = this.$refs.banner.$swiper
+    //   // console.log(this.$refs.banner);
+    //   banner.autoplay.stop()
+    // },
     // 初始化需要的数据
     async initData() {
       try {
@@ -194,6 +206,7 @@ export default {
     },
     // 当Swiper的progress被改变时执行
     progressHandler(progress) {
+      // console.log(progress);
       let slides = this.scrollList.slides
       for (let i = 0; i < slides.length; i++) {
         // 需要先设置 watchSlidesProgress: true
@@ -527,5 +540,18 @@ export default {
       },
       immediate: true
     },
+    $route(newV, oldV) {
+      if(newV.name === 'Find') {
+        // console.log('进入开始播放');
+        let banner = this.$refs.banner.$swiper
+        banner.autoplay.start()
+        this.scrollList.autoplay.start()
+      } else {
+        // console.log('离开暂停播放');
+        let banner = this.$refs.banner.$swiper
+        banner.autoplay.stop()
+        this.scrollList.autoplay.stop()
+      }
+    }
   }
 }

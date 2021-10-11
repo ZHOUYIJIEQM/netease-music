@@ -67,6 +67,12 @@ export default {
     },
     // 点击底部标签
     changeTab(index) {
+      // 重复点击 返回顶部
+      if (this.tabIndex === index) {
+        window.scroll({ top: 0, behavior: "smooth" })
+        return false;
+      }
+
       this.tabIndex = index;
       this.$router.push({ name: this.tabArr[index] })
         .catch((err) => {});

@@ -1,9 +1,10 @@
 <template>
   <!-- 发现页的 精选音乐视频 项 -->
-  <div class="mvlog-comp" @click="clickMvLog()">
+  <div class="mvlog-comp">
+    <!-- @click="clickMvLog(mvLogData.id)" -->
     <div class="mv-box">
       <img ref="coverUrl" v-lazy="mvLogData.img" alt="" />
-      <video ref="mlogVideo" :src="mvUrl" @click="playVideo"></video>
+      <video ref="mlogVideo" @click="playVideo"></video>
       <!-- 右上角的数据 -->
       <span class="tr-text" v-if="mvLogData.playCount">
         <span class="iconfont icon-bofangsanjiaoxing"></span>
@@ -57,12 +58,13 @@ export default {
         console.log(error);
       }
     },
-    clickMvLog(id) {
-      this.$emit("clickMvLog", id);
-    },
+    // clickMvLog(id) {
+    //   this.$emit("clickMvLog", id);
+    // },
     // 播放视频
     playVideo() {
       if (this.$refs.mlogVideo.paused) {
+        this.$refs.mlogVideo.src || (this.$refs.mlogVideo.src = this.mvUrl)
         this.$refs.mlogVideo.play() 
         this.videoStatus = false
       } else {
