@@ -8,6 +8,10 @@ export let global = {
     },
   },
   methods: {
+    // 路由返回
+    goBack() {
+      this.$router.go(-1)
+    },
     // 点击菜单字体图标
     clickMenu() {
       console.log('点击了菜单');

@@ -516,7 +516,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_VIDEO_PLAYLIST') {
           let videoPlayList = {}
           videoPlayList.type = '视频合辑'
-          videoPlayList.title = dataItem.uiElement.subTitle.title
+          videoPlayList.title = '视频歌单'
+          // videoPlayList.title = dataItem.uiElement.subTitle.title
           videoPlayList.text = dataItem.uiElement.button.text
           videoPlayList.list = []
           dataItem.creatives.forEach(item => {

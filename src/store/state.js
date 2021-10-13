@@ -15,6 +15,8 @@ const state = {
   redirect: window.localStorage.getItem('musicRedirect') || '',
   // 是否显示底部播放器
   showPlayer: false,
+  // 正在播放的mv id, 保持只有一个播放器在播放
+  mvId: 0,
 }
 
 export default state

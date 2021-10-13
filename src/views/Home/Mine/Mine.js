@@ -42,7 +42,7 @@ export default {
       tabsColor: "transparent",
       // 是否正在加载 为你推荐 内容
       loadingRecommend: false,
-      // 是否显示为你推荐
+      // 是否显示 为你推荐
       showRecommend: true,
     };
   },
@@ -90,7 +90,6 @@ export default {
     // 获取需要的数据
     async getData() {
       try {
-        this.$store.commit("changeLoading", true);
         this.recommendList = this.userList = [];
         this.subCount = {};
         if (this.loginStatus) {
@@ -128,9 +127,7 @@ export default {
         };
         this.recommendList.unshift(hotList, newList);
         this.loadingRecommend = false;
-        this.$store.commit("changeLoading", false);
       } catch (error) {
-        this.$store.commit("changeLoading", false);
         console.log('"我的"页初始化数据错误:', error);
       }
     },

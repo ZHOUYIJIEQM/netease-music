@@ -194,11 +194,12 @@
                 aspect-ratio: 1;
                 .scroll-play-list-item {
                   .img-box {
+                    background-color: $gjColor;
                     width: 100%;
                     aspect-ratio: 1;
                     border-radius: .1rem;
                     overflow: hidden;
-                    margin: 0 auto;
+                    // margin: 0 auto;
                     // transition: all .5s;
                     img {
                       width: 100%;

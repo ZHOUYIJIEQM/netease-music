@@ -50,6 +50,11 @@ export default {
     flex: 1;
     height: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    &>div {
+      width: 100%;
+    }
   }
 }
 </style>

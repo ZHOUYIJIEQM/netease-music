@@ -63,7 +63,10 @@ const mutations = {
    */
   changeShowPlayer(state, value) {
     state.showPlayer = value
-  }
+  },
+  changeMvId(state, value) {
+    state.mvId = value
+  },
 }
 
 export default mutations

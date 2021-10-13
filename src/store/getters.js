@@ -15,6 +15,7 @@ const getters = {
   userInfo: state => JSON.parse(state.userInfo),
   // 底部播放器
   showPlayer: state => state.showPlayer,
+  mvId: state => state.mvId,
 }
 
 export default getters

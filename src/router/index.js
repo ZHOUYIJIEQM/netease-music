@@ -30,16 +30,24 @@ const routes = [
       },
     ],
   },
+  // 登录/注册
   {
     path: "/Login",
     name: "Login",
     component: () => import('@/views/Login/Login.vue')
-  }
-  // {
-  //   path: "/PlayList",
-  //   name: "PlayList",
-  //   component: () => import("@/views/PlayList/PlayList.vue"),
-  // },
+  },
+  {
+    path: "/PhoneLogin",
+    name: "PhoneLogin",
+    component: () => import('@/views/Login/PhoneLogin.vue')
+  },
+  {
+    path: "/VerifyCode",
+    name: "VerifyCode",
+    component: () => import('@/views/Login/VerifyCode.vue')
+  },
+
+  
 ];
 
 /**

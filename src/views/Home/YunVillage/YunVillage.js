@@ -1,6 +1,6 @@
 import { scrollPosition } from "@/mixin/scrollPosition.js";
 import { getAllMv, getMvDetail } from "@/api/api";
-import moment, { duration } from "moment";
+
 
 export default {
   mixins: [scrollPosition],
@@ -22,6 +22,7 @@ export default {
     };
   },
   created() {
+    this.area = ['内地','港台','欧美','日本','韩国'].sort(()=>Math.random()>0.5?1:-1)[0]
     this.getData();
   },
   activated() {
@@ -38,6 +39,7 @@ export default {
         // console.log(this.pageNum);
         let limit = 20;
         let allmv = await getAllMv({
+          area: this.area,
           offset: this.pageNum * limit,
           limit: limit,
         });
@@ -45,7 +47,7 @@ export default {
           ...allmv.data.map((item) => {
             return {
               id: item.id,
-              duration: moment(item.duration).format("mm:ss"),
+              duration: item.duration,
               name: item.name,
               playCount: item.playCount,
               img: item.cover,
@@ -74,7 +76,7 @@ export default {
         document.body.scrollHeight || document.documentElement.scrollHeight;
       let sT = this.getScrollTop();
       let cH = this.getClientHeight();
-      if (sT + cH > bodyH - 200 && !this.loading && this.flagActive === 1) {
+      if (sT + cH > bodyH - 300 && !this.loading && this.flagActive === 1) {
         this.loading = true;
         // console.log("到底触发");
         this.getData();

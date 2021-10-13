@@ -109,7 +109,7 @@
                       <!-- @click.native="goPlaylist(item1.id)" -->
                       <!-- 这样 loop 模式, 有一个点击无效, 获取 swiper 的 realIndex, 在 <swiper> 处 绑定点击事件, 用 realIndex 操作 -->
                         <div class="img-box">
-                          <img :src="item1.img+'?param=400y400'" alt="">
+                          <img :src="item1.img+'?param=200y200'" alt="">
                         </div>
                       </swiper-slide>
                     </swiper>

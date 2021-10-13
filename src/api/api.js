@@ -299,6 +299,8 @@ export function getMLog(params) {
  */
 export function getAllMv(params={}) {
   return post('/mv/all', params)
+  // 网易出品mv
+  // return post('/mv/exclusive/rcmd', params)
 }
 
 /**
@@ -315,7 +317,7 @@ export function getMvDetail(id) {
  * @param {number} id mv id
  * @param {*} r 分辨率
  */
-export function mvUrl(id, r=720) {
+export function mvUrl(id, r=480) {
   return get(`/mv/url?id=${id}&r=${r}`)
 }
 

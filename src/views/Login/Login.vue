@@ -70,7 +70,7 @@ export default {
 .login-page {
   @include df(column);
   background: #dc2c1f;
-  height: 100%;
+  height: 100vh;
   .logo {
     flex: 1;
     @include df();
@@ -108,20 +108,55 @@ export default {
   }
   .type {
     flex-basis: 30%;
-    
+    padding-top: 0.3rem;
+    @include df(column);
+    align-items: center;
     .phone-login {
-
+      margin-top: 0.1rem;
+      padding: 0.12rem 25%;
+      color: #f84344;
+      background-color: #fff;
+      display: inline-block;
+      border-radius: 0.2rem;
+      &:active {
+        background: #f3dfdf;
+      }
     }
     .login-icon {
-      .wx {
-
-      }
-      .email {
-
+      padding: 4.5vh 0;
+      // padding: .3rem 0;
+      display: flex;
+      & > div {
+        border: 1px solid #e65045;
+        width: 0.32rem;
+        height: 0.32rem;
+        color: #f8d6d4;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0.16rem;
+        &:active {
+          background: rgba(211, 211, 211, 0.2);
+          .iconfont {
+            color: white;
+          }
+        }
+        .iconfont {
+          font-size: 0.2rem;
+        }
       }
     }
     .licen {
-
+      margin-bottom: 5.2vh;
+      font-size: 0;
+      span {
+        color: #e1e1e162;
+        font-size: 0.08rem;
+      }
+      .deal {
+        color: #f0f0f0c5;
+      }
     }
   }
 
@@ -135,7 +170,7 @@ export default {
       opacity: 1;
     }
     100% {
-      width: 45vh;
+      width: 40vh;
     }
   }
 }

@@ -4,7 +4,12 @@
     <!-- @click="clickMvLog(mvLogData.id)" -->
     <div class="mv-box">
       <img ref="coverUrl" v-lazy="mvLogData.img" alt="" />
-      <video ref="mlogVideo" @click="playVideo"></video>
+      <video 
+        ref="mlogVideo" 
+        @click="playVideo"
+        @play="vdoPlay"
+        @pause="vdoPause"
+      ></video>
       <!-- 右上角的数据 -->
       <span class="tr-text" v-if="mvLogData.playCount">
         <span class="iconfont icon-bofangsanjiaoxing"></span>
@@ -38,41 +43,52 @@ export default {
   },
   data() {
     return {
-      mvUrl: '',
       // video 是否在暂停状态
       videoStatus: true,
     };
   },
   mounted() {
-    this.init()
   },
   methods: {
-    async init() {
-      try {
-        let mlog = await getMLog({id: this.mvLogData.id, res: 480})
-        this.mvUrl = mlog.data.resource.content.video.urlInfo.url
-        this.$refs.mlogVideo.volume = 0.1
-        this.$refs.mlogVideo.loop = true
-        this.videoStatus = this.$refs.mlogVideo.paused
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    // clickMvLog(id) {
-    //   this.$emit("clickMvLog", id);
-    // },
     // 播放视频
-    playVideo() {
-      if (this.$refs.mlogVideo.paused) {
-        this.$refs.mlogVideo.src || (this.$refs.mlogVideo.src = this.mvUrl)
-        this.$refs.mlogVideo.play() 
-        this.videoStatus = false
+    async playVideo() {
+      this.$store.commit('changeMvId', this.mvLogData.id)
+      let vdo = this.$refs.mlogVideo
+      if (!vdo.src) {
+        try {
+          let mlog = await getMLog({id: this.mvLogData.id, res: 480})
+          vdo.src = mlog.data.resource.content.video.urlInfo.url
+          vdo.oncanplay = () => {
+            vdo.play()
+          }
+        } catch (error) {
+          console.log(error);
+        }
       } else {
-        this.$refs.mlogVideo.pause()
-        this.videoStatus = true
+        this.toggleVdoStatus()
       }
     },
+    toggleVdoStatus() {
+      let vdo = this.$refs.mlogVideo
+      vdo.paused ? vdo.play() : vdo.pause()
+    },
+    vdoPlay() {
+      this.videoStatus = false
+    },
+    vdoPause() {
+      this.videoStatus = true
+    }
   },
+  watch: {
+    '$store.getters.mvId': {
+      handler: function (newV) {
+        if (!this.$refs.mlogVideo.paused && newV !== this.mvLogData.id) {
+          // console.log('暂停', this.mvLogData.name);
+          this.$refs.mlogVideo.pause()
+        }
+      }
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

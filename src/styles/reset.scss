@@ -66,6 +66,7 @@ img[src=""], img:not([src]) {
   -webkit-line-clamp: 2; 
   overflow:hidden;
   -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 html, body, #app {

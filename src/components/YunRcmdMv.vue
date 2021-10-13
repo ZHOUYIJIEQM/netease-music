@@ -1,18 +1,27 @@
 <template>
   <!-- 用于 云村 推荐视频 -->
-  <div class="rcmd-mv" @click="clickMv(rcmdMv)">
+  <div class="rcmd-mv">
     <div class="img-box" ref="imgbox">
       <transition name="fadeIn">
-        <img ref="img" v-if="imgShow"/>
+        <img ref="img" v-if="imgShow" />
       </transition>
-      <span class="duration">{{ rcmdMv.duration }}</span>
+      <video 
+        ref="rcmdVideo" 
+        @click="clickVideo(rcmdMv.id)"
+        @play="vdoPlay" 
+        @pause="vdoPause" 
+      ></video>
+      <!-- @timeupdate="vdoTimeUpdate" -->
+      <!-- preload="none" 如果设置了 src 又不想 video 马上加载, 即可使用 -->
+      <span class="duration" v-if="updateTime">{{ updateTime }}</span>
+      <span class="duration" v-else>{{ duration }}</span>
     </div>
     <div class="mv-info">
-      <div class="name text-eli">{{ rcmdMv.name }}</div>
+      <div class="name two-eli">{{ rcmdMv.name }}</div>
       <div class="playinfo">
         <div class="count">
-          <i class="iconfont icon-bofangsanjiaoxing"></i
-          >{{ rcmdMv.playCount | formatNum }}
+          <i class="iconfont icon-bofangsanjiaoxing"></i>
+          <span>{{ rcmdMv.playCount | formatNum }}</span>
         </div>
         <div class="tag text-eli">{{ rcmdMv.tag }}</div>
       </div>
@@ -21,6 +30,8 @@
 </template>
 
 <script>
+import {mvUrl} from '@/api/api'
+import moment from "moment";
 export default {
   props: {
     rcmdMv: {
@@ -33,23 +44,40 @@ export default {
   data() {
     return {
       imgShow: false,
-      bgc: ['#f7b2b2', '#9ee0b4', '#9ecfe0', '#9eabe0', '#c59ee0', '#f7c7b2']
+      bgc: ['#f7b2b2', '#9ee0b4', '#9ecfe0', '#9eabe0', '#c59ee0', '#f7c7b2'],
+      // 1s 更新一次的定时器
+      vdoTimer: null,
+      // 更新的时间
+      updateTime: 0,
     }
+  },
+  computed: {
+    duration() {
+      return moment(this.rcmdMv.duration).format("mm:ss")
+    },
   },
   mounted() {
     this.loadImg()
+    // this.$watch(
+    //   function () {
+    //     return this.$refs.rcmdVideo
+    //   },
+    //   (newV, oldV) => {
+    //     console.log(newV);
+    //   }
+    // )
+    this.visible()
   },
   methods: {
+    // 加载图片
     loadImg() {
       this.$refs.imgbox.style.background = this.bgc[this.roundNum(0, this.bgc.length - 1)]
       let img = new Image()
       img.src = this.rcmdMv.img
       img.onload = () => {
+        this.imgShow = true
         this.$nextTick(() => {
-          this.imgShow = true
-          this.$nextTick(() => {
-            this.$refs.img.src = this.rcmdMv.img
-          })
+          this.$refs.img.src = this.rcmdMv.img
         })
       }
     },
@@ -57,22 +85,126 @@ export default {
     roundNum(start, end) {
       return Math.round(Math.random() * (end - start) + start)
     },
-    clickMv(id) {
-      console.log(id);
+    // 点击 video
+    async clickVideo(id) {
+      this.$store.commit('changeMvId', id)
+      try {
+        let vdo = this.$refs.rcmdVideo
+        // 如果没有地址就添加
+        if (!vdo.src) {
+          let url = await mvUrl(id)
+          url = url.data.url
+          vdo.src = url
+          vdo.oncanplay = () => {
+            vdo.play()
+          }
+        } else {
+          this.toggleVdoStatus()
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 再次点击, 根据播放状态判断要播放或是暂停
+    toggleVdoStatus() {
+      let vdo = this.$refs.rcmdVideo
+      if (vdo.paused) {
+        vdo.play()
+      } else {
+        vdo.pause()
+      }
+    },
+    // 更新视频时间, 如果想要更精准一点可以在video绑定 @play="xxx" 使用 setInterval, @pause="xxx" clearInterval,
+    vdoTimeUpdate() {
+      let vdo = this.$refs.rcmdVideo
+      this.updateTime = moment(parseInt(Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
+      // console.log(this.updateTime);
+    },
+    vdoPlay() {
+      // console.log('开始播放');
+      let vdo = this.$refs.rcmdVideo
+      this.updateTime = moment(parseInt(vdo.duration - Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
+      this.vdoTimer = setInterval(() => {
+        this.updateTime = moment(parseInt(vdo.duration - Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
+      }, 1000)
+    },
+    vdoPause() {
+      // console.log('开始暂停');
+      clearInterval(this.vdoTimer)
+    },
+    // 离开视图范围, 暂停播放
+    visible() {
+      // let v = new IntersectionObserver(entries => {
+      //   entries.forEach((entry, index) => {
+      //     if (entry.intersectionRatio > 0) {
+      //       console.log('出现在视图', this.rcmdMv.name, entry);
+      //     } else {
+      //       if (!this.$refs.rcmdVideo.paused) {
+      //         console.log('暂停播放', this.rcmdMv.name, entry);
+      //         this.$refs.rcmdVideo.pause()
+      //       }
+      //     }
+      //   })
+      // })
+      // 指定视图范围
+      let gap = 0
+      try {
+        let html = document.querySelector('html')
+        gap = window.getComputedStyle(html).fontSize
+        gap = parseInt(/(\d+)/g.exec(gap)[0]) * 0.5
+        gap = gap > 0 ? '-'+gap+'px' : '-30px'
+      } catch (error) {
+        gap = '-30px'
+      }
+      let v = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // 可见
+              // console.log("出现在视图", this.rcmdMv.name, entry);
+            } else {
+              if (!this.$refs.rcmdVideo.paused) {
+                // console.log("暂停播放", this.rcmdMv.name, entry);
+                this.$refs.rcmdVideo.pause();
+              }
+            }
+          });
+        },
+        // 在离顶/底部还有一小段距离时触发(顶/底部有个导航条,)
+        { rootMargin: `${gap} 0px ${gap} 0px` }
+      );
+
+      v.observe(this.$refs.rcmdVideo)
     }
   },
+  watch: {
+    '$store.getters.mvId': {
+      handler: function (newV) {
+        if (!this.$refs.rcmdVideo.paused && newV !== this.rcmdMv.id) {
+          // console.log('暂停', this.rcmdMv.name);
+          this.$refs.rcmdVideo.pause()
+        }
+      }
+    },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .rcmd-mv {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   .img-box {
     width: 100%;
     aspect-ratio: 1 / 1.25;
     background-color: #f7b2b2;
     position: relative;
     font-size: 0;
-    img {
+    img, video {
+      position: absolute;
+      left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -81,31 +213,40 @@ export default {
       position: absolute;
       bottom: 0.08rem;
       right: 0.06rem;
-      color: #e0e0e0;
-      font-size: 0.12rem;
+      color: #eee;
+      font-size: 0.11rem;
     }
   }
   .mv-info {
-    padding: 0.1rem 0.08rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: .1rem .08rem .08rem;
     .name {
-      font-size: 0.14rem;
+      font-size: 0.13rem;
       color: #4a4a4a;
-      line-height: 1.5;
+      line-height: 1.3;
+      flex: 1;
     }
     .playinfo {
       margin-top: 0.06rem;
-      color: #9e9e9e;
+      color: #6b6b6b;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.1rem;
       .count {
+        display: flex;
+        align-items: center;
         .icon-bofangsanjiaoxing {
-          font-size: 0.12rem;
+          font-size: .09rem;
+          font-weight: bold;
+          margin-right: .02rem;
+          color: #b8b8b8;
         }
       }
       .tag {
-        max-width: 5em;
+        max-width: 8em;
         line-height: 1.3;
       }
     }
