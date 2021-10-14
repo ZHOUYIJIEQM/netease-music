@@ -13,6 +13,12 @@
         <div class="wx" @click="loginType('wx')">
           <i class="iconfont icon-ic-weixin"></i>
         </div>
+        <div class="email" @click="loginType('qq')">
+          <i class="iconfont icon-QQ"></i>
+        </div>
+        <div class="email" @click="loginType('wb')">
+          <i class="iconfont icon-weibo"></i>
+        </div>
         <div class="email" @click="loginType('nEmail')">
           <i class="iconfont icon-wangyiyouxiang"></i>
         </div>
@@ -41,11 +47,17 @@ export default {
           break;
         // 微信
         case "wx":
-          this.$toast("微信登录暂未开发");
+          this.$toast("微信登录暂未开发!");
+          break;
+        case "qq":
+          this.$toast("QQ登录暂未开发!");
+          break;
+        case "wb":
+          this.$toast("微博登录暂未开发!");
           break;
         // 网易邮箱
         case "nEmail":
-          this.$router.replace({ name: "EmailLogin" });
+          this.$toast("网易邮箱登录暂未开发!");
           break;
         default:
           break;

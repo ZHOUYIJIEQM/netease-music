@@ -27,6 +27,11 @@
     color: $color;
     font-size: $fontsize;
   }
+  // chrome 处理自动填充了背景色
+  input:-webkit-autofill {
+    transition-delay: 99999s;
+    transition: color 99999s ease-out, background-color 99999s ease-out;
+  }
 }
 
 // 毛玻璃高斯模糊

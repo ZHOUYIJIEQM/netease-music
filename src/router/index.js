@@ -46,6 +46,16 @@ const routes = [
     name: "VerifyCode",
     component: () => import('@/views/Login/VerifyCode.vue')
   },
+  {
+    path: "/PasswdLogin",
+    name: "PasswdLogin",
+    component: () => import('@/views/Login/PasswdLogin.vue')
+  },
+  {
+    path: "/Register",
+    name: "Register",
+    component: () => import('@/views/Login/Register.vue')
+  },
 
   
 ];

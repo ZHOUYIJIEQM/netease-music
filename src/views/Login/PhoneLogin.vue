@@ -86,7 +86,10 @@ export default {
               confirmButtonText: "确定",
             })
             .then(res => {
-              this.$router.push({ name: "SignIn", query: {navName: "注册"} })
+              this.$router.push({ 
+                name: "Register", 
+                query: { navName: "注册" } 
+              })
             })
             .catch(err => {
               console.log(err);
@@ -100,7 +103,10 @@ export default {
     },
     // 去找回账号
     recoverAccout() {
-      this.$router.push({ name: "SignIn", query: { navName: "找回账号" } });
+      this.$router.push({ 
+        name: "Register", 
+        query: { navName: "找回账号" } 
+      });
     },
   },
 }
