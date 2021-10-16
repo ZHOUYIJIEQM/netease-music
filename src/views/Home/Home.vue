@@ -5,8 +5,21 @@
         <router-view></router-view>
       </keep-alive>
     </div>
-    <!-- <div class="menu" @click="toggleMenu">菜单</div>
-    <div class="menu" style="z-index: -1" v-show="showMenu">sssssssss</div> -->
+
+    
+    <!-- 菜单 -->
+    <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 60}" >
+      <van-popup 
+        class="home-menu"
+        v-model="showMenu"
+        position="left" 
+        @click-overlay="toggleMenu"
+        :style="{ width: '80%' }"
+        :overlay-style="{'background-color': 'rgb(0 0 0 / 60%)'}"
+      >
+        <HomeMenu></HomeMenu>
+      </van-popup>
+    </div>
     
     <!-- 底部切换 -->
     <div class="home-footer">
@@ -25,8 +38,14 @@
   </div>
 </template>
 <script>
+import { global } from "@/mixin/global";
+
 export default {
   name: "homeInclude",
+  mixins: [global],
+  components: {
+    HomeMenu: () => import("@/components/Menu")
+  },
   data() {
     return {
       // footer 数据
@@ -51,11 +70,17 @@ export default {
       tabIndex: 0,
       // footer 下标对应路由名
       tabArr: ["Find", "Mine", "YunVillage"],
-      // 是否显示左侧菜单
-      showMenu: false,
     };
   },
   computed: {
+    showMenu: {
+      get: function() {
+        return this.$store.getters.showMenu
+      },
+      set: function() {
+        // this.$store.commit('toggleMenu')
+      }
+    }
   },
   methods: {
     // 初始化路由
@@ -78,9 +103,10 @@ export default {
         .catch((err) => {});
       // 会报错 NavigationDuplicated: Avoided redundant navigation to current location
     },
-    // 菜单显示/隐藏
-    toggleMenu() {
-      this.showMenu = !this.showMenu
+    hideMenu(value) {
+      if (value === 'left') {
+        this.$store.commit('toggleMenu')
+      }
     }
   },
   watch: {
@@ -103,12 +129,9 @@ export default {
     padding-bottom: $footerHeight;
   }
 
-  .menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: .3rem;
-    background-color: royalblue;
+  .home-menu {
+    height: 100%;
+    background-color: #f5f5f5;
   }
 
   .home-footer {
@@ -141,3 +164,4 @@ export default {
   }
 }
 </style>
+

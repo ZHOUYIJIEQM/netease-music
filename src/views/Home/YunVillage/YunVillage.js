@@ -1,9 +1,10 @@
 import { scrollPosition } from "@/mixin/scrollPosition.js";
-import { getAllMv, getMvDetail } from "@/api/api";
+import { global } from "@/mixin/global";
+import { getAllMv } from "@/api/api";
 
 
 export default {
-  mixins: [scrollPosition],
+  mixins: [scrollPosition, global],
   components: {
     Navbar: () => import("@/components/Navbar"),
     Loading: () => import("@/components/Loading"),

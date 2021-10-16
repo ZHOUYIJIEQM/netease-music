@@ -45,9 +45,9 @@ const mutations = {
     window.localStorage.setItem('musicCellPhone', value)
   },
   /**
-   * @description 设置是否在首页显示菜单
+   * @description 首页显示/隐藏菜单
    */
-  changeShowMenu(state) {
+  toggleMenu(state) {
     state.showMenu = !state.showMenu
   },
   /**

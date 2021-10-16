@@ -3,8 +3,9 @@
   <div class="yun-village-page">
     <!-- 头部导航 -->
     <Navbar 
-      ref="navbar" 
+      ref="navbar"
       class="yun-village-navbar"
+      @clickLeft="toggleMenu"
     >
       <template #left>
         <i class="iconfont icon-weibiaoti12"></i>

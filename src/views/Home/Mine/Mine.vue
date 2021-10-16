@@ -6,6 +6,7 @@
       ref="navbar" 
       class="mine-navbar" 
       :style="{'background': navbarColor}"
+      @clickLeft="toggleMenu"
     >
       <template #left>
         <i class="iconfont icon-weibiaoti12"></i>

@@ -10,11 +10,22 @@
         @click="clickVideo(rcmdMv.id)"
         @play="vdoPlay" 
         @pause="vdoPause" 
+        @error="vdoErr"
+        @playing="playing"
+        @waiting="waiting"
       ></video>
       <!-- @timeupdate="vdoTimeUpdate" -->
       <!-- preload="none" 如果设置了 src 又不想 video 马上加载, 即可使用 -->
       <span class="duration" v-if="updateTime">{{ updateTime }}</span>
       <span class="duration" v-else>{{ duration }}</span>
+      <div class="play-status" v-if="playStatus.length">
+        <van-loading size=".14rem" color="#fff" v-show="playStatus==='stop'" />
+        <div class="loader" v-show="playStatus==='play'">
+          <div style="--x: 0"></div>
+          <div style="--x: 1"></div>
+          <div style="--x: 2"></div>
+        </div>
+      </div>
     </div>
     <div class="mv-info">
       <div class="name two-eli">{{ rcmdMv.name }}</div>
@@ -44,11 +55,13 @@ export default {
   data() {
     return {
       imgShow: false,
-      bgc: ['#f7b2b2', '#9ee0b4', '#9ecfe0', '#9eabe0', '#c59ee0', '#f7c7b2'],
+      bgc: ['#f58a8a', '#f59f8a', '#f5c78a', '#9ee0b4', '#a8f58a', '#e5f58a', '#9ecfe0', '#9eabe0', '#c59ee0', '#f7c7b2'],
       // 1s 更新一次的定时器
       vdoTimer: null,
       // 更新的时间
       updateTime: 0,
+      // 播放状态
+      playStatus: '',
     }
   },
   computed: {
@@ -88,6 +101,7 @@ export default {
     // 点击 video
     async clickVideo(id) {
       this.$store.commit('changeMvId', id)
+      this.playStatus = 'stop'
       try {
         let vdo = this.$refs.rcmdVideo
         // 如果没有地址就添加
@@ -114,6 +128,11 @@ export default {
         vdo.pause()
       }
     },
+    setPStatus(status) {
+      setTimeout(() => {
+        this.playStatus = status
+      }, 100)
+    },
     // 更新视频时间, 如果想要更精准一点可以在video绑定 @play="xxx" 使用 setInterval, @pause="xxx" clearInterval,
     vdoTimeUpdate() {
       let vdo = this.$refs.rcmdVideo
@@ -122,15 +141,23 @@ export default {
     },
     vdoPlay() {
       // console.log('开始播放');
+      this.setPStatus('stop')
       let vdo = this.$refs.rcmdVideo
-      this.updateTime = moment(parseInt(vdo.duration - Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
+      let cTime = vdo.currentTime
+      if (typeof cTime !== 'number') {
+        cTime = 0
+      }
+      this.updateTime = moment(parseInt(vdo.duration - Math.ceil(cTime)) * 1000).format("mm:ss")
       this.vdoTimer = setInterval(() => {
         this.updateTime = moment(parseInt(vdo.duration - Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
       }, 1000)
     },
     vdoPause() {
-      // console.log('开始暂停');
       clearInterval(this.vdoTimer)
+      this.setPStatus('')
+    },
+    vdoErr() {
+      this.$toast('网络原因, 视频播放错误!')
     },
     // 离开视图范围, 暂停播放
     visible() {
@@ -175,7 +202,13 @@ export default {
       );
 
       v.observe(this.$refs.rcmdVideo)
-    }
+    },
+    playing() {
+      this.setPStatus('play')
+    },
+    waiting() {
+      this.setPStatus('stop')
+    },
   },
   watch: {
     '$store.getters.mvId': {
@@ -191,6 +224,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/mixin.scss";
+
 .rcmd-mv {
   display: flex;
   flex-direction: column;
@@ -215,6 +250,16 @@ export default {
       right: 0.06rem;
       color: #eee;
       font-size: 0.11rem;
+    }
+    .play-status {
+      position: absolute;
+      left: .05rem;
+      bottom: .08rem;
+      @include loader($divWidth: .02rem);
+      .icon-bofang2 {
+        color: #fff;
+        font-size: .14rem;
+      }
     }
   }
   .mv-info {
@@ -251,5 +296,12 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="scss">
+.play-status {
+  .van-loading__circular circle {
+    stroke-width: .06rem;
+  }  
 }
 </style>

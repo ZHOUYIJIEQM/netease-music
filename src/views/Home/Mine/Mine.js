@@ -67,10 +67,6 @@ export default {
     window.removeEventListener("scroll", this.handlerScroll);
   },
   methods: {
-    // 去登录
-    goLogin() {
-      !this.loginStatus && this.$router.push({ name: "Login" });
-    },
     // 点击 icon 导航
     clickIcon(title) {
       this.$toast(title + "未开发");

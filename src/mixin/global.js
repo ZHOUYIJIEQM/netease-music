@@ -1,6 +1,10 @@
 // 一些在组件共用的属性, 函数
 
 export let global = {
+  data() {
+    return {
+    }
+  },
   computed: {
     // 获取登录状态
     loginStatus() {
@@ -8,6 +12,18 @@ export let global = {
     },
   },
   methods: {
+    // 去登录
+    goLogin() {
+      !this.loginStatus && this.$router.push({ name: "Login" });
+    },
+    // 退出登录
+    logout() {
+      this.$store.dispatch('userLogout')
+    },
+    // 菜单显示/隐藏
+    toggleMenu() {
+      this.$store.commit('toggleMenu')
+    },
     // 路由返回
     goBack() {
       this.$router.go(-1)

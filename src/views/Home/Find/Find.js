@@ -158,10 +158,6 @@ export default {
         console.log(error);
       }
     },
-    // 显示/隐藏菜单
-    toggleMenu() {
-      console.log('点击菜单');
-    },
     // 去搜索页
     goSearch() {
       console.log('去搜索页');
