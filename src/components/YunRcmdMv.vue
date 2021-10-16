@@ -142,15 +142,19 @@ export default {
     vdoPlay() {
       // console.log('开始播放');
       this.setPStatus('stop')
+      this.getVdoCTime()
+      this.vdoTimer = setInterval(() => {
+        this.getVdoCTime()
+      }, 1000)
+    },
+    // 获取 video currentTime
+    getVdoCTime() {
       let vdo = this.$refs.rcmdVideo
       let cTime = vdo.currentTime
       if (typeof cTime !== 'number') {
         cTime = 0
       }
       this.updateTime = moment(parseInt(vdo.duration - Math.ceil(cTime)) * 1000).format("mm:ss")
-      this.vdoTimer = setInterval(() => {
-        this.updateTime = moment(parseInt(vdo.duration - Math.ceil(vdo.currentTime)) * 1000).format("mm:ss")
-      }, 1000)
     },
     vdoPause() {
       clearInterval(this.vdoTimer)
