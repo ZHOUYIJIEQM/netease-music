@@ -1,6 +1,6 @@
 import { scrollPosition } from "@/mixin/scrollPosition.js";
 import { arrTurnTwo } from '@/utils/globalMethods.js'
-import { homePageFind, defaultSearch, getOfficialList } from '@/api/api'
+import { homePageFind, defaultSearch, getOfficialList, playlistCatlist, highqualityPlayList } from '@/api/api'
 import moment from "moment";
 import { global } from "@/mixin/global.js";
 
@@ -159,14 +159,19 @@ export default {
         if (this.loginStatus) {
           this.cursor = find.data.cursor
           // 登录后没有返回 推荐歌单第一项 轮播数据, 在这里先获取
-          let scrolllistData = await getOfficialList(6)
+          let catlist = await playlistCatlist()
+          catlist = catlist.sub.map(item => item.name)
+          catlist = catlist[Math.round(Math.random() * catlist.length - 1)]
+          // console.log(catlist);
+          let scrolllistData = await highqualityPlayList({ cat: catlist, limit: 5 })
+          // console.log(scrolllistData);
           this.scrollListData = []
-          scrolllistData.result.forEach(item2 => {
+          scrolllistData.playlists.forEach(item2 => {
+            // console.log(item2.name);
             this.scrollListData.push({
               id: item2.id,
               name: item2.name,
-              img: item2.picUrl,
-              playCount: item2.playCount,
+              img: item2.coverImgUrl,
             })
           })
         }

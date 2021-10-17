@@ -77,10 +77,9 @@
       
       .video-item {
         $gap: .08rem;
-        width: calc((100% - $gap) / 2);
         border-radius: .1rem;
         background-color: #fff;
-        margin-bottom: $gap;
+        // margin-bottom: $gap;
         overflow: hidden;
         .img-box {
           width: 100%;

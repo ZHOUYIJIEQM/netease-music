@@ -243,10 +243,15 @@ export default {
 .rcmd-mv {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  // height: 100%;
   .img-box {
+    &.one-column {
+      aspect-ratio: 1 / .56;
+    }
+    &.two-column {
+      aspect-ratio: 1 / 1.25;
+    }
     width: 100%;
-    aspect-ratio: 1 / 1.25;
     background-color: #f7b2b2;
     position: relative;
     font-size: 0;

@@ -38,7 +38,8 @@
       </div>
       <!-- 推荐 -->
       <div class="video-recommend" v-show="flagActive === 1">
-        <div class="video-item"
+        <!-- todo: 通过设置 one-column two-column 改变列数 -->
+        <div class="video-item one-column"
           v-for="(item, index) in recommendVideo"
           :key="index"
         >
@@ -62,3 +63,24 @@
 </template>
 <script src="./YunVillage.js"></script>
 <style lang="scss" scoped src="./YunVillage.scss"></style>
+<style lang="scss">
+.yun-village-page {
+  $gap: .08rem;
+  .video-recommend {
+    .one-column {
+      width: 100%;
+      margin-bottom: .12rem;
+      .img-box {
+        aspect-ratio: 1 / .56; 
+      }
+    }
+    .two-column {
+      width: calc((100% - $gap) / 2);
+      margin-bottom: $gap;
+      .img-box {
+        aspect-ratio: 1 / 1.25; 
+      }
+    }
+  }
+}
+</style>

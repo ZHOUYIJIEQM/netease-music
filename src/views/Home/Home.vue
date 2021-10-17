@@ -7,7 +7,7 @@
     </div>
 
     
-    <!-- 菜单 -->
+    <!-- 菜单 手势隐藏菜单 -->
     <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 60}" >
       <van-popup 
         class="home-menu"
