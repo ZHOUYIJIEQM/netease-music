@@ -68,8 +68,8 @@ export default {
         lazy: {
           loadPrevNext: true,
         },
-        // observer: true, // 启动动态检查器(OB/观众/观看者)
-        // observeParents: true // 修改swiper的父元素时，自动初始化swiper
+        // observer: true, // 启动动态检查器(OB/观众/观看者)，当改变swiper的样式（例如隐藏/显示）或者修改swiper的子元素时，自动初始化swiper。
+        // observeParents: true // 将observe应用于Swiper的祖先元素。修改swiper的父元素时，自动初始化swiper
       },
       // 发现页数据
       homeFindData: [],
@@ -156,10 +156,20 @@ export default {
     async getData() {
       try {
         let find = await homePageFind()
-        // if (this.loginStatus) {
+        if (this.loginStatus) {
           this.cursor = find.data.cursor
-        //   console.log(this.cursor);
-        // }
+          // 登录后没有返回 推荐歌单第一项 轮播数据, 在这里先获取
+          let scrolllistData = await getOfficialList(6)
+          this.scrollListData = []
+          scrolllistData.result.forEach(item2 => {
+            this.scrollListData.push({
+              id: item2.id,
+              name: item2.name,
+              img: item2.picUrl,
+              playCount: item2.playCount,
+            })
+          })
+        }
         // 里面的数据看起来有些乱, 手动提取需要的数据
         let dataBlocks = find.data.blocks
         // console.log(dataBlocks);
@@ -170,13 +180,14 @@ export default {
         console.log(error);
       }
     },
-    // 登录后, 获取发现页数据
+    // 登录后, 获取发现页数据, 需要传入 cursor 参数
     async getLoginData() {
       // console.log('触发滚动');
       let bodyH = document.body.scrollHeight || document.documentElement.scrollHeight;
       let scrollT = this.getScrollTop()
       let clientH = this.getClientHeight()
-      if (bodyH - 200 < scrollT + clientH && !this.loading) {
+      // 距离底部 300 px 获取新数据
+      if (bodyH - 300 < scrollT + clientH && !this.loading) {
         // console.log('触底加载');
         if (!this.cursor) {
           window.removeEventListener('scroll', this.getLoginData)
@@ -280,19 +291,7 @@ export default {
                 })
               })
             } else {
-              try {
-                let scrolllist = await getOfficialList(6)
-                scrolllist.result.forEach(item2 => {
-                  rcmdPlayList.scrollPlaylist.push({
-                    id: item2.id,
-                    name: item2.name,
-                    img: item2.picUrl,
-                    playCount: item2.playCount,
-                  })
-                })
-              } catch (error) {
-                console.log(error);
-              }
+              rcmdPlayList.scrollPlaylist.push(...this.scrollListData)
             }
             if (item.creativeType === "list") {
               item.resources.forEach(item2 => {
@@ -582,7 +581,7 @@ export default {
       },
       immediate: true
     },
-    $route(newV, oldV) {
+    $route(newV) {
       if(newV.name === 'Find') {
         // console.log('进入开始播放');
         this.$refs.banner.$swiper.autoplay.start()

@@ -106,9 +106,13 @@ export default {
         let vdo = this.$refs.rcmdVideo
         // 如果没有地址就添加
         if (!vdo.src) {
-          let url = await mvUrl(id)
-          url = url.data.url
-          vdo.src = url
+          if (this.rcmdMv.url) {
+            vdo.src = this.rcmdMv.url
+          } else {
+            let url = await mvUrl(id)
+            url = url.data.url
+            vdo.src = url
+          }
           vdo.oncanplay = () => {
             vdo.play()
           }
@@ -217,9 +221,15 @@ export default {
   watch: {
     '$store.getters.mvId': {
       handler: function (newV) {
-        if (!this.$refs.rcmdVideo.paused && newV !== this.rcmdMv.id) {
+        if (newV !== this.rcmdMv.id) {
           // console.log('暂停', this.rcmdMv.name);
+          this.updateTime = moment(this.rcmdMv.duration).format("mm:ss")
+          // 销毁
           this.$refs.rcmdVideo.pause()
+          this.$refs.rcmdVideo.removeAttribute('src')
+          this.$refs.rcmdVideo.load()
+          clearInterval(this.vdoTimer)
+          this.setPStatus('')
         }
       }
     },

@@ -315,11 +315,21 @@ export function getMvDetail(id) {
 
 /**
  * 获取 mv 播放地址
- * @param {number} id mv id
- * @param {*} r 分辨率
+ * @param {Number|Stirng} id mv id
+ * @param {Number|Stirng} r 分辨率
  */
 export function mvUrl(id, r=480) {
   return get(`/mv/url?id=${id}&r=${r}`)
+}
+
+
+/**
+ * 推荐视频
+ * @param {Number} offset 分页
+ * @returns 
+ */
+export function vdoRcmd(offset) {
+  return get(`/video/timeline/recommend?offset=${offset}`)
 }
 
 

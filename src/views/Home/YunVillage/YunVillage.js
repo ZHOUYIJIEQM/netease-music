@@ -1,6 +1,6 @@
 import { scrollPosition } from "@/mixin/scrollPosition.js";
 import { global } from "@/mixin/global";
-import { getAllMv } from "@/api/api";
+import { getAllMv, vdoRcmd } from "@/api/api";
 
 
 export default {
@@ -38,25 +38,44 @@ export default {
       try {
         this.$store.commit("changeLoading", this.loading);
         // console.log(this.pageNum);
-        let limit = 20;
-        let allmv = await getAllMv({
-          area: this.area,
-          offset: this.pageNum * limit,
-          limit: limit,
-        });
-        this.recommendVideo.push(
-          ...allmv.data.map((item) => {
-            return {
-              id: item.id,
-              duration: item.duration,
-              name: item.name,
-              playCount: item.playCount,
-              img: item.cover,
-              tag: item.artistName,
-            };
-          })
-        );
-        this.pageNum++;
+        if (!this.loginStatus) {
+          let limit = 20;
+          let allmv = await getAllMv({
+            area: this.area,
+            offset: this.pageNum * limit,
+            limit: limit,
+          });
+          this.recommendVideo.push(
+            ...allmv.data.map((item) => {
+              return {
+                id: item.id,
+                duration: item.duration,
+                name: item.name,
+                playCount: item.playCount,
+                img: item.cover,
+                tag: item.artistName,
+              };
+            })
+          );
+          this.pageNum++;
+        } else {
+          let allmv = await vdoRcmd(this.pageNum)
+          console.log(allmv);
+          this.recommendVideo.push(
+            ...allmv.datas.map(item => {
+              return {
+                id: item.data.vid,
+                duration: item.data.durationms,
+                name: item.data.title,
+                img: item.data.coverUrl,
+                url: item.data.urlInfo.url,
+                tag: item.data.videoGroup && item.data.videoGroup[0].name,
+                playCount: item.data.playTime
+              }
+            })
+          )
+          this.pageNum++
+        }
         this.loading = false;
         this.$store.commit("changeLoading", false);
       } catch (error) {
@@ -73,8 +92,7 @@ export default {
       });
     },
     handlerScroll() {
-      let bodyH =
-        document.body.scrollHeight || document.documentElement.scrollHeight;
+      let bodyH = document.body.scrollHeight || document.documentElement.scrollHeight;
       let sT = this.getScrollTop();
       let cH = this.getClientHeight();
       if (sT + cH > bodyH - 300 && !this.loading && this.flagActive === 1) {
