@@ -67,13 +67,12 @@
       </div>
 
       <!-- 发现页里的块 根据 item 里的 type 来渲染块 -->
-      <div class="find-data-item"
+      <div class="find-data-box"
         v-for="(item, index) in homeFindData"
         :key="index"
-        :class="{'bottom-border': item.type === '推荐歌单'}"
       >
 
-        <template v-if="item.type === '推荐歌单'">
+        <div class="find-data-item bottom-border" v-if="item.type === '推荐歌单'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -142,9 +141,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '推荐歌曲'">
+        <div class="find-data-item" v-if="item.type === '推荐歌曲'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -174,9 +173,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '精选音乐视频'">
+        <div class="find-data-item" v-if="item.type === '精选音乐视频'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text" @click="$toast('')">
@@ -202,9 +201,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '雷达歌单'">
+        <div class="find-data-item" v-if="item.type === '雷达歌单'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -232,9 +231,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '热门播客'">
+        <div class="find-data-item" v-if="item.type === '热门播客'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -266,7 +265,7 @@
                     <div class="right-box">
                       <div class="name text-eli">{{item2.name}}</div>
                       <div class="des">
-                        <span class="tag">{{item2.labelText}}</span>
+                        <span v-if="item2.labelText" class="tag">{{item2.labelText}}</span>
                       </div>
                     </div>
                   </div>
@@ -274,9 +273,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '专属场景歌单'">
+        <div class="find-data-item" v-if="item.type === '专属场景歌单'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -304,9 +303,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '新歌新碟数字专辑'">
+        <div class="find-data-item" v-if="item.type === '新歌新碟数字专辑'">
           <div class="item-title">
             <div class="title">
               <span class="title-item"
@@ -391,9 +390,9 @@
               </swiper>
             </div>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '音乐日历'">
+        <div class="find-data-item" v-if="item.type === '音乐日历'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -423,9 +422,9 @@
               </div>
             </div>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '云村ktv'">
+        <div class="find-data-item" v-if="item.type === '云村ktv'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -450,9 +449,9 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '广播电台'">
+        <div class="find-data-item" v-if="item.type === '广播电台'">
           <div class="item-title">
             <div class="title">
               <span class="title-item"
@@ -507,9 +506,9 @@
               </swiper>
             </div>
           </div>
-        </template>
+        </div>
 
-        <template v-if="item.type === '视频合辑'">
+        <div class="find-data-item" v-if="item.type === '视频合辑'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
             <div class="text" v-if="item.text">
@@ -537,7 +536,7 @@
               </swiper-slide>
             </swiper>
           </div>
-        </template>
+        </div>
 
       </div>
       

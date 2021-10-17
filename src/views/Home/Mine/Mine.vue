@@ -69,7 +69,7 @@
       <!-- 登录 -->
       <div class="your-like-music" 
         v-if="loginStatus && createdList.length" 
-        @click="clickPlayList(createdList[0].id)"
+        @click="goPlaylist(createdList[0].id)"
       >
         <div class="like-icon">
           <img v-lazy="createdList[0].coverImgUrl" alt="">
@@ -119,17 +119,19 @@
                   <div class="created">
                     <div 
                       v-if="loginStatus"
-                      style="min-height: 1rem; margin-bottom: .15rem;"
+                      
                     >
                       <template v-if="createdList.length > 1">
                         <div class="list-box"
                           v-for="(item, index) in createdList.slice(1)"
                           :key="index"
                         >
-                          <UserPlayList :listInfo="item"></UserPlayList>
+                          <PlayListInfoMore :playlistInfo="item"></PlayListInfoMore>
                         </div>
                       </template>
-                      <Loading v-else></Loading>
+                      <div v-else style="min-height: 1rem;">
+                        <Loading></Loading>
+                      </div>
                     </div>
                     <div class="import">
                       <div class="img-box">
@@ -156,7 +158,7 @@
                         v-for="(item, index) in subList"
                         :key="index"
                       >
-                        <UserPlayList :listInfo="item" :showCreator="true"></UserPlayList>
+                        <PlayListInfoMore :playlistInfo="item" :showCreator="true"></PlayListInfoMore>
                       </div>
                     </div>
                   </template>
@@ -249,5 +251,8 @@
       font-weight: bold;
     }
   }
+  // .van-tab__pane {
+  //   padding: .05rem .15rem .1rem;
+  // }
 }
 </style>

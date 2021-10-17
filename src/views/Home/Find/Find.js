@@ -1,6 +1,6 @@
 import { scrollPosition } from "@/mixin/scrollPosition.js";
 import { arrTurnTwo } from '@/utils/globalMethods.js'
-import { homePageFind, defaultSearch } from '@/api/api'
+import { homePageFind, defaultSearch, getOfficialList } from '@/api/api'
 import moment from "moment";
 import { global } from "@/mixin/global.js";
 
@@ -41,6 +41,8 @@ export default {
       },
       // 轮播配置
       swiperOptions: {
+        // 滑轮切换
+        mousewheel: true,
         pagination: {
           // 分页器
           el: ".swiper-pagination",
@@ -73,6 +75,7 @@ export default {
       homeFindData: [],
       // 歌单配置(3列多一点)
       threeColumnOptions: {
+        // mousewheel: true,
         // 这样就可以在css自定义每一项的宽度大小
         slidesPerView: 'auto',
         resistanceRatio: 0.3,
@@ -81,6 +84,8 @@ export default {
       },
       // 推荐歌单的第一项 轮播配置
       scrollPlayList: {
+        // nested: true,
+        // mousewheel: true,
         speed: 600,
         // // 循环
         loop: true,
@@ -106,6 +111,7 @@ export default {
       scrollPlayListIndex: 0,
       // 歌曲配置(1列多一点)
       songOptions: {
+        // mousewheel: true,
         slidesPerView: 'auto',
         resistanceRatio: 0.3,
       },
@@ -113,7 +119,10 @@ export default {
       loading: true,
       // 新歌新碟数字专辑 活动项
       newListActive: 0,
+      // 广播电台活动标记
       broadCastActive: 0,
+      // 登录后的请求参数
+      cursor: null,
     }
   },
   computed: {
@@ -121,17 +130,17 @@ export default {
       return this.$refs.scrollList[0].$swiper
     }
   },
+  activated() {
+    if (this.loginStatus) {
+      window.addEventListener('scroll', this.getLoginData)
+    }
+  },
+  deactivated() {
+    if (this.loginStatus) {
+      window.removeEventListener('scroll', this.getLoginData)
+    }
+  },
   methods: {
-    // gplay() {
-    //   let banner = this.$refs.banner.$swiper
-    //   // console.log(this.$refs.banner);
-    //   banner.autoplay.start()
-    // },
-    // gpause() {
-    //   let banner = this.$refs.banner.$swiper
-    //   // console.log(this.$refs.banner);
-    //   banner.autoplay.stop()
-    // },
     // 初始化需要的数据
     async initData() {
       try {
@@ -147,20 +156,41 @@ export default {
     async getData() {
       try {
         let find = await homePageFind()
+        // if (this.loginStatus) {
+          this.cursor = find.data.cursor
+        //   console.log(this.cursor);
+        // }
         // 里面的数据看起来有些乱, 手动提取需要的数据
         let dataBlocks = find.data.blocks
         // console.log(dataBlocks);
         this.extractData(dataBlocks)
         // console.log('发现页需要的数据', JSON.stringify(this.homeFindData, null, '  '));
         this.loading = false
-
       } catch(error) {
         console.log(error);
       }
     },
-    // 去搜索页
-    goSearch() {
-      console.log('去搜索页');
+    // 登录后, 获取发现页数据
+    async getLoginData() {
+      // console.log('触发滚动');
+      let bodyH = document.body.scrollHeight || document.documentElement.scrollHeight;
+      let scrollT = this.getScrollTop()
+      let clientH = this.getClientHeight()
+      if (bodyH - 200 < scrollT + clientH && !this.loading) {
+        // console.log('触底加载');
+        if (!this.cursor) {
+          window.removeEventListener('scroll', this.getLoginData)
+          return
+        }
+        this.loading = true
+        let find = await homePageFind({cursor: this.cursor})
+        // 里面的数据看起来有些乱, 手动提取需要的数据
+        // console.log(find);
+        this.cursor = find.data.cursor
+        let dataBlocks = find.data.blocks
+        this.extractData(dataBlocks)
+        this.loading = false
+      }
     },
     // 语音搜索
     yuyin() {
@@ -238,7 +268,7 @@ export default {
           rcmdPlayList.text = dataItem.uiElement.button.text
           rcmdPlayList.scrollPlaylist = []
           rcmdPlayList.list = []
-          dataItem.creatives.forEach(item => {
+          dataItem.creatives.forEach(async item => {
             if (item.creativeType === "scroll_playlist") {
               item.resources.forEach(item2 => {
                 // 提取歌单需要的数据
@@ -249,6 +279,20 @@ export default {
                   playCount: item2.resourceExtInfo.playCount
                 })
               })
+            } else {
+              try {
+                let scrolllist = await getOfficialList(6)
+                scrolllist.result.forEach(item2 => {
+                  rcmdPlayList.scrollPlaylist.push({
+                    id: item2.id,
+                    name: item2.name,
+                    img: item2.picUrl,
+                    playCount: item2.playCount,
+                  })
+                })
+              } catch (error) {
+                console.log(error);
+              }
             }
             if (item.creativeType === "list") {
               item.resources.forEach(item2 => {
@@ -532,7 +576,8 @@ export default {
   },
   watch: {
     loginStatus: {
-      handler: function () {
+      handler: function (newV) {
+        this.homeFindData = []
         this.initData()
       },
       immediate: true
@@ -540,13 +585,11 @@ export default {
     $route(newV, oldV) {
       if(newV.name === 'Find') {
         // console.log('进入开始播放');
-        let banner = this.$refs.banner.$swiper
-        banner.autoplay.start()
+        this.$refs.banner.$swiper.autoplay.start()
         this.scrollList.autoplay.start()
       } else {
         // console.log('离开暂停播放');
-        let banner = this.$refs.banner.$swiper
-        banner.autoplay.stop()
+        this.$refs.banner.$swiper.autoplay.stop()
         this.scrollList.autoplay.stop()
       }
     }

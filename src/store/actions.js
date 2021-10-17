@@ -12,7 +12,7 @@ const actions = {
     commit('changeLoading', true)
     try {
       let l = await phoneLogin(params);
-      console.log('登录信息:', l);
+      // console.log('登录信息:', l);
       if (l.code === 200) {
         // 保存登录信息
         dispatch("saveLoginData", l)
@@ -71,7 +71,7 @@ const actions = {
       let out = await loginOut();
       commit("changeLoginStatus", false);
       commit("saveCookie", "");
-      commit("changeShowMenu")
+      commit("toggleMenu")
       window.localStorage.clear();
       vue.$toast({
         message: "已退出登录",

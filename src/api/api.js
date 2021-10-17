@@ -3,9 +3,10 @@ import store from "@/store";
 
 /**
  * @description 调用此接口 , 可获取APP首页信息
+ * 
  */
-export function homePageFind() {
-  return get(`/homepage/block/page`);
+export function homePageFind(params={}) {
+  return post(`/homepage/block/page`, params);
 }
 
 /**

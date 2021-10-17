@@ -118,13 +118,14 @@ export default {
     },
     // 去登录
     goLogin() {
-      !this.loginStatus && this.$router.push({ name: "Login" });
-      this.$store.commit('toggleMenu')
+      if (!this.loginStatus) {
+        this.$router.push({ name: "Login" });
+        this.$store.commit('toggleMenu')
+      }
     },
     // 退出登录
     logout() {
       this.$store.dispatch('userLogout')
-      this.$store.commit('toggleMenu')
     },
   },
 }

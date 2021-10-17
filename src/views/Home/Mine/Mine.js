@@ -13,6 +13,7 @@ export default {
     Navbar: () => import("@/components/Navbar"),
     Loading: () => import("@/components/Loading"),
     PlayListBlock: () => import("@/components/PlayListBlock"),
+    PlayListInfoMore: () => import("@/components/PlayListInfoMore"),
   },
   data() {
     return {
@@ -53,11 +54,35 @@ export default {
     },
     // 用户创建的歌单
     createdList() {
-      return this.userList.filter((list) => !list.subscribed);
+      let userlist = this.userList.filter((list) => !list.subscribed);
+      return userlist.map(item => {
+        return {
+          subscribed: item.subscribed,
+          id: item.id,
+          name: item.name,
+          coverImgUrl: item.coverImgUrl,
+          subscribedCount: item.subscribedCount,
+          trackCount: item.trackCount,
+          // creator: item.creator.nickname,
+          // playCount: item.playCount,
+        }
+      })
     },
     // 收藏的歌单
     subList() {
-      return this.userList.filter((list) => list.subscribed);
+      let sublist = this.userList.filter((list) => list.subscribed);
+      return sublist.map(item => {
+        return {
+          subscribed: item.subscribed,
+          id: item.id,
+          name: item.name,
+          coverImgUrl: item.coverImgUrl,
+          subscribedCount: item.subscribedCount,
+          trackCount: item.trackCount,
+          creator: item.creator.nickname,
+          // playCount: item.playCount,
+        }
+      })
     },
   },
   activated() {
@@ -76,6 +101,7 @@ export default {
      * @param {Object} scrollObj { scrollTop: 距离顶部位置, isFixed: 是否吸顶 }
      */
     tabsScroll(scrollObj) {
+      // console.log(scrollObj);
       // 贴顶时修改背景色
       if (scrollObj.isFixed) {
         this.tabsColor = "white";
@@ -83,6 +109,7 @@ export default {
         this.tabsColor = "transparent";
       }
     },
+
     // 获取需要的数据
     async getData() {
       try {
@@ -92,7 +119,9 @@ export default {
           this.userList = [];
           let userlist = await userPlaylist();
           this.userList = userlist.playlist;
+          // 用户的 歌单信息
           this.subCount = await userSubCount();
+          // console.log(this.subCount);
         }
         // 3778678 热歌榜  3779629 新歌榜
         let hotList = await playListDetail("3778678");

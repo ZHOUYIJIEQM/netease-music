@@ -8,7 +8,7 @@
       </div>
       <div class="song-name">
         <!-- {{ktvData.songName}} -->
-        <van-notice-bar :text="ktvData.songName"/>
+        <van-notice-bar :speed="30" :delay="delayTime" :text="ktvData.songName"/>
       </div>
     </div>
     <div class="name two-eli">
@@ -28,6 +28,12 @@ export default {
       default: function () {
         return {}
       }
+    }
+  },
+  data() {
+    return {
+      // 1 - 4 随机数
+      delayTime: Math.round(Math.random() * 3 + 1)
     }
   },
   methods: {

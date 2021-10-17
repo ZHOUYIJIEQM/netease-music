@@ -32,8 +32,8 @@ export let global = {
     clickMenu() {
       console.log('点击了菜单');
     },
-    // 点击搜索
-    clickSearch() {
+    // 去搜索
+    goSearch() {
       console.log('前往搜索页');
     },
     // 前往 歌单
