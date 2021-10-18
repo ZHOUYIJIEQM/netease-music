@@ -25,7 +25,7 @@
 ```
 npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
 ```
-> swiper 使用 5.x 的版本, npm view swiper versions 查看有哪些版本
+> swiper 使用 5.x 的版本, npm view swiper versions 查看有哪些版本  
 > [vant 自动按需引入组件需要先配置, 否则使用时没有样式](https://vant-contrib.gitee.io/vant/#/zh-CN/quickstart#fang-shi-yi.-zi-dong-an-xu-yin-ru-zu-jian-tui-jian)
 
 ## 遇到的一些问题记录

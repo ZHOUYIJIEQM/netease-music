@@ -13,6 +13,9 @@
       <i class="iconfont icon-scansaomiao"></i>
     </div>
 
+    <!-- todo: 一键登录 -->
+    <div @click="lgin">一键登录</div>
+
     <div class="menu-content" ref="menuContent" @scroll="menuContentScroll">
       <!-- 推荐去买黑胶vip -->
       <div class="rcmd-vip">
@@ -101,6 +104,11 @@ export default {
     }
   },
   methods: {
+    // todo: 一键登录
+    lgin() {
+      let p = { phone: '13192735145', password: '123bubigaimima' }
+      this.$store.dispatch('userPhoneLogin', p)
+    },
     // 滚动处理
     menuContentScroll() {
       let userInfo = this.$refs.userInfo

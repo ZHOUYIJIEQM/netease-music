@@ -123,11 +123,16 @@ export default {
       broadCastActive: 0,
       // 登录后的请求参数
       cursor: null,
+      // 底部分隔线
+      dividerShow: false
     }
   },
   computed: {
     scrollList() {
-      return this.$refs.scrollList[0].$swiper
+      // 需要这样写, 在 homeFindData 发生改变后, 重新获取
+      if (this.homeFindData.length) {
+        return this.$refs.scrollList[0].$swiper
+      }
     }
   },
   activated() {
@@ -148,14 +153,16 @@ export default {
         let defaultText = await defaultSearch()
         this.searchText = defaultText.data.showKeyword
         this.getData()
+        this.scrollPlayListIndex = 0
       } catch (error) {
         console.log(error);
       }
     },
-    // 不登录, 获取发现页数据, 并提取需要的数据
+    // 获取发现页数据, 并提取需要的数据
     async getData() {
       try {
         let find = await homePageFind()
+        // 登录状态
         if (this.loginStatus) {
           this.cursor = find.data.cursor
           // 登录后没有返回 推荐歌单第一项 轮播数据, 在这里先获取
@@ -174,6 +181,11 @@ export default {
               img: item2.coverImgUrl,
             })
           })
+          window.addEventListener('scroll', this.getLoginData)
+        } else {
+          // 非登录, 直接显示底部分隔线
+          this.dividerShow = true
+          window.removeEventListener('scroll', this.getLoginData)
         }
         // 里面的数据看起来有些乱, 手动提取需要的数据
         let dataBlocks = find.data.blocks
@@ -195,6 +207,7 @@ export default {
       if (bodyH - 300 < scrollT + clientH && !this.loading) {
         // console.log('触底加载');
         if (!this.cursor) {
+          this.dividerShow = true
           window.removeEventListener('scroll', this.getLoginData)
           return
         }
@@ -295,9 +308,7 @@ export default {
                   playCount: item2.resourceExtInfo.playCount
                 })
               })
-            } else {
-              rcmdPlayList.scrollPlaylist.push(...this.scrollListData)
-            }
+            } 
             if (item.creativeType === "list") {
               item.resources.forEach(item2 => {
                 rcmdPlayList.list.push({
@@ -309,6 +320,9 @@ export default {
               })
             }
           });
+          if (!rcmdPlayList.scrollPlaylist.length) {
+            rcmdPlayList.scrollPlaylist.push(...this.scrollListData)
+          }
           this.homeFindData.push(rcmdPlayList)
         }
         

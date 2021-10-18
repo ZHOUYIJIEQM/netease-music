@@ -39,7 +39,8 @@
       <!-- 推荐 -->
       <div class="video-recommend" v-show="flagActive === 1">
         <!-- todo: 通过设置 one-column two-column 改变列数 -->
-        <div class="video-item one-column"
+        <!-- <div class="video-item one-column" -->
+        <div class="video-item two-column"
           v-for="(item, index) in recommendVideo"
           :key="index"
         >
@@ -78,7 +79,7 @@
       width: calc((100% - $gap) / 2);
       margin-bottom: $gap;
       .img-box {
-        aspect-ratio: 1 / 1.25; 
+        aspect-ratio: 1 / 1.27; 
       }
     }
   }

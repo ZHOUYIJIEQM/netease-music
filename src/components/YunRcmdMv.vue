@@ -243,14 +243,8 @@ export default {
 .rcmd-mv {
   display: flex;
   flex-direction: column;
-  // height: 100%;
+  height: 100%;
   .img-box {
-    &.one-column {
-      aspect-ratio: 1 / .56;
-    }
-    &.two-column {
-      aspect-ratio: 1 / 1.25;
-    }
     width: 100%;
     background-color: #f7b2b2;
     position: relative;
@@ -274,7 +268,7 @@ export default {
       position: absolute;
       left: .05rem;
       bottom: .08rem;
-      @include loader($divWidth: .02rem);
+      @include loader($divWidth: .02rem, $boxHeight: .1rem);
       .icon-bofang2 {
         color: #fff;
         font-size: .14rem;
@@ -289,7 +283,7 @@ export default {
     .name {
       font-size: 0.13rem;
       color: #4a4a4a;
-      line-height: 1.3;
+      line-height: 1.4;
       flex: 1;
     }
     .playinfo {

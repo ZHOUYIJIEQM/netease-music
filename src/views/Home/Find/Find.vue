@@ -87,6 +87,7 @@
               :options="threeColumnOptions"
               v-if="item.list.length"
             >
+            <!-- todo: 测试template可否去掉 -->
               <template v-if="item.scrollPlaylist.length">
                 <swiper-slide class="list-item-box">
                   <div class="list-item-inner scroll-list">
@@ -545,7 +546,7 @@
         <Loading></Loading>
       </div>
 
-      <van-divider class="divider" v-if="!loading && homeFindData.length">到底了!</van-divider>
+      <van-divider class="divider" v-if="dividerShow">到底了!</van-divider>
     </div>
   </div>
 </template>

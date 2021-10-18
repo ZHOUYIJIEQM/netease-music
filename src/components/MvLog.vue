@@ -9,6 +9,7 @@
         @click="playVideo"
         @play="vdoPlay"
         @pause="vdoPause"
+        @error="vdoError"
       ></video>
       <!-- 右上角的数据 -->
       <span class="tr-text" v-if="mvLogData.playCount">
@@ -57,11 +58,13 @@ export default {
       if (!vdo.src) {
         try {
           let mlog = await getMLog({id: this.mvLogData.id, res: 480})
+          // console.log(mlog);
           vdo.src = mlog.data.resource.content.video.urlInfo.url
           vdo.oncanplay = () => {
             vdo.play()
           }
         } catch (error) {
+          this.$toast('获取播放链接错误!')
           console.log(error);
         }
       } else {
@@ -77,6 +80,9 @@ export default {
     },
     vdoPause() {
       this.videoStatus = true
+    },
+    vdoError() {
+      this.$toast('视频播放错误!')
     }
   },
   watch: {
