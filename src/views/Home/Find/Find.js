@@ -181,6 +181,7 @@ export default {
               img: item2.coverImgUrl,
             })
           })
+          this.dividerShow = false
           window.addEventListener('scroll', this.getLoginData)
         } else {
           // 非登录, 直接显示底部分隔线

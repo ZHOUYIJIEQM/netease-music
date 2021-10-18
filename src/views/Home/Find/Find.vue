@@ -546,7 +546,7 @@
         <Loading></Loading>
       </div>
 
-      <van-divider class="divider" v-if="dividerShow">到底了!</van-divider>
+      <van-divider class="divider" v-if="dividerShow && homeFindData.length">到底了!</van-divider>
     </div>
   </div>
 </template>
