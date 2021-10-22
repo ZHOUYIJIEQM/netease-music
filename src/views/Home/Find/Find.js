@@ -104,7 +104,7 @@ export default {
           // 间隔时间
           delay: 2000,
           // 滑动操作离开后重新自动播放
-          disableOnInteraction: false,
+          // disableOnInteraction: false,
         },
       },
       // 对应下标
@@ -603,11 +603,11 @@ export default {
     },
     $route(newV) {
       if(newV.name === 'Find') {
-        // console.log('进入开始播放');
+        console.log('进入开始播放');
         this.$refs.banner.$swiper.autoplay.start()
         this.scrollList.autoplay.start()
       } else {
-        // console.log('离开暂停播放');
+        console.log('离开暂停播放');
         this.$refs.banner.$swiper.autoplay.stop()
         this.scrollList.autoplay.stop()
       }

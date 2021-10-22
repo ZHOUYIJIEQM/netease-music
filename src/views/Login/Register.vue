@@ -1,5 +1,5 @@
 <template>
-  <!-- 注册/找回账号 没有多余手机号测试, 也不清楚能不能用 -->
+  <!-- 注册/找回账号 -->
   <div class="register-page">
     <Navbar
       class="navbar"

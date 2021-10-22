@@ -2,13 +2,12 @@
 
 export let global = {
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     // 获取登录状态
     loginStatus() {
-      return this.$store.getters.loginStatus
+      return this.$store.getters.loginStatus;
     },
   },
   methods: {
@@ -18,27 +17,28 @@ export let global = {
     },
     // 退出登录
     logout() {
-      this.$store.dispatch('userLogout')
+      this.$store.dispatch("userLogout");
     },
     // 菜单显示/隐藏
     toggleMenu() {
-      this.$store.commit('toggleMenu')
+      this.$store.commit("toggleMenu");
     },
     // 路由返回
     goBack() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     // 点击菜单字体图标
     clickMenu() {
-      console.log('点击了菜单');
+      console.log("点击了菜单");
     },
     // 去搜索
     goSearch() {
-      console.log('前往搜索页');
+      console.log("前往搜索页");
     },
     // 前往 歌单
     goPlaylist(id) {
-      console.log('点击歌单:', id);
+      console.log("点击歌单:", id);
+      this.$router.push({ name: "PlayListDetail", params: { id } });
     },
   },
-}
+};

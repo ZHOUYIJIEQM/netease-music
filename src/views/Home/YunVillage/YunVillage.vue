@@ -72,7 +72,7 @@
       width: 100%;
       margin-bottom: .12rem;
       .img-box {
-        aspect-ratio: 1 / .56; 
+        aspect-ratio: 1 / .57; 
       }
     }
     .two-column {

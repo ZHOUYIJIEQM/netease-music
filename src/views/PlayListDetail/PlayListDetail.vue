@@ -1,7 +1,120 @@
 <template>
-  <div class="daily-playlist-page">
-    
+  <!-- 歌单详情页面 -->
+  <div class="playlist-detail-page">
+    <Navbar 
+      class="navbar" 
+      @clickLeft="goBack"
+      ref="navbar"
+      @navbarMounted="navbarMounted"
+    >
+      <template #left>
+        <div class="icon">
+          <i class="iconfont icon-fanhui"></i>
+        </div>
+      </template>
+      <template #middle>
+        <div class="middle-content">
+          <div class="text">
+            <van-notice-bar
+              class="notice-bar"
+              :text="playListName"
+              speed="30"
+              color="#fff"
+              background="transparent"
+            />
+          </div>
+          <i class="iconfont icon-sousuo"></i>
+        </div>
+      </template>
+      <template #right>
+        <i class="iconfont icon-gengduoxiao"></i>
+      </template>
+      <template #background>
+        <!-- 高斯模糊 -->
+        <div class="navbar-bg bg-outer" ref="navbarBg">
+          <div
+            class="bg-inner"
+            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
+          ></div>
+        </div>
+      </template>
+    </Navbar>
+    <!-- 歌单详情介绍 -->
+    <div class="playlist-detail">
+      <!-- 歌单描述 -->
+      <div 
+        class="description-box" 
+        ref="description"
+      >
+        <div class="img-box">
+          <template v-if="playList.coverImgUrl">
+            <img v-lazy="playList.coverImgUrl" alt="">
+            <span><i class="iconfont icon-bofangsanjiaoxing"></i> {{playList.playCount | formatNum}}</span>
+          </template>
+        </div>
+        <div class="info-box" v-if="playList.creator">
+          <div class="playlist-name text-eli">
+            {{playList.name}}
+          </div>
+          <div class="author">
+            <img v-lazy="playList.creator.avatarUrl" alt=""> <span>{{ playList.creator.nickname }}</span>
+          </div>
+          <div class="playlist-description">
+            <span class="text-eli">{{playList.description}}</span><i class="iconfont icon-jiantouyou"></i>
+          </div>
+        </div>
+      </div>
+      <!-- 背景 -->
+      <div class="description-bg">
+        <div class="detail-bg bg-outer">
+          <div 
+            class="bg-inner"
+            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
+          ></div>
+        </div>
+      </div>
+      <!-- 收藏 评论 分享 -->
+      <div class="playlist-bar" ref="playlistBar">
+        <!-- todo: 还需设置点击事件 -->
+        <div class="favo text-eli">
+          <i class="iconfont icon-dagou"></i>
+          <span class="text-eli">{{playList.subscribedCount || '收藏'}}</span>
+        </div>
+        <div class="comment text-eli">
+          <i class="iconfont icon-pinglun2"></i>
+          <span class="text-eli">{{playList.commentCount || '评论'}}</span>
+        </div>
+        <div class="share text-eli">
+          <i class="iconfont icon-fenxiang"></i>
+          <span class="text-eli">{{playList.shareCount || '分享'}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- 歌曲列表 -->
+    <div class="playlist-song" ref="playlist">
+      <!-- 头部 -->
+      <van-sticky offset-top="navbarHeight">
+        <div class="playlist-title">
+          <i class="iconfont icon-bofang1"></i>
+          <span class="title-text">播放全部<i v-if="playList.trackIds">({{playList.trackIds.length}})</i></span>
+          <span class="title-icon">
+            <i class="iconfont icon-xiazai1"></i>
+          </span>
+        </div>
+      </van-sticky>
+
+    </div>
   </div>
 </template>
-<script src="./DailyPlayList.js"></script>
-<style lang="scss" scoped src="DailyPlayList.scss"></style>
+<script src="./PlayListDetail.js"></script>
+<style lang="scss" src="./PlayListDetail.scss"></style>
+<style lang="scss">
+@import '@/styles/mixin.scss';
+.playlist-detail-page {
+  .navbar {
+    .van-notice-bar {
+      padding: 0;
+    }
+  }
+}
+</style>

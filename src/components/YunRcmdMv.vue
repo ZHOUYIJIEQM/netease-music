@@ -34,6 +34,10 @@
           <i class="iconfont icon-bofangsanjiaoxing"></i>
           <span>{{ rcmdMv.playCount | formatNum }}</span>
         </div>
+        <div class="praised-count" v-if="rcmdMv.praisedCount">
+          <i class="iconfont icon-zanpress"></i>
+          <span>{{ rcmdMv.praisedCount | formatNum }}</span>
+        </div>
         <div class="tag text-eli">{{ rcmdMv.tag }}</div>
       </div>
     </div>
@@ -186,7 +190,9 @@ export default {
       try {
         let html = document.querySelector('html')
         gap = window.getComputedStyle(html).fontSize
+        // '100px'
         gap = parseInt(/(\d+)/g.exec(gap)[0]) * 0.5
+        // 100 * 0.5
         gap = gap > 0 ? '-'+gap+'px' : '-30px'
       } catch (error) {
         gap = '-30px'
@@ -281,31 +287,36 @@ export default {
     flex-direction: column;
     padding: .1rem .08rem .08rem;
     .name {
-      font-size: 0.13rem;
+      font-size: .13rem;
       color: #4a4a4a;
       line-height: 1.4;
       flex: 1;
     }
     .playinfo {
-      margin-top: 0.06rem;
-      color: #6b6b6b;
+      margin-top: .06rem;
+      color: #888787;
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       align-items: center;
-      font-size: 0.1rem;
-      .count {
+      font-size: .09rem;
+      .count, .praised-count {
         display: flex;
         align-items: center;
-        .icon-bofangsanjiaoxing {
+        white-space: nowrap;
+        .iconfont {
           font-size: .09rem;
           font-weight: bold;
           margin-right: .02rem;
           color: #b8b8b8;
         }
       }
+      .praised-count {
+        margin-left: .05rem;
+      }
       .tag {
         max-width: 8em;
         line-height: 1.3;
+        margin-left: auto;
       }
     }
   }

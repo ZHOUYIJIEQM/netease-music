@@ -8,6 +8,7 @@ const routes = [
     path: "/",
     redirect: { name: "Find" },
   },
+  // 首页
   {
     path: "/Home",
     name: "Home",
@@ -55,6 +56,12 @@ const routes = [
     path: "/Register",
     name: "Register",
     component: () => import('@/views/Login/Register.vue')
+  },
+  // 歌单详情页面
+  {
+    path: "/PlayListDetail/:id",
+    name: "PlayListDetail",
+    component: () => import('@/views/PlayListDetail/PlayListDetail.vue')
   },
 
   

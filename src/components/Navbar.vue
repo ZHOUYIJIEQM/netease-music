@@ -9,6 +9,9 @@
     <div class="right" @click="clickItem('right')">
       <slot name="right"></slot>
     </div>
+    <div class="background">
+      <slot name="background"></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -19,6 +22,9 @@ export default {
       type === 'middle' && this.$emit('clickMiddle')
       type === 'right' && this.$emit('clickRight')
     }
+  },
+  mounted() {
+    this.$emit('navbarMounted')
   }
 }
 </script>
@@ -55,6 +61,14 @@ export default {
     &>div {
       width: 100%;
     }
+  }
+  .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
   }
 }
 </style>
