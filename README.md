@@ -58,7 +58,8 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     - 菜单使用 vant 弹出层, 弹出层的css中设置了```transform```, 所以在子孙元素css中设置```position:fixed;```无效
 1. 歌单详情页面
     - 获取歌单详情, 并从里面 trackIds 提取歌单的所有歌曲 id, 根据 id 获取歌曲信息, 每次最多加载100首曲, 滚动到底触发加载更多歌曲
-    - 
+    - 添加触碰离开事件, 在歌单介绍, 向上/下滚动到指定内容
+    - 添加滚动事件, 设置头部背景透明度, 歌单介绍背景弧度, playlistbar透明度
 
 
 ## 遇到的一些问题

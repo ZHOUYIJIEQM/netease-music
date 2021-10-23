@@ -133,8 +133,13 @@ $playlistBarH: .4rem;
         width: 300%;
         border-radius: 0 0 50% 50%;
         z-index: -2;
+        @include df();
+        justify-content: center;
+        .bg-inner {
+          width: 100vw;
+        }
       }
-      @include gaussBlur(.5rem, .5, .5rem);
+      @include gaussBlur(.4rem, .6, 1rem);
     }
     .playlist-bar {
       color: $black;
@@ -184,6 +189,35 @@ $playlistBarH: .4rem;
     }
   }
   .playlist-song {
-
+    .playlist-title {
+      padding: .12rem .15rem .12rem;
+      @include df();
+      align-items: center;
+      background-color: #fff;
+      .iconfont {
+        font-size: .2rem;
+      }
+      .icon-bofang1 {
+        font-size: .24rem;
+        color: red;
+      }
+      .title-text {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding-left: .12rem;
+        span {
+          padding-left: .08rem;
+          font-size: .12rem;
+          color: #989898;
+        }
+      }
+      .icon-gouxuanzeyemian {
+        padding-left: .2rem;
+      }
+    }
+    .list-item {
+      
+    }
   }
 }

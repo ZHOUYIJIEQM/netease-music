@@ -78,31 +78,49 @@
         <!-- todo: 还需设置点击事件 -->
         <div class="favo text-eli">
           <i class="iconfont icon-dagou"></i>
-          <span class="text-eli">{{playList.subscribedCount || '收藏'}}</span>
+          <span class="text-eli" v-if="playList.subscribedCount">{{playList.subscribedCount|formatNum}}</span>
+          <span v-else>收藏</span>
         </div>
         <div class="comment text-eli">
           <i class="iconfont icon-pinglun2"></i>
-          <span class="text-eli">{{playList.commentCount || '评论'}}</span>
+          <span class="text-eli" v-if="playList.commentCount">{{playList.commentCount|formatNum}}</span>
+          <span v-else>评论</span>
         </div>
         <div class="share text-eli">
           <i class="iconfont icon-fenxiang"></i>
-          <span class="text-eli">{{playList.shareCount || '分享'}}</span>
+          <span class="text-eli" v-if="playList.shareCount">{{playList.shareCount|formatNum}}</span>
+          <span v-else>分享</span>
         </div>
       </div>
     </div>
     <!-- 歌曲列表 -->
     <div class="playlist-song" ref="playlist">
       <!-- 头部 -->
-      <van-sticky offset-top="navbarHeight">
+      <van-sticky :offset-top="navbarHeight">
         <div class="playlist-title">
           <i class="iconfont icon-bofang1"></i>
-          <span class="title-text">播放全部<i v-if="playList.trackIds">({{playList.trackIds.length}})</i></span>
+          <span class="title-text">播放全部<span v-if="playList.trackIds">({{playList.trackIds.length}})</span></span>
           <span class="title-icon">
             <i class="iconfont icon-xiazai1"></i>
           </span>
         </div>
       </van-sticky>
-
+      <!-- 歌曲列表 -->
+      <van-list
+        v-model="loadingData"
+        :finished="finished"
+        :error.sync="loadingError"
+        error-text="请求失败，点击重新加载"
+        @load="getSongs"
+      >
+        <div 
+          v-for="(item, index) in songList" 
+          :key="index"
+          class="list-item"
+        >
+          <PlayListDetailItem :listIndex="index+1" :listInfo="item"></PlayListDetailItem>
+        </div>
+      </van-list>
     </div>
   </div>
 </template>
