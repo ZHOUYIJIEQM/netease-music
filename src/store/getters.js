@@ -16,6 +16,7 @@ const getters = {
   // 底部播放器
   showPlayer: state => state.showPlayer,
   mvId: state => state.mvId,
+  songId: state => state.songId,
 }
 
 export default getters

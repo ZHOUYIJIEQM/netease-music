@@ -67,6 +67,9 @@ const mutations = {
   changeMvId(state, value) {
     state.mvId = value
   },
+  changeSongId(state, value) {
+    state.songId = value
+  },
 }
 
 export default mutations

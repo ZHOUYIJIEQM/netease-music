@@ -40,7 +40,16 @@
       </template>
     </Navbar>
     <!-- 歌单详情介绍 -->
-    <div class="playlist-detail">
+    <div class="playlist-detail" ref="playlistDetail">
+      <!-- 背景 -->
+      <div class="description-bg">
+        <div class="detail-bg bg-outer" ref="detailBg">
+          <div 
+            class="bg-inner"
+            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
+          ></div>
+        </div>
+      </div>
       <!-- 歌单描述 -->
       <div 
         class="description-box" 
@@ -62,15 +71,6 @@
           <div class="playlist-description">
             <span class="text-eli">{{playList.description}}</span><i class="iconfont icon-jiantouyou"></i>
           </div>
-        </div>
-      </div>
-      <!-- 背景 -->
-      <div class="description-bg">
-        <div class="detail-bg bg-outer">
-          <div 
-            class="bg-inner"
-            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
-          ></div>
         </div>
       </div>
       <!-- 收藏 评论 分享 -->
@@ -132,6 +132,23 @@
   .navbar {
     .van-notice-bar {
       padding: 0;
+    }
+    .van-notice-bar__content {
+      font-size: .17rem;
+    }
+  }
+  .playlist-song {
+    .van-loading__spinner {
+      width: .2rem;
+      height: .2rem;
+    }
+    .van-loading__circular circle {
+      color: #f05a5a;
+      stroke-width: 5;
+    }
+    .van-loading__text {
+      color: #f05a5a;
+      // font-weight: bold;
     }
   }
 }

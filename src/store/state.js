@@ -17,6 +17,8 @@ const state = {
   showPlayer: false,
   // 正在播放的mv id, 保持只有一个播放器在播放
   mvId: 0,
+  // 正在播放的歌曲 id
+  songId: 0,
 }
 
 export default state

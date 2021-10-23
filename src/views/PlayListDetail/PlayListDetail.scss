@@ -18,7 +18,7 @@ $playlistBarH: .4rem;
         margin-left: auto;
       }
     }
-    @include gaussBlur();
+    @include gaussBlur(.1rem);
     .navbar-bg {
       opacity: 0;
     }
@@ -125,12 +125,14 @@ $playlistBarH: .4rem;
       top: 0;
       height: 100%;
       width: 100%;
+      @include df();
+      justify-content: center;
       // 背景
       .detail-bg.bg-outer {
         position: absolute;
         top: 0;
-        left: -100%;
-        width: 300%;
+        // left: -100%;
+        width: 280%;
         border-radius: 0 0 50% 50%;
         z-index: -2;
         @include df();
@@ -203,21 +205,23 @@ $playlistBarH: .4rem;
       }
       .title-text {
         flex: 1;
+        font-weight: bold;
         display: flex;
         align-items: center;
         padding-left: .12rem;
         span {
           padding-left: .08rem;
+          font-weight: normal;
           font-size: .12rem;
           color: #989898;
         }
       }
+      .icon-xiazai1 {
+        color: $black;
+      }
       .icon-gouxuanzeyemian {
         padding-left: .2rem;
       }
-    }
-    .list-item {
-      
     }
   }
 }

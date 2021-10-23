@@ -40,5 +40,13 @@ export let global = {
       console.log("点击歌单:", id);
       this.$router.push({ name: "PlayListDetail", params: { id } });
     },
+    clickSong(id) {
+      console.log('歌曲', id);
+      this.$store.commit('changeSongId', Number(id))
+    },
+    clickMvIcon(id) {
+      console.log('mv', id);
+      this.$store.commit('changeMvId', Number(id))
+    }
   },
 };

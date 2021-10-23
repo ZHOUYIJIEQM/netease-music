@@ -1,13 +1,16 @@
 import { playListDetail, songDetail, collectPlayList } from "@/api/api";
 import { global } from "@/mixin/global.js";
+import { scrollPosition } from "@/mixin/scrollPosition.js";
 import PlayListDetailItem from "@/components/PlayListDetailItem"
+import Navbar from "@/components/Navbar"
 
 export default {
   name: 'PlayListDetail',
-  mixins: [global],
+  mixins: [global, scrollPosition],
   components: {
     PlayListDetailItem,
-    Navbar: () => import("@/components/Navbar"),
+    Navbar,
+    // Navbar: () => import("@/components/Navbar"),
   },
   data() {
     return {
@@ -76,9 +79,18 @@ export default {
   },
   mounted() {
     // console.log(this.$refs.navbar); 
-    // undefined, 未完成加载, 直接获取不到, 用 setInterval, 100ms获取一次, 得到后清除定时器, 或是在子组件里 mounted emit 表示已经加载好了
-    this.getNavbarHeight()
+    // undefined, 因为使用异步组件的写法, mounted时未完成加载, 直接获取得不到, 用 setInterval, 100ms获取一次, 得到后清除定时器, 或是在子组件里 mounted emit 表示已经加载好了, 或是别写成异步组件的写法
+    // this.getNavbarHeight()
     // this.navbarMounted()
+
+    this.getEleAttr()
+    
+    window.addEventListener('scroll', this.handlerScroll, false)
+    window.addEventListener('touchend', this.touchE, false)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handlerScroll, false)
+    window.removeEventListener('touchend', this.touchE, false)
   },
   methods: {
     // 初始化数据
@@ -99,13 +111,13 @@ export default {
       try {
         let ids = this.songsIds.slice(this.songList.length, this.songList.length + this.len).join(",")
         let songList = await songDetail(ids)
-        console.log(songList);
+        // console.log(songList);
         this.songList.push(
           ...songList.songs.map((item, index) => {
             return {
               id: item.id,
               name: item.name,
-              secName: item.tns && item.tns[0],
+              secName: item.tns ? item.tns[0] : item.alia[0],
               artist: item.ar.map(item1 => item1.name).join('/'),
               al: item.al.name,
               mvId: item.mv,
@@ -117,14 +129,100 @@ export default {
         if (this.songList.length >= this.songsIds.length) {
           this.finished = true
         }
-        console.log(this.songList);
+        // console.log(this.songList);
       } catch (error) {
         console.log(error);
         this.loadingError = true
       }
     },
+    // 获取一些需要的dom及属性值
+    getEleAttr() {
+      // 导航条
+      this.navEle = this.$refs.navbar.$el
+      // 导航条背景
+      this.navBgEle = this.$refs.navbarBg
+      // 歌单描述内容
+      this.descriptionEle = this.$refs.description
+      // 歌单描述的背景
+      this.detailBgEle = this.$refs.detailBg
+      // 订阅 评论 分享
+      this.playlistBarEle = this.$refs.playlistBar
+      // 歌单列表
+      this.playlistEle = this.$refs.playlist
+      // 导航条高度
+      this.navH = this.navEle.offsetHeight
+      // 粘性置顶高度
+      this.navbarHeight = this.navH + 'px'
+      // 订阅 评论 分享 距离顶部高度
+      this.playlistBarT = this.playlistBarEle.getBoundingClientRect().top
+      // 歌单列表 距离顶部高度
+      this.playlistT = this.playlistEle.getBoundingClientRect().top
+    },
+    // 滚动处理
+    handlerScroll() {
+      this.scrollT = this.getScrollTop()
+      // console.log(this.scrollT);
+      // 显示/隐藏回到顶部
+      if (this.scrollT > this.playlistT * 3) {
+        this.topFlag = true
+      } else {
+        this.topFlag = false
+      }
 
-    // 在mounted用refs获取子组件时, 无法直接获取到
+      // 滚动高度小于 navbar 高度
+      if (this.scrollT >= 0 && this.scrollT <= this.navH) {
+        this.playListName = '歌单'
+        this.descriptionEle.style.opacity = 1
+      }
+
+      // 描述内容 透明度
+      if (this.scrollT >= this.navH && this.scrollT <= this.playlistT - this.navH) {
+        this.playListName = this.playList.name
+        let opacity = (this.scrollT - this.navH) / this.descriptionEle.offsetHeight
+        opacity = opacity >= 1 ? 1 : opacity
+        this.descriptionEle.style.opacity = 1 - opacity
+      }
+      
+      // 导航条背景图 透明度, 描述背景图弧形边框
+      if (this.scrollT <= this.playlistT - this.navH) {
+        let opacity = this.scrollT / (this.playlistBarT)
+        opacity = opacity >= 1 ? 1 : opacity
+        this.navBgEle.style.opacity = opacity
+        let r = 50 - 15 * opacity
+        // console.log(r);
+        this.detailBgEle.style.borderRadius = `0 0 ${r}% ${r}%`
+      } else {
+        this.navBgEle.style.opacity = 1
+      }
+      
+      // 订阅 评论 分享 透明度
+      if (this.scrollT >= this.playlistBarT - this.navH * 1.5 && this.scrollT <= this.playlistT - this.navH ) {
+        let opacity = (this.scrollT - (this.playlistBarT - this.navH * 1.5)) / (this.playlistT - (this.playlistBarT - this.navH * 0.5))
+        // console.log(opacity);
+        opacity = opacity >= 1 ? 1 : opacity
+        this.playlistBarEle.style.opacity = 1 - opacity
+      } else {
+        this.playlistBarEle.style.opacity = 1
+      }
+
+    },
+    // 触摸松开, 滚动到指定位置
+    touchE() {
+      this.scrollTimer && clearTimeout(this.scrollTimer)
+      // 松开后 150 毫秒后才触发, 松开后可能还有一段滚动距离, 如果在触发范围内, 可能反复弹动
+      this.scrollTimer = setTimeout(() => {
+        // 滑动距离小于 nav 高度时, 松开重新回到顶部
+        if (this.scrollT > 0 && this.scrollT < this.navH) {
+          window.scroll({ top: 0, behavior: "smooth" })
+        }
+        // 大于 nav 高度, 且小于 播放列表高度
+        if (this.scrollT > this.navH && this.scrollT < (this.playlistT - this.navH)) {
+          window.scroll({ top: (this.playlistT - this.navH), behavior: "smooth" })
+        }
+      }, 150)
+    },
+
+    // 在mounted用refs获取子组件时, 如果无法直接获取到
     navbarMounted() {
       this.navbarHeight = this.$refs.navbar.$el.offsetHeight+'px'
     },

@@ -1,16 +1,20 @@
 <template>
   <div class="playlist-detail-item" @click="clickSong(listInfo.id)">
-    <span class="list-index" v-if="listIndex">{{listIndex}}</span>
+    <template v-if="listIndex">
+      <span class="list-index" v-if="!activeSong">{{listIndex}}</span>
+      <i class="list-index iconfont icon-paixingbang" v-else></i>
+    </template>
     <div class="song-info">
       <div class="name text-eli">
         <span class="main-name">{{listInfo.name}}</span>
-        <span v-if="listInfo.secName">({{listInfo.secName}})</span>
+        <span class="sec-name" v-if="listInfo.secName">({{listInfo.secName}})</span>
       </div>
       <div class="artist text-eli">
+        <!-- 移动端chrome环境下, 不加 lang="" tag 看起来不是垂直居中 -->
         <span class="tag" lang="" v-if="listInfo.sq">SQ</span>
-        <span>{{listInfo.artist}}</span>
-        <span class="split">-</span>
-        <span>{{listInfo.al}}</span>
+        <span lang="" >{{listInfo.artist}}</span>
+        <span lang="" class="split">-</span>
+        <span lang="" >{{listInfo.al}}</span>
       </div>
     </div>
     <i v-if="listInfo.mvId" @click.stop="clickMvIcon(listInfo.mvId)" class="iconfont icon-bofangshu"></i>
@@ -18,6 +22,7 @@
   </div>
 </template>
 <script>
+import { global } from "@/mixin/global";
 export default {
   props: {
     listIndex: Number,
@@ -29,14 +34,14 @@ export default {
       }
     }
   },
-  methods: {
-    clickSong(id) {
-      console.log('歌曲', id);
-      // this.$emit('clickSong', id)
-    },
-    clickMvIcon(id) {
-      console.log('mv', id);
+  mixins: [global],
+  computed: {
+    activeSong() {
+      return this.$store.getters.songId == this.listInfo.id
     }
+  },
+  methods: {
+    
   },
 }
 </script>
@@ -58,14 +63,22 @@ export default {
     color: #999;
     font-size: .14rem;
   }
+  .icon-paixingbang {
+    color: #f13b3b;
+    font-size: .18rem;
+  }
   .song-info {
     flex: 1;
     overflow: hidden;
     line-height: 1.4;
+    padding-right: .08rem;
     .name {
       color: #999;
       .main-name {
         color: $black;
+      }
+      .sec-name {
+        font-size: .14rem;
       }
     }
     .artist {
@@ -74,6 +87,7 @@ export default {
       .tag {
         color: red;
         font-size: .08rem;
+        font-weight: bold;
         line-height: 1;
         display: inline-block;
         border: .05px solid red;
@@ -83,7 +97,7 @@ export default {
         margin-right: .03rem;
       }
       .split {
-        margin: 0 .02rem;
+        margin: 0 .04rem;
       }
       span {
         vertical-align: middle;
