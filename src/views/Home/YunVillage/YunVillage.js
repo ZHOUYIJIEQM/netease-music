@@ -102,4 +102,10 @@ export default {
       }
     },
   },
+  watch: {
+    loginStatus(newV) {
+      this.recommendVideo = []
+      this.getData()
+    }
+  }
 };

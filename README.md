@@ -6,7 +6,7 @@
 1. [vant 文档](https://vant-contrib.gitee.io/vant/#/zh-CN/toast)
 1. [日期处理 Moment.js](http://momentjs.cn/)
 
-## 实现功能
+## 已实现
 1. 发现页
 1. 我的页
 1. 云村页
@@ -49,6 +49,7 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     ```
     - 播放器播放时, 离开当前可视范围, 暂停播放, 使用交叉观察器```IntersectionObserver```, 判断是否离开了可视范围, 离开后暂停
     - 用于一个全局变量保存视频id, 监听它, 改变后卸载与视频id不同的video元素
+    - 移动端chrome video 切换到后台后会自动暂停, 不能继续播放
 1. 登录
     - 记录进入登录页前的路由, 登录后返回改路径
     - 输入手机号后判断是否已经注册过, 未注册则弹框提示去注册
@@ -57,12 +58,14 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     - 主要功能是: 登录/退出
     - 菜单使用 vant 弹出层, 弹出层的css中设置了```transform```, 所以在子孙元素css中设置```position:fixed;```无效
 1. 歌单详情页面
-    - 获取歌单详情, 并从里面 trackIds 提取歌单的所有歌曲 id, 根据 id 获取歌曲信息, 每次最多加载100首曲, 滚动到底触发加载更多歌曲
-    - 添加触碰离开事件, 在歌单介绍, 向上/下滚动到指定内容
+    - [获取歌单详情](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e8%af%a6%e6%83%85), 并从里面 trackIds 提取歌单的所有歌曲 id, 根据 id [获取歌曲信息](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e6%9b%b2%e8%af%a6%e6%83%85), 每次最多加载100首曲, 滚动到底触发加载更多歌曲
+    - 添加触碰离开事件, 滚动高度在歌单介绍处, 向上/下滚动到指定内容
     - 添加滚动事件, 设置头部背景透明度, 歌单介绍背景弧度, playlistbar透明度
-
+    - 点击订阅, 如果未登录, 此时显示未订阅(+)图标, 点击则弹窗提示去登录, 如果登录, 且是自己创建的歌单, 显示已订阅(勾选)图标且颜色为灰色, 如果不是自己创建的歌单, 判断是否已经订阅过, 显示对应图标, 点击后切换图标, 订阅人数加1
+    - 点击歌单介绍内容, 弹出另一个歌单详情介绍, 保存封面, 处理直接按返回键
 
 ## 遇到的一些问题
+1. 移动端chrome, 滚动页面隐藏地址栏, 体验不太好, 可以添加到主屏幕
 1. 使用```flex: 1;```时, 子元素```text-overflow: ellipsis;```不起作用, 可在```flex: 1;``` 所在元素设置 ```overflow: hidden;``` 或 ```width: 0;```
 1. 因为设置了超出显示省略号, 出现了文字底部显示不全，可设置行高
 ![文字底部显示不全](./preview/文字底部显示不全.jpg)  

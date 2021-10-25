@@ -165,6 +165,7 @@ export default {
       this.updateTime = moment(parseInt(vdo.duration - Math.ceil(cTime)) * 1000).format("mm:ss")
     },
     vdoPause() {
+      // console.log('暂停');
       clearInterval(this.vdoTimer)
       this.setPStatus('')
     },

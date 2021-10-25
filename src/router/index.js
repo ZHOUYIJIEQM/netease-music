@@ -61,10 +61,14 @@ const routes = [
   {
     path: "/PlayListDetail/:id",
     name: "PlayListDetail",
-    component: () => import('@/views/PlayListDetail/PlayListDetail.vue')
+    component: () => import('@/views/PlayListDetail/PlayListDetail.vue'),
   },
 
-  
+  // 输入不匹配的路由, 重定向到 发现
+  {
+    path: '*' ,
+    redirect: { name: "Find" },
+  } 
 ];
 
 /**

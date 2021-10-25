@@ -109,7 +109,7 @@
                       <!-- @click.native="goPlaylist(item1.id)" -->
                       <!-- 这样 loop 模式, 有一个点击无效, 获取 swiper 的 realIndex, 在 <swiper> 处 绑定点击事件, 用 realIndex 操作 -->
                         <div class="img-box">
-                          <img :src="item1.img+'?param=200y200'" alt="">
+                          <img v-lazy="item1.img+'?param=200y200'" alt="">
                         </div>
                       </swiper-slide>
                     </swiper>
@@ -179,9 +179,10 @@
         <div class="find-data-item" v-if="item.type === '精选音乐视频'">
           <div class="item-title">
             <div class="title">{{item.title}}</div>
-            <div class="text" v-if="item.text" @click="$toast('')">
+            <div class="text" v-if="item.text" @click="refreshMlog">
               <span class="iconfont icon-icon_refresh"></span>
-              <span>{{item.text}}</span>
+              <!-- <span>{{item.text}}</span> -->
+              <span>换一批</span>
             </div>
           </div>
           <div class="item-content">

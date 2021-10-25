@@ -7,7 +7,7 @@
     <div class="song-info">
       <div class="name text-eli">
         <span class="main-name">{{listInfo.name}}</span>
-        <span class="sec-name" v-if="listInfo.secName">({{listInfo.secName}})</span>
+        <span class="sec-name" v-if="listInfo.secName"> ({{listInfo.secName}}) </span>
       </div>
       <div class="artist text-eli">
         <!-- 移动端chrome环境下, 不加 lang="" tag 看起来不是垂直居中 -->
@@ -114,6 +114,7 @@ export default {
   }
   .icon-gengduoxiao {
     font-size: .18rem;
+    font-weight: bold;
     padding: 0 .08rem;
   }
 }

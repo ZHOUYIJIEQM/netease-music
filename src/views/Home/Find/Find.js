@@ -78,7 +78,7 @@ export default {
         // mousewheel: true,
         // 这样就可以在css自定义每一项的宽度大小
         slidesPerView: 'auto',
-        resistanceRatio: 0.3,
+        resistanceRatio: 0,
         // spaceBetween: '2.6%',
         // spaceBetween: 10,
       },
@@ -113,7 +113,7 @@ export default {
       songOptions: {
         // mousewheel: true,
         slidesPerView: 'auto',
-        resistanceRatio: 0.3,
+        resistanceRatio: 0,
       },
       // 是否显示加载提示
       loading: true,
@@ -161,7 +161,8 @@ export default {
     // 获取发现页数据, 并提取需要的数据
     async getData() {
       try {
-        let find = await homePageFind()
+        let find = await homePageFind({refresh: true})
+        console.log(find);
         // 登录状态
         if (this.loginStatus) {
           this.cursor = find.data.cursor
@@ -213,9 +214,9 @@ export default {
           return
         }
         this.loading = true
-        let find = await homePageFind({cursor: this.cursor})
+        let find = await homePageFind({refresh: true, cursor: this.cursor})
         // 里面的数据看起来有些乱, 手动提取需要的数据
-        // console.log(find);
+        console.log(find);
         this.cursor = find.data.cursor
         let dataBlocks = find.data.blocks
         this.extractData(dataBlocks)
@@ -281,6 +282,29 @@ export default {
 				slide.transition(transition);
 				// slide.transition(1000);
 			}
+    },
+    // mlog 换一批
+    async refreshMlog() {
+      try {
+        this.$store.commit('changeLoading', true)
+        let find = await homePageFind({refresh: true, cursor: '{"blockCodeOrderList":["HOMEPAGE_MUSIC_MLOG"]}'})
+        console.log(find);
+        let index = this.homeFindData.findIndex(item => item.type === '精选音乐视频')
+        console.log(index);
+        this.homeFindData[index].list = []
+        find.data.blocks[0].extInfo.forEach(item => {
+          this.homeFindData[index].list.push({
+            id: item.resource.mlogBaseData.id,
+            img: item.resource.mlogBaseData.coverUrl,
+            name: item.resource.mlogBaseData.text,
+            playCount: item.resource.mlogExtVO.playCount,
+          })
+        })
+        this.$store.commit('changeLoading', false)
+      } catch (error) {
+        this.$store.commit('changeLoading', false)
+        console.log(error);
+      }
     },
     // 提取需要的数据
     extractData(dataBlocks) {
@@ -372,6 +396,7 @@ export default {
 
         // 你的雷达歌单
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_MGC_PLAYLIST') {
+          // console.log(dataItem);
           let radarPlayList = {}
           radarPlayList.type = '雷达歌单'
           radarPlayList.title = '你的雷达歌单'
@@ -603,11 +628,11 @@ export default {
     },
     $route(newV) {
       if(newV.name === 'Find') {
-        console.log('进入开始播放');
+        // console.log('进入开始播放');
         this.$refs.banner.$swiper.autoplay.start()
         this.scrollList.autoplay.start()
       } else {
-        console.log('离开暂停播放');
+        // console.log('离开暂停播放');
         this.$refs.banner.$swiper.autoplay.stop()
         this.scrollList.autoplay.stop()
       }

@@ -35,6 +35,10 @@ export let global = {
     goSearch() {
       console.log("前往搜索页");
     },
+    // 返回顶部
+    toTop() {
+      window.scroll({ top: 0, behavior: 'smooth'})
+    },
     // 前往 歌单
     goPlaylist(id) {
       console.log("点击歌单:", id);
@@ -47,6 +51,29 @@ export let global = {
     clickMvIcon(id) {
       console.log('mv', id);
       this.$store.commit('changeMvId', Number(id))
-    }
+    },
+    // 复制文本 value 
+    copyText(value) {
+      // 创建的input需要加到 body, 不然复制不到值
+      let input = document.createElement('input')
+      input.value = value
+      input.style.position = 'absolute'
+      input.style.left = '-10000px'
+      input.style.top = '-10000px'
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand('copy')
+      this.$toast('复制成功! 快和小伙伴们分享吧!')
+      document.body.removeChild(input)
+    },
+    // 已滚动高度
+    getScrollTop() {
+      return (
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0
+      );
+    },
   },
 };

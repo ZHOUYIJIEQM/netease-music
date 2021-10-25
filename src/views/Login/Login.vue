@@ -1,6 +1,6 @@
 <template>
   <!-- 登录页 第一页, 选择登录类型 -->
-  <div class="login-page">
+  <div class="login-page" ref="loginPage">
     <div class="logo">
       <div class="logo-bg">
         <img src="../../assets/logo.png" alt="" />
@@ -63,6 +63,9 @@ export default {
           break;
       }
     },
+  },
+  mounted() {
+    this.$refs.loginPage.style.height = window.innerHeight + 'px'
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

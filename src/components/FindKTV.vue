@@ -8,7 +8,7 @@
       </div>
       <div class="song-name">
         <!-- {{ktvData.songName}} -->
-        <van-notice-bar :speed="30" :delay="delayTime" :text="ktvData.songName"/>
+        <van-notice-bar :speed="20" :delay="delayTime" :text="ktvData.songName"/>
       </div>
     </div>
     <div class="name two-eli">
