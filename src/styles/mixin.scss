@@ -34,7 +34,7 @@
   }
 }
 
-// 毛玻璃高斯模糊
+// 毛玻璃高斯模糊 backdrop-filter 在 firefox 需要手动开启
 @mixin gaussBlur($blur: .3rem, $brightness: .6, $margin: .2rem) {
   .bg-outer {
     // 同时还需要设置定位位置

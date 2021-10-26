@@ -4,14 +4,11 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    redirect: { name: "Find" },
-  },
   // 首页
   {
     path: "/Home",
     name: "Home",
+    redirect: { name: "Find" },
     component: () => import("@/views/Home/Home.vue"),
     children: [
       {
@@ -86,5 +83,17 @@ const router = new VueRouter({
   routes,
   scrollBehavior,
 });
+
+router.afterEach((to, from) => {
+  // 这还是不太好用, 不能判断是 push 过来的 还是 replace 
+  let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+  if (history.length && to.name === history[0]) {
+    return
+  }else {
+    history.unshift(to.name)
+  }
+  // console.log(history);
+  window.sessionStorage.setItem('netMusicAppHistory', JSON.stringify(history))
+})
 
 export default router;

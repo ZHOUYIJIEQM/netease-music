@@ -75,14 +75,6 @@ export default {
   },
   mounted() {
     this.loadImg()
-    // this.$watch(
-    //   function () {
-    //     return this.$refs.rcmdVideo
-    //   },
-    //   (newV, oldV) => {
-    //     console.log(newV);
-    //   }
-    // )
     this.visible()
   },
   methods: {

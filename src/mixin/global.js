@@ -23,9 +23,14 @@ export let global = {
     toggleMenu() {
       this.$store.commit("toggleMenu");
     },
-    // 路由返回
+    // 路由返回, 如果第一次进入的页面有导航返回键, go(-1), 是无效的, 把访问过的路由记录到 sessionStorage, 只有一个路由还点了返回键, 就直接跳到首页
     goBack() {
-      this.$router.go(-1);
+      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      if (history.length > 1) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push({name: 'Find'})
+      }
     },
     // 点击菜单字体图标
     clickMenu() {

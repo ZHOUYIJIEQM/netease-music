@@ -124,7 +124,7 @@ export default {
       // 登录后的请求参数
       cursor: null,
       // 底部分隔线
-      dividerShow: false
+      dividerShow: false,
     }
   },
   computed: {
@@ -162,7 +162,7 @@ export default {
     async getData() {
       try {
         let find = await homePageFind({refresh: true})
-        console.log(find);
+        // console.log(find);
         // 登录状态
         if (this.loginStatus) {
           this.cursor = find.data.cursor
@@ -172,7 +172,6 @@ export default {
           catlist = catlist[Math.round(Math.random() * catlist.length - 1)]
           // console.log(catlist);
           let scrolllistData = await highqualityPlayList({ cat: catlist, limit: 5 })
-          // console.log(scrolllistData);
           this.scrollListData = []
           scrolllistData.playlists.forEach(item2 => {
             // console.log(item2.name);
@@ -182,6 +181,16 @@ export default {
               img: item2.coverImgUrl,
             })
           })
+          // let sdata = scrolllistData.playlists.map(item2 => {
+          //   return {
+          //     id: item2.id,
+          //     name: item2.name,
+          //     img: item2.coverImgUrl,
+          //   }
+          // })
+          // this.$set(this.scrolllistData, 0, sdata)
+          // console.log('第一项', sdata);
+          console.log('第一项', this.scrolllistData);
           this.dividerShow = false
           window.addEventListener('scroll', this.getLoginData)
         } else {
@@ -285,25 +294,29 @@ export default {
     },
     // mlog 换一批
     async refreshMlog() {
-      try {
-        this.$store.commit('changeLoading', true)
-        let find = await homePageFind({refresh: true, cursor: '{"blockCodeOrderList":["HOMEPAGE_MUSIC_MLOG"]}'})
-        console.log(find);
-        let index = this.homeFindData.findIndex(item => item.type === '精选音乐视频')
-        console.log(index);
-        this.homeFindData[index].list = []
-        find.data.blocks[0].extInfo.forEach(item => {
-          this.homeFindData[index].list.push({
-            id: item.resource.mlogBaseData.id,
-            img: item.resource.mlogBaseData.coverUrl,
-            name: item.resource.mlogBaseData.text,
-            playCount: item.resource.mlogExtVO.playCount,
+      if (this.loginStatus) {
+        try {
+          this.$store.commit('changeLoading', true)
+          let find = await homePageFind({refresh: true, cursor: '{"blockCodeOrderList":["HOMEPAGE_MUSIC_MLOG"]}'})
+          console.log(find);
+          let index = this.homeFindData.findIndex(item => item.type === '精选音乐视频')
+          console.log(index);
+          this.homeFindData[index].list = []
+          find.data.blocks[0].extInfo.forEach(item => {
+            this.homeFindData[index].list.push({
+              id: item.resource.mlogBaseData.id,
+              img: item.resource.mlogBaseData.coverUrl,
+              name: item.resource.mlogBaseData.text,
+              playCount: item.resource.mlogExtVO.playCount,
+            })
           })
-        })
-        this.$store.commit('changeLoading', false)
-      } catch (error) {
-        this.$store.commit('changeLoading', false)
-        console.log(error);
+          this.$store.commit('changeLoading', false)
+        } catch (error) {
+          this.$store.commit('changeLoading', false)
+          console.log(error);
+        }
+      } else {
+        this.$toast('登录后才能换一批音乐视频哦!')
       }
     },
     // 提取需要的数据
@@ -316,6 +329,7 @@ export default {
 
         // 推荐歌单
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_PLAYLIST_RCMD') {
+          // console.log(dataItem);
           let rcmdPlayList = {}
           rcmdPlayList.type = '推荐歌单'
           rcmdPlayList.title = dataItem.uiElement.subTitle.title
@@ -629,12 +643,12 @@ export default {
     $route(newV) {
       if(newV.name === 'Find') {
         // console.log('进入开始播放');
-        this.$refs.banner.$swiper.autoplay.start()
-        this.scrollList.autoplay.start()
+        this.$refs.banner && this.$refs.banner.$swiper.autoplay.start()
+        this.scrollList && this.scrollList.autoplay.start()
       } else {
         // console.log('离开暂停播放');
-        this.$refs.banner.$swiper.autoplay.stop()
-        this.scrollList.autoplay.stop()
+        this.$refs.banner && this.$refs.banner.$swiper.autoplay.stop()
+        this.scrollList && this.scrollList.autoplay.stop()
       }
     }
   }
