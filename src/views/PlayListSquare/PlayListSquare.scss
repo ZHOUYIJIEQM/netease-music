@@ -1,0 +1,93 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+
+.playlist-page {
+  padding-top: $navHeight;
+  background-color: #f8f8f8;
+  height: 100%;
+  @include df(column);
+  .navbar {
+    background-color: inherit;
+    .playlist-name {
+      font-size: .17rem;
+      font-weight: bold;
+    }
+  }
+  .tabbar {
+    flex-shrink: 0;
+    background-color: inherit;
+    width: 100%;
+    padding-right: .15rem;
+    @include df();
+    align-items: center;
+    .tab {
+      flex-grow: 1;
+      overflow: hidden;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        right: -.06rem;
+        top: 55%;
+        transform: translateY(-50%);
+        height: 40%;
+        width: .1rem;
+        background: linear-gradient(to left, #bebebe 50%, transparent);
+        border-radius: 50%;
+        filter: blur(2px);
+      }
+    }
+    .more {
+      @include df();
+      align-items: center;
+      justify-content: center;
+      width: .16rem;
+      margin-left: .15rem;
+      img {
+        width: .16rem;
+      }
+    }
+  }
+  .swiper-box {
+    flex-grow: 1;
+    overflow: hidden;
+    .list-swiper {
+      height: 100%;
+      .list-item-box {
+        height: 100%;
+        overflow: auto;
+        padding: .1rem .15rem;
+        .playlist-content {
+          @include df();
+          flex-wrap: wrap;
+          .playlist-box {
+            $width: 31.5%;
+            width: $width;
+            margin-right: calc((100% - ($width * 3)) / 2);
+            margin-bottom: .15rem;
+            &:nth-child(3n) {
+              margin-right: 0;
+            }
+          }
+        }
+        .loading {
+          @include df();
+          justify-content: center;
+          align-items: center;
+          padding: .2rem 0 .1rem;
+          p {
+            margin-left: .15rem;
+            font-size: .13rem;
+            color: #4d4d4d;
+          }
+        }
+        .bottom {
+          padding: .15rem 0 .1rem;
+          color: #4d4d4d;
+          font-size: .13rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -36,12 +36,19 @@ export function getOfficialList(limit = 30) {
 }
 
 /**
- * 获取精品歌单
+ * 获取精品歌单, 有些标签得到的歌单是空的, 改为 歌单 ( 网友精选碟 )
  * @param {Object} params 
+ * 获取精品歌单
  * 可选参数 : 
  * cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部", 可从精品歌单标签列表接口获取(/playlist/highquality/tags) 
  * limit: 取出歌单数量 , 默认为 20 
  * before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
+ * 
+ * 歌单 ( 网友精选碟 )
+ * cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
+ * limit: 取出歌单数量 , 默认为 50
+ * offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*50, 其中 50 为 limit 的值
+ * 
  */
 export function highqualityPlayList(params={}) {
   // 有些类别没有返回内容

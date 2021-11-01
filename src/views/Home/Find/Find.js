@@ -125,6 +125,8 @@ export default {
       cursor: null,
       // 底部分隔线
       dividerShow: false,
+      // 推荐歌单第一项 轮播内容
+      rcmdListBanner: [],
     }
   },
   computed: {
@@ -172,25 +174,14 @@ export default {
           catlist = catlist[Math.round(Math.random() * catlist.length - 1)]
           // console.log(catlist);
           let scrolllistData = await highqualityPlayList({ cat: catlist, limit: 5 })
-          this.scrollListData = []
-          scrolllistData.playlists.forEach(item2 => {
-            // console.log(item2.name);
-            this.scrollListData.push({
+          this.rcmdListBanner = []
+          this.rcmdListBanner.push(...scrolllistData.playlists.map(item2 => {
+            return {
               id: item2.id,
               name: item2.name,
               img: item2.coverImgUrl,
-            })
-          })
-          // let sdata = scrolllistData.playlists.map(item2 => {
-          //   return {
-          //     id: item2.id,
-          //     name: item2.name,
-          //     img: item2.coverImgUrl,
-          //   }
-          // })
-          // this.$set(this.scrolllistData, 0, sdata)
-          // console.log('第一项', sdata);
-          console.log('第一项', this.scrolllistData);
+            }
+          }))
           this.dividerShow = false
           window.addEventListener('scroll', this.getLoginData)
         } else {
@@ -202,6 +193,7 @@ export default {
         let dataBlocks = find.data.blocks
         // console.log(dataBlocks);
         this.extractData(dataBlocks)
+        // this.scrollList.autoplay.start()
         // console.log('发现页需要的数据', JSON.stringify(this.homeFindData, null, '  '));
         this.loading = false
       } catch(error) {
@@ -225,7 +217,7 @@ export default {
         this.loading = true
         let find = await homePageFind({refresh: true, cursor: this.cursor})
         // 里面的数据看起来有些乱, 手动提取需要的数据
-        console.log(find);
+        // console.log(find);
         this.cursor = find.data.cursor
         let dataBlocks = find.data.blocks
         this.extractData(dataBlocks)
@@ -239,13 +231,34 @@ export default {
     // 点击轮播下的图标
     clickIcon(type) {
       if(type === "每日推荐") {
-        this.$toast(`${type} 未开发!`)
+        // this.$toast(`${type} 未开发!`)
+        if (this.loginStatus) {
+          this.$router.push({ name: "DailyPlayList" })
+        } else {
+          // 弹出提示登录
+          this.$dialog
+            .confirm({
+              title: "每日推荐",
+              message: "需要登录才能推荐哦!",
+              confirmButtonText: "确定",
+            })
+            .then((res) => {
+              console.log("确认", res);
+              this.$store.commit("saveRedirect", '/DailyPlayList');
+              this.$router.push({ name: "Login" });
+            })
+            .catch((err) => {
+              console.log("取消", err);
+            });
+        }
       }
       if(type === "歌单") {
-        this.$toast(`${type} 未开发!`)
+        // this.$toast(`${type} 未开发!`)
+        this.$router.push({ name: "PlayListSquare" })
       }
       if(type === "排行榜") {
-        this.$toast(`${type} 未开发!`)
+        // this.$toast(`${type} 未开发!`)
+        this.$router.push({ name: "LeaderBoard" })
       }
       if(type === "私人FM") {
         this.$toast(`${type} 未开发!`)
@@ -360,7 +373,7 @@ export default {
             }
           });
           if (!rcmdPlayList.scrollPlaylist.length) {
-            rcmdPlayList.scrollPlaylist.push(...this.scrollListData)
+            rcmdPlayList.scrollPlaylist.push(...this.rcmdListBanner)
           }
           this.homeFindData.push(rcmdPlayList)
         }
@@ -642,12 +655,14 @@ export default {
     },
     $route(newV) {
       if(newV.name === 'Find') {
-        // console.log('进入开始播放');
+        console.log('进入开始播放');
         this.$refs.banner && this.$refs.banner.$swiper.autoplay.start()
+        // console.log(this.scrollList);
         this.scrollList && this.scrollList.autoplay.start()
       } else {
-        // console.log('离开暂停播放');
+        console.log('离开暂停播放');
         this.$refs.banner && this.$refs.banner.$swiper.autoplay.stop()
+        // console.log(this.scrollList);
         this.scrollList && this.scrollList.autoplay.stop()
       }
     }

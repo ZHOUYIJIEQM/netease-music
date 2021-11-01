@@ -88,7 +88,7 @@
               v-if="item.list.length"
             >
             <!-- todo: 测试template可否去掉 -->
-              <template v-if="item.scrollPlaylist.length">
+              <!-- <template v-if="item.scrollPlaylist.length"> -->
                 <swiper-slide class="list-item-box">
                   <div class="list-item-inner scroll-list">
                     <swiper
@@ -109,7 +109,7 @@
                       <!-- @click.native="goPlaylist(item1.id)" -->
                       <!-- 这样 loop 模式, 有一个点击无效, 获取 swiper 的 realIndex, 在 <swiper> 处 绑定点击事件, 用 realIndex 操作 -->
                         <div class="img-box">
-                          <img :src="item1.img+'?param=200y200'" alt="">
+                          <img v-lazy="item1.img+'?param=200y200'" alt="">
                         </div>
                       </swiper-slide>
                     </swiper>
@@ -127,7 +127,7 @@
                     </div>
                   </div>
                 </swiper-slide>
-              </template>
+              <!-- </template> -->
               <swiper-slide
                 class="list-item-box"
                 v-for="(item1, index1) in item.list"

@@ -94,6 +94,12 @@ export default {
         }
       }
     },
+    mvLogData(newV) {
+      this.$refs.mlogVideo.pause()
+      this.$refs.mlogVideo.removeAttribute('src')
+      this.$refs.mlogVideo.load()
+      this.videoStatus = true
+    }
   }
 };
 </script>

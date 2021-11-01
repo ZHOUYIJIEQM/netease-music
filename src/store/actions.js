@@ -17,7 +17,8 @@ const actions = {
         // 保存登录信息
         dispatch("saveLoginData", l)
         // 跳转到登录前的地址
-        router.replace({ path: state.redirect });
+        router.replace({ path: state.redirect })
+          .catch(err => {})
         dispatch("clearLoginData");
         vue.$toast({
           message: "登录成功!",

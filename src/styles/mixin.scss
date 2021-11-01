@@ -41,6 +41,8 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    // 给一个默认背景色, 在图片加载失败时可以显示得清楚些
+    background-color: #ddd;
     .bg-inner {
       height: 100%;
       background-position-x: center;

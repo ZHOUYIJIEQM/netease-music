@@ -75,7 +75,7 @@ export default {
       return false
     },
     description() {
-      return this.playList.description.replace(/\n/g, '<br>')
+      return this.playList.description && this.playList.description.replace(/\n/g, '<br>')
     }
   },
   created() {

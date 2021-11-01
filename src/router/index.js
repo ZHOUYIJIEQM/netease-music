@@ -54,11 +54,25 @@ const routes = [
     name: "Register",
     component: () => import('@/views/Login/Register.vue')
   },
-  // 歌单详情页面
   {
     path: "/PlayListDetail/:id",
     name: "PlayListDetail",
     component: () => import('@/views/PlayListDetail/PlayListDetail.vue'),
+  },
+  {
+    path: "/LeaderBoard",
+    name: "LeaderBoard",
+    component: () => import("@/views/LeaderBoard/LeaderBoard.vue"),
+  },
+  {
+    path: "/DailyPlayList",
+    name: "DailyPlayList",
+    component: () => import("@/views/DailyPlayList/DailyPlayList.vue"),
+  },
+  {
+    path: "/PlayListSquare",
+    name: "PlayListSquare",
+    component: () => import("@/views/PlayListSquare/PlayListSquare.vue"),
   },
 
   // 输入不匹配的路由, 重定向到 发现

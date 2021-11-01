@@ -1,21 +1,25 @@
 <template>
   <!-- 发现页 用于 显示歌单图片, 歌单名, 播放次数 的组件 -->
-  <div class="play-list-comp" @click="clickPlayList(playListData.id)">
+  <div class="play-list-comp" @click="goPlaylist(playListData.id)">
     <div class="top-shadow" :style="{'background-color': topShadow.background}"></div>
     <div class="play-list-box" :style="{'top': topShadow.height}">
-      <img v-lazy="playListData.img+'?param=400y400'" alt="">
-      <!-- 右上角的数据 -->
+      <img v-lazy="playListData.img+'?param=300y300'" alt="">
+      <!-- 右上角的播放数据 -->
       <span class="tr-text" v-if="playListData.playCount">
         <span class="iconfont icon-bofangsanjiaoxing"></span>
         {{playListData.playCount | formatNum}}
       </span>
+      <!-- 排行榜非数字 -->
+      <span class="tr-text" v-else>{{playListData.frequency}}</span>
       <i class="iconfont icon-bofang2" v-if="playIcon"></i>
     </div>
     <div class="play-list-name two-eli" v-if="playListData.name.length">{{playListData.name}}</div>
   </div>
 </template>
 <script>
+import { global } from "@/mixin/global.js";
 export default {
+  mixins: [global],
   props: {
     // 设置图片上方阴影一些样式
     topShadow: {
@@ -39,7 +43,8 @@ export default {
       type: Object,
       default: function() {
         return {}
-      }
+      },
+      require: true
     }
   },
   methods: {
@@ -95,7 +100,7 @@ export default {
       }
     }
     .icon-bofang2 {
-      color: hsl(0deg 0% 100% / 50%);
+      color: rgba(255, 255, 255, .7);
       position: absolute;
       bottom: .06rem;
       right: .04rem;
