@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       tabData: ["官方", "精品", "华语", "轻音乐", "古风", "电子", "ACG"],
+      // 保留一些需要的数据
       tabParams: [],
       playList: [],
       listSwiperOptions: {
@@ -32,17 +33,24 @@ export default {
     // 如果填充的类型为对象，那么被赋值的是同一个内存地址的对象，而不是深拷贝对象。
     // this.tabParams = new Array(this.tabData.length).fill({offset: 1});
     // this.playList = new Array(this.tabData.length).fill([]);
-    // this.tabParams[0].offset = 2 // 所有对象的offset都变成2了
+    // this.tabParams[0].offset = 2 // this.tabParams数组里所有对象的offset都变成2了 this.tabParams[0].offset this.tabParams[1].offset ... this.tabParams[5].offset
 
-    this.tabParams = this.tabData.map(item => { return {offset: 1, more: true} })
+    this.tabParams = this.tabData.map(item => { return {offset: 1, scroll: 0, more: true} })
     this.playList = this.tabData.map(item => [])
   },
   mounted() {
     this.isMounted = true;
+    // 添加滚动事件, 上拉加载
     this.$refs.listItem.forEach(item => {
       item.$el.addEventListener('scroll', this.swiperItemScroll)
     })
     this.getData();
+  },
+  activated() {
+    // 点击歌单后返回时, 返回原来的滚动位置
+    this.$refs.listItem.forEach((item, index) => {
+      item.$el.scrollTop = this.tabParams[index].scroll
+    })
   },
   methods: {
     // 获取数据
@@ -62,7 +70,7 @@ export default {
         // console.log(params);
         if (this.tabParams[index].more) {
           let data = await highqualityPlayList(params);
-          console.log(data);
+          // console.log(data);
           this.playList[index].push(
             ...data.playlists.map((item) => {
               return {
@@ -102,6 +110,7 @@ export default {
       let swiperH = this.$refs.listSwiper.$el.offsetHeight
       let scrollT = Math.ceil(this.$refs.listItem[index].$el.scrollTop)
       let scrollH = this.$refs.listItem[index].$el.scrollHeight
+      this.tabParams[index].scroll = scrollT
       // console.log(swiperH, scrollT, scrollH);
       if (swiperH + scrollT + 50 >= scrollH && !this.loading) {
         // console.log('到底了');

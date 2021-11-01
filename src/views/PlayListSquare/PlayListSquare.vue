@@ -48,7 +48,11 @@
               <PlayListBlock :topShadow="{background: '#e9e8e8', height: '.05rem'}" :playListData="item1"></PlayListBlock>
             </div>
           </div>
-          <div class="loading" v-show="loading">
+          <div 
+            class="loading" 
+            :style="{'padding-top': playList[index].length ? '' : '.3rem'}"
+            v-show="tabParams[index].more"
+          >
             <div class="circle"><van-loading color="red" size="0.2rem"/></div>
             <p>正在加载</p>
           </div>
