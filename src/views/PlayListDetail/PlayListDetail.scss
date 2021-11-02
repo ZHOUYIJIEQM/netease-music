@@ -5,6 +5,7 @@ $imgShadowH: .05rem;
 $playlistBarH: .4rem;
 
 .playlist-detail-page {
+  scroll-behavior: smooth;
   .navbar {
     color: #fff;
     background-color: transparent!important;
@@ -225,6 +226,9 @@ $playlistBarH: .4rem;
       .icon-gouxuanzeyemian {
         padding-left: .2rem;
       }
+    }
+    .songlist {
+      content-visibility: auto;
     }
   }
 

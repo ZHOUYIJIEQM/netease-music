@@ -215,7 +215,7 @@ export default {
     },
     // 触摸松开, 滚动到指定位置
     touchE() {
-      this.$nextTick(() => {
+      // this.$nextTick(() => {
         this.scrollTimer && clearTimeout(this.scrollTimer)
         // 松开后一小段时间后才触发, 松开后可能还有一段滚动距离, 如果在触发范围内, 可能反复弹动
         this.scrollTimer = setTimeout(() => {
@@ -234,7 +234,7 @@ export default {
             // console.log(this.scrollT, this.playlistT - this.navH);
           }
         }, 250)
-      })
+      // })
     },
     // 处理订阅
     async handlerSubscribe() {

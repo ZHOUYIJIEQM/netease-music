@@ -115,6 +115,7 @@
       </van-sticky>
       <!-- 歌曲列表 -->
       <van-list
+        class="songlist"
         v-model="loadingData"
         :finished="finished"
         :error.sync="loadingError"
@@ -183,13 +184,13 @@
       padding: 0;
     }
     .van-notice-bar__content {
-      font-size: .17rem;
+      font-size: 17px;
     }
   }
   .playlist-song {
     .van-loading__spinner {
-      width: .2rem;
-      height: .2rem;
+      width: 20px;
+      height: 20px;
     }
     .van-loading__circular circle {
       color: #f05a5a;
