@@ -66,7 +66,7 @@ export default {
             reason: item.rcmdReason
           }
         })
-        console.log(this.dailySongs);
+        // console.log(this.dailySongs);
         this.$store.commit("changeLoading", false);
         this.$nextTick(() => {
           this.setAttr()
@@ -105,7 +105,10 @@ export default {
 
       if (this.scrollT < this.plT - this.navH) {
         let opacity = this.scrollT / (this.plT - this.navH)
-        this.navbgEle.style.opacity = opacity >= 1 ? 1 : opacity
+        this.navbgEle.style.opacity = opacity
+      } else {
+        this.navbgEle.style.opacity = 1
+
       }
       
       if (!this.isTouch) {

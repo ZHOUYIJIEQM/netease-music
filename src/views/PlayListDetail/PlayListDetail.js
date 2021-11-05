@@ -281,7 +281,7 @@ export default {
     },
     // todo: 前往歌单评论页 
     goComment() {
-
+      this.$router.push({name: 'PlayListComment', params: {id: this.$route.params.id}})
     },
     // 点击分享选项
     onSelect(option) {

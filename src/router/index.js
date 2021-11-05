@@ -60,6 +60,11 @@ const routes = [
     component: () => import('@/views/PlayListDetail/PlayListDetail.vue'),
   },
   {
+    path: "/PlayListDetail/:id/comment",
+    name: "PlayListComment",
+    component: () => import('@/views/PlayListComment/PlayListComment.vue'),
+  },
+  {
     path: "/LeaderBoard",
     name: "LeaderBoard",
     component: () => import("@/views/LeaderBoard/LeaderBoard.vue"),
