@@ -1,0 +1,93 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+$topHeight: 2.2rem;
+
+.daily-playlist-page {
+  .navbar {
+    background-color: transparent;
+    color: #fff;
+    @include gaussBlur(.1rem);
+    .navbar-bg {
+      opacity: 0;
+    }
+  }
+  .top {
+    height: $topHeight;
+    position: relative;
+    .top-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+    }
+    @include gaussBlur(.4rem, .6, 1rem);
+    .daily-info {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      color: #fff;
+      .date {
+        display: flex;
+        justify-content: center;
+        font-weight: bold;
+        .day {
+          vertical-align: top;
+          font-size: .4rem;
+        }
+        span:nth-child(2) {
+          font-weight: bolder;
+          font-size: .1rem;
+          padding-top: .03rem;
+        }
+        span:nth-child(n+2) {
+          margin: .05rem 0 0 .06rem ;
+        }
+        
+      }
+      .recommend-text {
+        margin-top: .2rem;
+        margin-bottom: .4rem;
+        text-align: center;
+        position: relative;
+        font-size: .13rem;
+        span {
+          position: absolute;
+          top: 0;
+          left: .1rem;
+        }
+      }
+    }
+  }
+
+  .playlist-content {
+    .playlist-title {
+      @include df();
+      align-items: center;
+      padding: .12rem .15rem .12rem;
+      background-color: #fff;
+      .iconfont {
+        font-size: .2rem;
+      }
+      .icon-bofang1 {
+        font-size: .24rem;
+        color: red;
+      }
+      .title-text {
+        margin-left: .1rem;
+      }
+      .title-icon {
+        margin-left: auto;
+      }
+    }
+    .playlist {
+      .list-item {
+        padding: .1rem .15rem;
+        &:active {
+          background-color: #ececec;
+        }
+      }
+    }
+  }
+}

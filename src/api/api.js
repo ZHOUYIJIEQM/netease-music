@@ -273,7 +273,7 @@ export function dailyRecommend() {
  * @description 获取默认搜索关键词
  */
 export function defaultSearch() {
-  return get(`/search/default`);
+  return post(`/search/default`);
 }
 
 /**

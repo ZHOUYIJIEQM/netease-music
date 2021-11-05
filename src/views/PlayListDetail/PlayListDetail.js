@@ -55,6 +55,8 @@ export default {
           { name: '二维码', icon: 'qrcode' },
         ],
       ],
+      // 是否触摸
+      isTouch: false,
     }
   },
   computed: {
@@ -89,12 +91,14 @@ export default {
 
     this.getEleAttr()
     
-    window.addEventListener('scroll', this.handlerScroll, false)
-    window.addEventListener('touchend', this.touchE, false)
+    window.addEventListener('scroll', this.handlerScroll)
+    window.addEventListener('touchstart', this.touchS)
+    window.addEventListener('touchend', this.touchE)
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handlerScroll, false)
-    window.removeEventListener('touchend', this.touchE, false)
+  destroyed() {
+    window.removeEventListener('scroll', this.handlerScroll)
+    window.removeEventListener('touchstart', this.touchS)
+    window.removeEventListener('touchend', this.touchE)
   },
   methods: {
     // 初始化数据
@@ -164,77 +168,75 @@ export default {
     },
     // 滚动处理
     handlerScroll() {
-      this.scrollT = this.getScrollTop()
-      this.scrollT = Math.ceil(this.scrollT)
-      // console.log(this.scrollT);
+      this.scrollT = Math.ceil(this.getScrollTop())
       // 显示/隐藏回到顶部
       if (this.scrollT > this.playlistT * 3) {
         this.topFlag = true
       } else {
         this.topFlag = false
       }
-
-      // 滚动高度小于 navbar 高度
-      if (this.scrollT >= 0 && this.scrollT <= this.navH) {
-        this.playListName = '歌单'
-        this.descriptionEle.style.opacity = 1
-      }
-
-      // 描述内容 透明度
-      if (this.scrollT >= this.navH && this.scrollT <= this.playlistT - this.navH) {
-        this.playListName = this.playList.name
-        let opacity = +((this.scrollT - this.navH) / this.descriptionEle.offsetHeight).toFixed(2)
-        opacity = opacity >= 1 ? 1 : opacity
-        this.descriptionEle.style.opacity = 1 - opacity
-      }
       
-      // 导航条背景图 透明度, 描述背景图弧形边框
-      if (this.scrollT <= this.playlistT - this.navH) {
-        let opacity = +(this.scrollT / (this.playlistT - this.navH)).toFixed(2)
-        opacity = opacity >= 1 ? 1 : opacity
-        this.navBgEle.style.opacity = opacity
-        let r = 50 - 18 * opacity
-        // console.log(r);
-        this.detailBgEle.style.borderRadius = `0 0 ${r}% ${r}%`
-      } else {
-        this.navBgEle.style.opacity = 1
+      if (this.scrollT <= this.playlistT) {
+
+        // 滚动高度小于 navbar 高度
+        if (this.scrollT >= 0 && this.scrollT <= this.navH) {
+          this.playListName = '歌单'
+          this.descriptionEle.style.opacity = 1
+        }
+
+        // 描述内容 透明度
+        if (this.scrollT >= this.navH && this.scrollT <= this.playlistT - this.navH) {
+          this.playListName = this.playList.name
+          let opacity = +((this.scrollT - this.navH) / this.descriptionEle.offsetHeight).toFixed(2)
+          opacity = opacity >= 1 ? 1 : opacity
+          this.descriptionEle.style.opacity = 1 - opacity
+        }
+        
+        // 导航条背景图 透明度, 描述背景图弧形边框
+        if (this.scrollT <= this.playlistT - this.navH) {
+          let opacity = +(this.scrollT / (this.playlistT - this.navH)).toFixed(2)
+          opacity = opacity >= 1 ? 1 : opacity
+          this.navBgEle.style.opacity = opacity
+          let r = 50 - 18 * opacity
+          // console.log(r);
+          this.detailBgEle.style.borderRadius = `0 0 ${r}% ${r}%`
+        } else {
+          this.navBgEle.style.opacity = 1
+        }
+        
+        // 订阅 评论 分享 透明度
+        if (this.scrollT >= this.playlistBarT - this.navH * 1.5 && this.scrollT <= this.playlistT - this.navH ) {
+          let opacity = +(this.scrollT - (this.playlistBarT - this.navH * 1.5)) / (this.playlistT - (this.playlistBarT - this.navH * 0.5)).toFixed(2)
+          // console.log(opacity);
+          opacity = opacity >= 1 ? 1 : opacity
+          this.playlistBarEle.style.opacity = 1 - opacity
+        } else if (this.scrollT > this.playlistT - this.navH) {
+          this.playlistBarEle.style.opacity = 0
+        } else if (this.scrollT < this.playlistBarT - this.navH * 1.5) {
+          this.playlistBarEle.style.opacity = 1
+        }
       }
-      
-      // 订阅 评论 分享 透明度
-      if (this.scrollT >= this.playlistBarT - this.navH * 1.5 && this.scrollT <= this.playlistT - this.navH ) {
-        let opacity = +(this.scrollT - (this.playlistBarT - this.navH * 1.5)) / (this.playlistT - (this.playlistBarT - this.navH * 0.5)).toFixed(2)
-        // console.log(opacity);
-        opacity = opacity >= 1 ? 1 : opacity
-        this.playlistBarEle.style.opacity = 1 - opacity
-      } else if (this.scrollT > this.playlistT - this.navH) {
-        this.playlistBarEle.style.opacity = 0
-      } else if (this.scrollT < this.playlistBarT - this.navH * 1.5) {
-        this.playlistBarEle.style.opacity = 1
+
+      if (!this.isTouch) {
+        this.scrollT = Math.ceil(this.getScrollTop())
+        this.sTimer && clearTimeout(this.sTimer)
+        this.sTimer = setTimeout(() => {
+          if (this.scrollT > 0 && this.scrollT < this.navH) {
+            window.scroll({top: 0, behavior: 'smooth'})
+          }
+          if (this.scrollT > this.navH && this.scrollT < (this.playlistT - this.navH)) {
+            window.scroll({top: (this.playlistT - this.navH), behavior: 'smooth'})
+          }
+        }, 100)
       }
 
     },
-    // 触摸松开, 滚动到指定位置
+    touchS() {
+      this.isTouch = true
+    },
     touchE() {
-      // this.$nextTick(() => {
-        this.scrollTimer && clearTimeout(this.scrollTimer)
-        // 松开后一小段时间后才触发, 松开后可能还有一段滚动距离, 如果在触发范围内, 可能反复弹动
-        this.scrollTimer = setTimeout(() => {
-          // 出现了滚动高度为小数, 会导致 第二个 if 判断出错
-          this.scrollT = Math.ceil(this.scrollT)
-          // 滑动距离小于 navbar 高度时, 松开重新回到顶部
-          if (this.scrollT > 0 && this.scrollT < this.navH) {
-            window.scroll({ top: 0, behavior: "smooth" })
-          }
-          // 大于 nav 高度, 且小于 播放列表高度
-          if (this.scrollT > this.navH && this.scrollT < (this.playlistT - this.navH)) {
-            window.scroll({ top: (this.playlistT - this.navH), behavior: "smooth" })
-            // 如果 this.scrollT 不向上取整, 
-            // 可能得到 滚动高度: 204.8000030517578 而 this.playlistT - this.navH : 205
-            // 点击返回时, 还能符合此处if判断条件, 从而 home 页面滚动到 this.playlistT - this.navH 高度
-            // console.log(this.scrollT, this.playlistT - this.navH);
-          }
-        }, 250)
-      // })
+      this.isTouch = false
+      this.handlerScroll()
     },
     // 处理订阅
     async handlerSubscribe() {

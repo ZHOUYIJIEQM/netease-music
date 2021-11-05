@@ -1,4 +1,5 @@
 <template>
+  <!-- 歌单详情页里的歌曲 -->
   <div class="playlist-detail-item" @click="clickSong(listInfo.id)">
     <template v-if="listIndex">
       <span class="list-index" v-if="!activeSong">{{listIndex}}</span>

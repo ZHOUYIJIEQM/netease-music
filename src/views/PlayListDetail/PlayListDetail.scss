@@ -7,6 +7,7 @@ $playlistBarH: .4rem;
 .playlist-detail-page {
   scroll-behavior: smooth;
   .navbar {
+    will-change: auto;
     color: #fff;
     background-color: transparent!important;
     .middle-content {
@@ -30,6 +31,7 @@ $playlistBarH: .4rem;
     padding-top: $navHeight;
     height: 2.35rem;
     .description-box {
+      will-change: auto;
       margin: .25rem .15rem 0;
       @include df();
       .img-box {
@@ -145,6 +147,7 @@ $playlistBarH: .4rem;
       @include gaussBlur(.4rem, .6, 1rem);
     }
     .playlist-bar {
+      will-change: auto;
       color: $black;
       @include df();
       justify-content: space-around;
@@ -229,6 +232,8 @@ $playlistBarH: .4rem;
     }
     .songlist {
       content-visibility: auto;
+      // .list-item {
+      // }
     }
   }
 
