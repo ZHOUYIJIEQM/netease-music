@@ -80,5 +80,18 @@ export let global = {
         0
       );
     },
+    // 窗口可视高度
+    getClientHeight() {
+      return (
+        window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight ||
+        0
+      );
+    },
+    // 获取已滚动高度
+    getScrollHeight() {
+      return document.body.scrollHeight || document.documentElement.scrollHeight
+    }
   },
 };

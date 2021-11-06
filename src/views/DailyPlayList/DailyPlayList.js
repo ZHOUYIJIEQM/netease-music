@@ -46,7 +46,7 @@ export default {
         this.$store.commit("changeLoading", true);
         let data = await dailyRecommend()
         let dailySongs = data.data.dailySongs
-        console.log(dailySongs);
+        // console.log(dailySongs);
         data.data.recommendReasons.forEach((item) => {
           let index = dailySongs.findIndex(item1 => item1.id === item.songId)
           dailySongs[index].rcmdReason = item.reason
@@ -83,7 +83,7 @@ export default {
       this.playlistEle = this.$refs.playlist
       this.navH = this.navEle.offsetHeight
       this.plT = this.playlistEle.getBoundingClientRect().top
-      console.log(this.navEle, this.navbgEle, this.playlistEle);
+      // console.log(this.navEle, this.navbgEle, this.playlistEle);
     },
     touchS() {
       this.isTouch = true

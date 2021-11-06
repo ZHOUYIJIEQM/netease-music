@@ -236,11 +236,24 @@ export function commentHot(params = {}) {
  * 可选参数:
  * pageNo: 分页参数, 第N页,默认为1
  * pageSize: 分页参数, 每页多少条数据,默认20
- * sortType: 排序方式, 1:按推荐排序, 2:按热度排序, 3:按时间排序
+ * sortType: 排序方式, 99:按推荐排序, 2:按热度排序, 3:按时间排序
  * cursor: 当sortType为3时且页数不是第一页时需传入, 值为上一条数据的time
  */
 export function commentNew(params = {}) {
   return post("/comment/new", params);
+}
+
+/**
+ * 楼层评论 (某一个评论还有多个回复)
+ * parentCommentId: 楼层评论 id
+ * id : 资源 id (歌曲, 歌单 的 id)
+ * type: 数字 , 资源类型 , 对应歌曲 , mv, 专辑 , 歌单 , 电台, 视频对应以下类型
+ * 0: 歌曲 1: mv 2: 歌单 3: 专辑 4: 电台 5: 视频
+ * limit: 取出评论数量 , 默认为 20
+ * time: 分页参数,取上一页最后一项的 time 获取下一页数据
+ */
+export function commentFloor(params = {}) {
+  return post("/comment/floor", params)
 }
 
 /**

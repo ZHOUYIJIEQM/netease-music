@@ -1,0 +1,196 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+
+.playlist-comment-page {
+  .playlist-info {
+    padding-top: $navHeight;
+    padding-bottom: .07rem;
+    background-color: $homeBgc;
+    .box {
+      height: .94rem;
+      background-color: #fff;
+      padding: .12rem .15rem;
+      @include df();
+      &:active {
+        background-color: $activeBgc;
+      }
+      &>img {
+        width: .7rem;
+        aspect-ratio: 1;
+        border-radius: .04rem;
+        margin-right: .12rem;
+      }
+      .des-info {
+        flex: 1;
+        @include df(column);
+        justify-content: center;
+        font-size: .14rem;
+        padding-right: .1rem;
+        line-height: 1.5;
+        .name {
+          letter-spacing: .01rem;
+        }
+        .author {
+          margin-top: .05rem;
+          font-size: .12rem;
+          color: #525252;
+          span {
+            color: #4775a9;
+          }
+        }
+      }
+      .right {
+        @include df();
+        align-items: center;
+        color: rgb(185, 185, 185);
+      }
+    }
+  }
+
+  .comment-title {
+    background-color: #fff;
+    @include df();
+    align-items: flex-end;
+    padding: .13rem .16rem;
+    span {
+      color: #a9a9a9;
+      font-size: .14rem;
+      &.active {
+        color: #363636;
+        font-weight: bold;
+      }
+      &:nth-child(1) {
+        flex: 1;
+      }
+      &:nth-child(n+2) {
+        font-size: .12rem;
+        margin-left: .12rem;
+      }
+    }
+  }
+
+  .comments-box {
+    .comment-item {
+      padding-top: .08rem;
+      @include df();
+      padding-left: .08rem;
+      &:active {
+        background-color: #f5f5f5;
+      }
+      .img-box {
+        width: .52rem;
+        height: .52rem;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        img {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .avatar {
+          width: 68%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+        }
+        .avatarDetail {
+          right: .06rem;
+          bottom: .06rem;
+          left: auto;
+          top: auto;
+          width: .12rem;
+        }
+      } 
+      .comment-content {
+        flex: 1;
+        margin-left: .05rem;
+        padding-bottom: .15rem;
+        border-bottom: 1px solid #e8e8e8;
+        .top {
+          @include df();
+          justify-content: space-between;
+          align-items: center;
+          .user {
+            font-size: .13rem;
+            .name {
+              color: #666;
+              line-height: 2;
+              .vip-box {
+                margin-left: .03rem;
+                display: inline-block;
+                padding: .01rem .02rem;
+                border-radius: .03rem;
+                font-size: 0;
+                background-color: #141412;
+                img {
+                  width: .19rem;
+                }
+                // span {
+                //   display: inline-block;
+                //   font-size: .12rem;
+                //   height: .12rem;
+                // }
+              }
+            }
+            .date {
+              font-size: .1rem;
+              color: #999;
+            }
+          }
+          .zan {
+            color: #999;
+            margin-right: .12rem;
+            @include df();
+            align-items: center;
+            .iconfont {
+              font-size: .14rem;
+            }
+            .icon-zan {
+  
+            }
+            .icon-z-likeFill {
+              color: #fe3a3b;
+            }
+            .zan-num {
+              margin-right: .05rem;
+              font-size: .12rem;
+            }
+          }
+        }
+        .content {
+          padding-right: .15rem;
+          margin-top: .12rem;
+          color: $black;
+          font-size: .14rem;
+          line-height: 1.5;
+        }
+        .reply {
+          margin-top: .1rem;
+          font-size: .11rem;
+          color: #597ba1;
+          .iconfont {
+            font-size: .1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .bottom {
+    text-align: center;
+    color: #666;
+    font-size: .14rem;
+    padding: .25rem 0;
+  }
+
+  .no-comments {
+    @include df();
+    justify-content: center;
+    padding-top: .5rem;
+    color: grey;
+    font-size: .14rem;
+  }
+}

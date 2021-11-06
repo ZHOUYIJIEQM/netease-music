@@ -14,13 +14,13 @@ $topHeight: 2.2rem;
   .top {
     height: $topHeight;
     position: relative;
+    background-color: $greyColor;
     .top-bg {
       position: absolute;
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: -1;
     }
     @include gaussBlur(.4rem, .6, 1rem);
     .daily-info {
@@ -28,6 +28,7 @@ $topHeight: 2.2rem;
       width: 100%;
       bottom: 0;
       color: #fff;
+      z-index: 1;
       .date {
         display: flex;
         justify-content: center;
