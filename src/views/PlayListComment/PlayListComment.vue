@@ -13,7 +13,7 @@
       </template>
       <template #middle>
         <div class="title">
-          评论
+          <span>评论</span>
           <span v-if="commentCount">({{commentCount}})</span>
         </div>
       </template>
@@ -51,40 +51,18 @@
         v-for="(item, index) in comments"
         :key="index"
       >
-        <div class="img-box">
-          <img class="avatar" :src="item.user.avatarUrl+'?param=300y300'" alt="">
-          <img class="pendant" v-if="item.pendantData" :src="item.pendantData.imageUrl+'?param=300y300'" alt="">
-          <img class="avatarDetail" v-if="item.user.avatarDetail" :src="item.user.avatarDetail.identityIconUrl" alt="">
-        </div>
-        <div class="comment-content">
-          <div class="top">
-            <div class="user">
-              <div class="name">
-                <span class="user-name">{{item.user.nickname}}</span>
-                <span class="vip-box" v-if="item.user.vipRights">
-                  <img src="../../assets/cvip.png" alt="">
-                  <span class="split">▪</span>
-                  <span class="level">{{item.user.vipRights.redVipLevel}}</span>
-                </span>
-              </div>
-              <div class="date">{{item.time|formatTime}}</div>
-            </div>
-            <div class="zan">
-              <span class="zan-num" :style="{color: item.liked ? '#fe3a3b' : ''}" v-if="item.likedCount">{{item.likedCount}}</span>
-              <i class="iconfont icon-zan" v-if="!item.liked"></i>
-              <i class="iconfont icon-z-likeFill" v-else></i>
-            </div>
-          </div>
-          <div class="content" v-html="formatComment(item.content)"></div>
-          <div class="reply" v-if="item.showFloorComment.replyCount">{{item.showFloorComment.replyCount}}条回复 <i class="iconfont icon-jiantou"></i></div>
-        </div>
+        <CommentItem :commentData="item" :commentType="2" :resourceId="commentId"></CommentItem>
       </div>
+      <div class="bottom" v-if="!this.hasMore">没有更多了哦!</div>
     </div>
-
-    <div class="bottom" v-if="!this.hasMore">没有更多了哦!</div>
 
     <div class="no-comments" v-show="!commentCount">
       暂无评论, 欢迎抢沙发
+    </div>
+
+    <div class="bottom-input">
+      <input type="text" placeholder="写评论...">
+      <p>发送</p>
     </div>
 
   </div>

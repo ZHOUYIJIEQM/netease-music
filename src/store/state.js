@@ -19,6 +19,8 @@ const state = {
   mvId: 0,
   // 正在播放的歌曲 id
   songId: 0,
+  // 是否显示了更多回复
+  showReply: false,
 }
 
 export default state

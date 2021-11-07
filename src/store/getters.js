@@ -17,6 +17,7 @@ const getters = {
   showPlayer: state => state.showPlayer,
   mvId: state => state.mvId,
   songId: state => state.songId,
+  showReply: state => state.showReply,
 }
 
 export default getters

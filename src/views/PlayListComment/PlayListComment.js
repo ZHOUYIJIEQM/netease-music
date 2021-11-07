@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar"
+import CommentItem from "@/components/CommentItem"
 import { global } from "@/mixin/global.js";
 import { playListDetail, commentNew } from "@/api/api.js";
 
@@ -6,7 +7,8 @@ export default {
   name: 'PlayListComment',
   mixins: [global],
   components: {
-    Navbar
+    Navbar,
+    CommentItem
   },
   data() {
     return {
@@ -26,18 +28,26 @@ export default {
       loading: false,
     }
   },
-  filters: {
-    
-  },
   computed: {
     // 共有多少评论
     commentCount() {
       return this.playList.commentCount;
     },
+    showReply() {
+      return this.$store.getters.showReply
+    }
   },
   mounted() {
     this.getPlayList()
     window.addEventListener('scroll', this.handlerScroll)
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.showReply) {
+      this.$store.commit('changeShowReply', false)
+      next(false)
+    } else {
+      next()
+    }
   },
   methods: {
     // 换行
@@ -82,6 +92,7 @@ export default {
             this.cursor && (params.cursor = this.cursor)
           }
           let comment = await commentNew(params)
+          console.log(comment.data);
           this.hasMore = comment.data.hasMore
           comment.data.cursor && (this.cursor = comment.data.cursor)
           this.pageNum++
