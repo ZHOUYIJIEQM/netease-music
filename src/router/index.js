@@ -79,6 +79,29 @@ const routes = [
     name: "PlayListSquare",
     component: () => import("@/views/PlayListSquare/PlayListSquare.vue"),
   },
+  {
+    path: "/Search",
+    name: "Search",
+    redirect: { name: "SearchDefault" },
+    component: () => import("@/views/Search/Search.vue"),
+    children: [
+      {
+        path: "Default",
+        name: "SearchDefault",
+        component: () => import("@/views/Search/Default/Default.vue"),
+      },
+      {
+        path: "Suggest",
+        name: "SearchSuggest",
+        component: () => import("@/views/Search/Suggest/Suggest.vue"),
+      },
+      {
+        path: "Result",
+        name: "SearchResult",
+        component: () => import("@/views/Search/Result/Result.vue"),
+      },
+    ]
+  },
 
   // 输入不匹配的路由, 重定向到 发现
   {

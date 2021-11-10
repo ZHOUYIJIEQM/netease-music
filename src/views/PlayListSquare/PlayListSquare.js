@@ -110,6 +110,7 @@ export default {
       let swiperH = this.$refs.listSwiper.$el.offsetHeight
       let scrollT = Math.ceil(this.$refs.listItem[index].$el.scrollTop)
       let scrollH = this.$refs.listItem[index].$el.scrollHeight
+      // 保留滚动位置
       this.tabParams[index].scroll = scrollT
       // console.log(swiperH, scrollT, scrollH);
       if (swiperH + scrollT + 50 >= scrollH && !this.loading) {

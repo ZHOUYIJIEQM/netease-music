@@ -72,7 +72,15 @@ const mutations = {
   },
   changeShowReply(state, value) {
     state.showReply = value
+  },
+  changeSearchComponent(state, value) {
+    state.searchComponent = value
+  },
+  saveSearchHistoryArr(state, arr) {
+    window.localStorage.setItem('musicSearchHistory', JSON.stringify(arr))
+    state.searchHistoryArr = JSON.stringify(arr)
   }
+
 }
 
 export default mutations

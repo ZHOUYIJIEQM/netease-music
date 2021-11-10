@@ -38,7 +38,8 @@ export let global = {
     },
     // 去搜索
     goSearch() {
-      console.log("前往搜索页");
+      // console.log("前往搜索页");
+      this.$router.push({name: 'Search'})
     },
     // 返回顶部
     toTop() {

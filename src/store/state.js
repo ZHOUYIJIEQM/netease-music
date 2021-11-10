@@ -21,6 +21,8 @@ const state = {
   songId: 0,
   // 是否显示了更多回复
   showReply: false,
+  // 搜索历史记录数组
+  searchHistoryArr: window.localStorage.getItem('musicSearchHistory'),
 }
 
 export default state

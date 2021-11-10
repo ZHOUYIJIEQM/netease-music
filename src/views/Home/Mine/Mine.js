@@ -130,12 +130,13 @@ export default {
         this.recommendList = this.loginStatus
           ? recommendList.recommend.slice(0, 4)
           : recommendList.result.slice(0, 4);
+        console.log(this.recommendList);
         this.recommendList = this.recommendList.map((item) => {
           return {
             id: item.id,
             name: item.name,
             img: item.picUrl,
-            playCount: item.playCount,
+            playCount: item.playcount,
           };
         });
         hotList = {

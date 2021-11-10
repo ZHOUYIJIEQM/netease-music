@@ -18,6 +18,14 @@ const getters = {
   mvId: state => state.mvId,
   songId: state => state.songId,
   showReply: state => state.showReply,
+  searchComponent: state => state.searchComponent,
+  searchHistoryArr: state => {
+    if (state.searchHistoryArr) {
+      return JSON.parse(state.searchHistoryArr)
+    } else {
+      return []
+    }
+  }
 }
 
 export default getters

@@ -82,6 +82,9 @@ export default {
       }
     }
   },
+  created() {
+    console.log('%c在 pc 浏览, 按 F12 切换手机模式后 swiper 左右滑动异常, 需要刷新一次', 'font-size: 16px; color: #fff; background: #1989fa; padding: 3px;');
+  },
   methods: {
     // 初始化路由
     initTab(to, from) {

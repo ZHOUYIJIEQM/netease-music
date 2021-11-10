@@ -248,6 +248,7 @@
                 .img-box {
                   position: relative;
                   flex-basis: .5rem;
+                  aspect-ratio: 1;
                   overflow: hidden;
                   border-radius: 0.08rem;
                   img {

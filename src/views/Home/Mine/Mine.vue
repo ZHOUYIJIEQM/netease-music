@@ -7,6 +7,7 @@
       class="mine-navbar" 
       :style="{'background': navbarColor}"
       @clickLeft="toggleMenu"
+      @clickRight="goSearch"
     >
       <template #left>
         <i class="iconfont icon-weibiaoti12"></i>
@@ -40,8 +41,6 @@
           </div>
           <div class="userName">
             <div class="name">{{userInfo.nickname}}</div>
-            <!-- todo: 需要先提取等级 -->
-            <!-- <div class="level">{{userInfo.}}</div> -->
           </div>
         </template>
         <template v-else>

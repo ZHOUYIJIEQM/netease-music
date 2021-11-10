@@ -78,6 +78,9 @@ export default {
     },
     description() {
       return this.playList.description && this.playList.description.replace(/\n/g, '<br>')
+    },
+    playlistId() {
+      return this.$route.params.id
     }
   },
   created() {
@@ -104,7 +107,11 @@ export default {
     // 初始化数据
     async initData() {
       try {
-        let pl = await playListDetail(this.$route.params.id)
+        this.playList = {}
+        this.songList = []
+        this.songsIds = []
+        this.loadingData = true
+        let pl = await playListDetail(this.playlistId)
         this.playList = pl.playlist;
         // 把里面歌曲 id 提取出来
         this.songsIds = this.playList.trackIds.map(item => item.id)
@@ -281,7 +288,7 @@ export default {
     },
     // todo: 前往歌单评论页 
     goComment() {
-      this.$router.push({name: 'PlayListComment', params: {id: this.$route.params.id}})
+      this.$router.push({name: 'PlayListComment', params: {id: this.playlistId}})
     },
     // 点击分享选项
     onSelect(option) {
@@ -364,6 +371,10 @@ export default {
         document.querySelector('.playlist-detail-page').style.overflow = ''
         document.querySelector('.playlist-detail-page').style.height = ''
       }
+    },
+    // 直接在url输入新的歌单id
+    playlistId(newV) {
+      this.initData()
     }
   },
   beforeRouteLeave (to, from, next) {

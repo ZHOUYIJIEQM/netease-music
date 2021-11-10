@@ -29,10 +29,17 @@ export let scrollPosition = {
       );
     },
   },
-  activated() {
-    this.$nextTick(() => {
-      window.scrollTo(0, this.scrollH);
-    });
+  // activated() {
+  //   this.$nextTick(() => {
+  //     window.scrollTo(0, this.scrollH);
+  //   });
+  // },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$nextTick(() => {
+        window.scrollTo(0, vm.scrollH)
+      })
+    })
   },
   beforeRouteLeave(to, from, next) {
     this.scrollH = this.getScrollTop();
