@@ -77,8 +77,10 @@ const mutations = {
     state.searchComponent = value
   },
   saveSearchHistoryArr(state, arr) {
-    window.localStorage.setItem('musicSearchHistory', JSON.stringify(arr))
-    state.searchHistoryArr = JSON.stringify(arr)
+    let history = JSON.stringify(arr)
+    console.log(history);
+    state.searchHistoryArr = history
+    window.localStorage.setItem('musicSearchHistory', history)
   }
 
 }

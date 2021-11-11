@@ -86,10 +86,21 @@ export default {
       if (this.searchText === '') {
         this.searchText = this.inputPlaceHolder
       }
+
+      // 把保存到 localStorage 的部分放到 result 页面 里, 应该可以解决
       this.$refs.searchInput.blur()
-      let arr = this.searchHistoryArr
-      arr.unshift(this.searchText)
-      this.$store.commit('saveSearchHistoryArr', arr)
+      let history = this.searchHistoryArr
+      // todo: 去重处理
+      // 找到下标
+      let index = history.findIndex(item => item === this.searchText)
+      // 存在就删除掉该项
+      index !== -1 && history.splice(index, 1)
+      // 再加到最前面
+      history.unshift(this.searchText)
+      this.$store.commit('saveSearchHistoryArr', history)
+      
+      // bug: 在点击历史搜索记录 2次以上偶然触发???, 不停触发热搜榜轮播切换事件 ?????
+      // 与 normalizeSlideIndex false  slidesPerView: 'auto' 有关, 改掉后就不会了
       this.$router.replace({name: 'SearchResult', query: {'keyWord': this.searchText}})
     },
     // 清除搜索input内容

@@ -9,16 +9,15 @@ const actions = {
    * @param {Object} params 可选参数: password(密码) | md5_password(md5加密后的密码, 传入后 password 参数将失效) | captcha(验证码, 传入后 password 参数将失效)
    */
   async userPhoneLogin({ state, commit, dispatch }, params) {
-    commit('changeLoading', true)
+    commit("changeLoading", true);
     try {
       let l = await phoneLogin(params);
       // console.log('登录信息:', l);
       if (l.code === 200) {
         // 保存登录信息
-        dispatch("saveLoginData", l)
+        dispatch("saveLoginData", l);
         // 跳转到登录前的地址
-        router.replace({ path: state.redirect })
-          .catch(err => {})
+        router.replace({ path: state.redirect }).catch((err) => {});
         dispatch("clearLoginData");
         vue.$toast({
           message: "登录成功!",
@@ -44,11 +43,11 @@ const actions = {
       console.log("登录接口错误:", err);
     }
     setTimeout(() => {
-      commit('changeLoading', false)
-    }, 300)
+      commit("changeLoading", false);
+    }, 300);
   },
   // 保存登录信息
-  saveLoginData({commit}, data) {
+  saveLoginData({ commit }, data) {
     commit("changeLoginStatus", true);
     commit("saveCookie", data.cookie);
     commit("saveProfile", data.profile);
@@ -72,7 +71,7 @@ const actions = {
       let out = await loginOut();
       commit("changeLoginStatus", false);
       commit("saveCookie", "");
-      commit("toggleMenu")
+      commit("toggleMenu");
       window.localStorage.clear();
       vue.$toast({
         message: "已退出登录",
@@ -83,6 +82,9 @@ const actions = {
     } catch (err) {
       console.log("退出登录错误:", err);
     }
+  },
+  saveSearchHistoryArr({ commit }, arr) {
+    commit('saveSearchHistoryArr', arr)
   },
 };
 

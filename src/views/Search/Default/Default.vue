@@ -39,7 +39,7 @@
       <div class="board-box">
         <swiper
           class="board-swiper"
-          ref="board"
+          ref="boardSwiper"
           :options="boardOptions"
           @slideChange="changeBoard"
           v-if="boardData.length"
@@ -102,6 +102,7 @@
             </div>
           </swiper-slide>
         </swiper>
+      
       </div>
 
       <!-- 音乐专区 -->
@@ -154,7 +155,8 @@ export default {
       boardPagination: ['热搜榜', '视频榜', '播客榜'],
       pagination: 0,
       boardOptions: {
-        slidesPerView: 'auto',
+        // slidesPerView: 'auto',
+        slidesPerView: 1.05,
         // 获取到 activeIndex
         normalizeSlideIndex: false,
         resistanceRatio: 0,
@@ -192,18 +194,21 @@ export default {
     },
     // 轮播对象
     boardSwiper() {
-      return this.$refs.board.$swiper
+      return this.$refs.boardSwiper.$swiper
     },
   },
   mounted() {
-    this.$store.commit('saveSearchHistoryArr', ['111', '222', '333', '111', '222', '333', '111', '222', '333'])
     this.initData()
+  },
+  activated() {
+    this.historyScroll()
   },
   methods: {
     async initData() {
       this.$store.commit("changeLoading", true);
       try {
         let board = await hotSearch()
+        // console.log(board);
         this.$set(this.boardData, 0, board.data)
       } catch (error) {
         console.log(error);
@@ -214,15 +219,16 @@ export default {
       }
     },
     changeBoard() {
-      // console.log('changeboard');
-      this.pagination = this.boardSwiper.activeIndex
+      console.log('changeboard');
+      this.boardSwiper && (this.pagination = this.boardSwiper.activeIndex)
     },
     changePagintion(index) {
-      // console.log('changepagination');
+      console.log('changepagination');
       this.pagination = index
       this.boardSwiper.slideTo(this.pagination)
     },
     goSearchRes(keyWord) {
+      this.historyScroll()
       this.$parent.searchText = keyWord
       this.$parent.goSearchResult()
     },
@@ -248,6 +254,9 @@ export default {
       if (left > gap) {
         this.searchHistoryMask = 'left-mask right-mask'
       }
+      if (left <= 0) {
+        this.searchHistoryMask = this.searchHistoryMask.replace(/left-mask\s*/, '')
+      }
     },
     clearHistory() {
       this.$store.commit('saveSearchHistoryArr', [])
@@ -256,7 +265,7 @@ export default {
   watch: {
     searchHistoryArr: {
       handler: function (newV) {
-        if (newV) {
+        if (newV.length) {
           this.$nextTick(() => {
             // 滚动未触发时, 先执行一次
             this.historyScroll()
@@ -264,7 +273,7 @@ export default {
         }
       },
       immediate: true,
-    }
+    },
   }
 };
 </script>
@@ -293,7 +302,7 @@ export default {
         left: 0;
         bottom: 0;
         height: 100%;
-        width: .3rem;
+        width: .2rem;
         background: linear-gradient(to left, transparent, #fff 85%);
       }
       &.right-mask::after {
@@ -302,7 +311,7 @@ export default {
         right: 0;
         bottom: 0;
         height: 100%;
-        width: .3rem;
+        width: .2rem;
         background: linear-gradient(to right, transparent, #fff 85%);
       }
       .inner-box {

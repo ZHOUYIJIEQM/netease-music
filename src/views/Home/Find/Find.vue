@@ -543,7 +543,7 @@
       </div>
       
       <!-- 加载提示 -->
-      <div class="loading-box" v-if="loading">
+      <div class="loading-box" v-if="!dividerShow">
         <Loading></Loading>
       </div>
 

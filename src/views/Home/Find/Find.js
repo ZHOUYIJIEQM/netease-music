@@ -206,8 +206,8 @@ export default {
       let bodyH = document.body.scrollHeight || document.documentElement.scrollHeight;
       let scrollT = this.getScrollTop()
       let clientH = this.getClientHeight()
-      // 距离底部 300 px 获取新数据
-      if (bodyH - 300 < scrollT + clientH && !this.loading) {
+      // 距离底部 350 px 获取新数据
+      if (bodyH - 350 < scrollT + clientH && !this.loading) {
         // console.log('触底加载');
         if (!this.cursor) {
           this.dividerShow = true
