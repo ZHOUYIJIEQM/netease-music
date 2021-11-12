@@ -1,6 +1,6 @@
 <template>
   <div class="suggest-content">
-    <!-- <template v-if="suggestMatch.length">
+    <template v-if="suggestMatch.length">
       <div 
         class="suggest-box"
         v-for="(item, index) in suggestMatch"
@@ -12,7 +12,7 @@
           <span class="suggest-text">{{item.keyword}}</span>
         </div>
       </div>
-    </template> -->
+    </template>
 
   </div>
 </template>
@@ -64,36 +64,18 @@ export default {
       }, 500)
     }
   },
-  beforeRouteEnter (to, from, next) {
-    // console.log(to, from);
-    if (to.query.keyWord) {
-      console.log('query', to.query.keyWord, to.name);
-      next(vm => {
-        // vm.$router.replace({
-        //   name: 'SearchSuggest',
-        //   query: to.query.keyWord
-        // })
-        // .catch(err => {})
-      })
-    }
-    // next(vm => {
-    //   console.log('刚进入', vm.$route.query, window.location.href);
-    // })
-  },
   // beforeRouteUpdate(to, from, next) {
-  //   // console.log('------');
-  //   if (to.query.keyWord) {
-  //     next()
-  //   } else {
-  //     next(false)
-  //   }
+  //   console.log('update', to);
+  //   // if (to.name === 'SearchSuggest' && to.query.keyWord) {
+  //   //   next()
+  //   // }
   // },
   watch: {
     '$route.query.keyWord': {
       handler: function(newV) {
         this.$nextTick(() => {
           console.log('搜索词', newV);
-          // this.getSuggest(newV)
+          this.getSuggest(newV)
         })
       },
       immediate: true

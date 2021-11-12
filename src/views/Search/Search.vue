@@ -76,16 +76,10 @@ export default {
     },
     // 搜索input输入
     searchInput() {
-      // if (this.searchText.length) {
-        // ??? query 
-        // this.$router.replace({name: 'SearchSuggest', params: {'keyWord': this.searchText}})
-        // this.$router.replace({name: 'SearchSuggest', query: JSON.stringify({'keyWord': this.searchText})})
-        // console.log(this.searchText);
-        this.$nextTick(() => {
-          this.$router.push({name: 'SearchSuggest', query: {'key': this.searchText}})
-            // .catch(err => {})
-        })
-      // }
+      if (this.searchText.length) {
+        this.$router.replace({name: 'SearchSuggest', query: {'keyWord': this.searchText}})
+          .catch(err => {})
+      }
     },
     // 搜索input聚焦
     searchFocus() {
@@ -119,6 +113,18 @@ export default {
       this.$router.replace({name: 'SearchDefault'})
     },
   },
+  // beforeRouteUpdate (to, from, next) {
+  //   // 出现奇怪的现象, query 的 keyWord 一次改变, 这里 log 触发了 2 次
+  //   // 第一次带有设置的 query 参数, 第二次 query 就没有了, 不明白为什么
+  //   console.log('路由更新', to);
+
+  //   if (to.name === 'SearchSuggest' && to.query.keyWord) {
+  //     next()
+  //   } else {
+  //     next(false)
+  //   }
+
+  // }
 }
 </script>
 
