@@ -317,6 +317,7 @@ export default {
       .inner-box {
         overflow-x: scroll;
         display: flex;
+        padding: 0 .06rem;
       }
       span {
         border-radius: .5rem;

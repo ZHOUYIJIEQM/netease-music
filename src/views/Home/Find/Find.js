@@ -206,7 +206,7 @@ export default {
       let bodyH = document.body.scrollHeight || document.documentElement.scrollHeight;
       let scrollT = this.getScrollTop()
       let clientH = this.getClientHeight()
-      // 距离底部 350 px 获取新数据
+      // 距离底部 300 px 获取新数据
       if (bodyH - 350 < scrollT + clientH && !this.loading) {
         // console.log('触底加载');
         if (!this.cursor) {
@@ -311,7 +311,7 @@ export default {
         try {
           this.$store.commit('changeLoading', true)
           let find = await homePageFind({refresh: true, cursor: '{"blockCodeOrderList":["HOMEPAGE_MUSIC_MLOG"]}'})
-          console.log(find);
+          // console.log(find);
           let index = this.homeFindData.findIndex(item => item.type === '精选音乐视频')
           console.log(index);
           this.homeFindData[index].list = []

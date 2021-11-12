@@ -230,7 +230,7 @@ export default {
   beforeRouteUpdate(to, from, next) {
     // console.log('rupdate query', this.$route.query)
     // console.log('rupdate', to);
-    // 偶尔莫名刷新 url (原因还未知), query 没了
+    // bug: 莫名更新 url , query 没了 (原因还未知) 
     // 期望得到: http://xxx.com/#/Register?navName=xxx
     // 结果得到: http://xxx.com/#/Register
     next(false)

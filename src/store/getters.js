@@ -20,7 +20,7 @@ const getters = {
   showReply: state => state.showReply,
   searchComponent: state => state.searchComponent,
   searchHistoryArr: state => {
-    if (state.searchHistoryArr.length) {
+    if (state.searchHistoryArr) {
       return JSON.parse(state.searchHistoryArr)
     } else {
       return []

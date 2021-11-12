@@ -18,6 +18,7 @@
             type="text" 
             :placeholder="inputPlaceHolder"
             v-model="searchText"
+            v-focus
             @input="searchInput"
             @focus="searchFocus"
             @keydown.enter="goSearchResult(searchText)"
@@ -75,7 +76,16 @@ export default {
     },
     // 搜索input输入
     searchInput() {
-
+      // if (this.searchText.length) {
+        // ??? query 
+        // this.$router.replace({name: 'SearchSuggest', params: {'keyWord': this.searchText}})
+        // this.$router.replace({name: 'SearchSuggest', query: JSON.stringify({'keyWord': this.searchText})})
+        // console.log(this.searchText);
+        this.$nextTick(() => {
+          this.$router.push({name: 'SearchSuggest', query: {'key': this.searchText}})
+            // .catch(err => {})
+        })
+      // }
     },
     // 搜索input聚焦
     searchFocus() {
