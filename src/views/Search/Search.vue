@@ -33,7 +33,7 @@
     </Navbar>
     <!-- 搜索内容 -->
     <div class="search-box">
-      <keep-alive>
+      <keep-alive :include="/.*Include$/">
         <router-view></router-view>
       </keep-alive>
     </div>
@@ -113,18 +113,26 @@ export default {
       this.$router.replace({name: 'SearchDefault'})
     },
   },
-  // beforeRouteUpdate (to, from, next) {
-  //   // 出现奇怪的现象, query 的 keyWord 一次改变, 这里 log 触发了 2 次
-  //   // 第一次带有设置的 query 参数, 第二次 query 就没有了, 不明白为什么
-  //   console.log('路由更新', to);
-
-  //   if (to.name === 'SearchSuggest' && to.query.keyWord) {
-  //     next()
-  //   } else {
-  //     next(false)
-  //   }
-
-  // }
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (to.query.keyWord) {
+        vm.searchText = to.query.keyWord
+      }
+    })
+  },
+  watch: {
+    $route(newV) {
+      // 限定只在 搜索路由
+      if (/Search/.test(newV.name)) {
+        // 修改头部背景色
+        if (newV.name === 'SearchResult') {
+          this.$refs.navbar.$el.style.background = '#f5f5f5'
+        } else {
+          this.$refs.navbar.$el.style.background = '#fff'
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -150,6 +158,7 @@ export default {
         border: none;
         padding: .08rem 0;
         line-height: 1;
+        background: inherit;
       }
       .icon-chacha {
         font-size: .22rem;

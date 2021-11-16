@@ -286,7 +286,7 @@ export default {
         }
       }
     },
-    // todo: 前往歌单评论页 
+    // 前往歌单评论页 
     goComment() {
       this.$router.push({name: 'PlayListComment', params: {id: this.playlistId}})
     },

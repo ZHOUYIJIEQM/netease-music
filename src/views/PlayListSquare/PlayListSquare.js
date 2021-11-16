@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       tabData: ["官方", "精品", "华语", "轻音乐", "古风", "电子", "ACG"],
-      // 保留一些需要的数据
+      // 保留一些需要的数据 保留每个轮播项的 offset分页 scroll滚动位置 more是否有更多
       tabParams: [],
       playList: [],
       listSwiperOptions: {

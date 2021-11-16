@@ -147,7 +147,7 @@
 import { saveEleScrollH } from "../mixin";
 import { hotSearch } from "@/api/api"
 export default {
-  name: "SearchDefault",
+  name: "SearchDefaultInclude",
   mixins: [saveEleScrollH],
   data() {
     return {
@@ -209,6 +209,7 @@ export default {
       try {
         let board = await hotSearch()
         // console.log(board);
+        // 没有其它榜的接口,全用热搜榜吧
         this.$set(this.boardData, 0, board.data)
       } catch (error) {
         console.log(error);

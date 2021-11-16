@@ -39,6 +39,7 @@
 </template>
 <script>
 import { global } from "@/mixin/global";
+import { defaultSearch } from '@/api/api'
 
 export default {
   name: "homeInclude",
@@ -88,10 +89,13 @@ export default {
   methods: {
     // 初始化路由
     initTab(to, from) {
+      // 需要限制在哪些路由页触发
       let routeName = to.name;
-      this.$router.push({ name: routeName })
-        .catch((err) => {});
-      this.tabIndex = this.tabArr.findIndex((item) => item === routeName);
+      if (routeName === 'Find' || routeName === 'Mine' || routeName === 'YunVillage') {
+        this.$router.push({ name: routeName })
+          .catch((err) => {});
+        this.tabIndex = this.tabArr.findIndex((item) => item === routeName);
+      }
     },
     // 点击底部标签
     changeTab(index) {
@@ -113,6 +117,7 @@ export default {
     }
   },
   watch: {
+    // 因为 keep-alive 所以只要路由变化就会触发, 即进入其他路由也会执行 initTab, 所以需要限制在哪些路由页才能触发
     $route: {
       handler: "initTab",
       immediate: true,

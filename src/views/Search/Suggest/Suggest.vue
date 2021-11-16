@@ -13,7 +13,11 @@
         </div>
       </div>
     </template>
-
+    <template v-else-if="!loading && !suggestMatch.length">
+      <div class="no-suggest" @click="goSearchRes($route.query.keyWord)">
+        搜索 <pre>“{{$route.query.keyWord}}”</pre>
+      </div>
+    </template>
   </div>
 </template>
 <script>
@@ -31,11 +35,6 @@ export default {
       loading: false,
     }
   },
-  computed: {
-    // keyWord() {
-    //   return this.$parent.searchText
-    // }
-  },
   methods: {
     goSearchRes(keyWord) {
       this.$parent.searchText = keyWord
@@ -43,6 +42,7 @@ export default {
     },
     // 获取建议
     getSuggest(keyWord) {
+      this.loading = true
       this.$store.commit("changeLoading", true);
       this.suggestMatch = []
       this.suggestTimer && clearTimeout(this.suggestTimer)
@@ -50,33 +50,36 @@ export default {
         try {
           if (keyWord) {
             let suggest = await searchSuggest(keyWord)
-            // console.log('搜索词', keyWord, suggest);
-            if (suggest.code) {
-              suggest.result && (this.suggestMatch = suggest.result.allMatch)
+            if (suggest.code === 200 && suggest.result.allMatch) {
+              this.suggestMatch = suggest.result.allMatch
             }
-            console.log(this.suggestMatch);
+            // console.log('搜索词', keyWord, this.suggestMatch, suggest);
           }
         } catch (error) {
           console.log(error);
         } finally {
           this.$store.commit("changeLoading", false);
+          this.loading = false
         }
-      }, 500)
+      }, 300)
     }
   },
-  // beforeRouteUpdate(to, from, next) {
-  //   console.log('update', to);
-  //   // if (to.name === 'SearchSuggest' && to.query.keyWord) {
-  //   //   next()
-  //   // }
-  // },
+  beforeRouteLeave (to, from, next) {
+    // 处理直接按返回键
+    // 不是去往 默认页 也不是 结果页
+    if (to.name !== 'SearchDefault' && to.name !== 'SearchResult') {
+      this.$parent.searchText = ''
+      next({
+        name: 'SearchDefault',
+      })
+    } else {
+      next()
+    }
+  },
   watch: {
     '$route.query.keyWord': {
       handler: function(newV) {
-        this.$nextTick(() => {
-          console.log('搜索词', newV);
-          this.getSuggest(newV)
-        })
+        this.getSuggest(newV)
       },
       immediate: true
     },
@@ -100,13 +103,26 @@ export default {
         margin-left: .15rem;
       }
       .suggest-text {
-        color: #181818;
+        line-height: 1.3;
+        color: #333;
         flex: 1;
         font-size: .14rem;
-        padding: .14rem .15rem .14rem 0;
+        padding: .12rem .15rem .12rem 0;
         margin-left: .1rem;
         border-bottom: 1px solid #d6d6d6;
       }
+    }
+  }
+  .no-suggest {
+    &:active {
+      background-color: #d6d6d6;
+    }
+    color: #6399fd;
+    padding: .15rem 0 .15rem .15rem;
+    border-bottom: 1px solid #d6d6d6;
+    font-size: .14rem;
+    pre {
+      display: inline-block;
     }
   }
 }

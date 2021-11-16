@@ -1,0 +1,68 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+
+.result-content {
+  $activeC: #dfdfdf;
+  height: 100%;
+  background-color: $homeBgc;
+  @include df(column);
+  .tab {
+    flex-shrink: 0;
+    padding: .06rem 0 .03rem;
+  }
+  .result-box {
+    flex: 1;
+    overflow: hidden;
+    .result-swiper {
+      height: 100%;  
+      color: $black;
+      .result-item {
+        height: 100%;
+        overflow-y: scroll;
+
+        .composite-box {
+          .composite-item {
+            padding: 0 .15rem;
+            .composite-item-inner {
+              &:last-child {
+                margin-bottom: .15rem;
+              }
+              margin-top: .15rem;
+              border-radius: .1rem;
+              background-color: #fff;
+              overflow: hidden;
+              .title {
+                padding: 0 .03rem .08rem;
+                margin: .18rem .12rem .08rem;
+                border-bottom: 1px solid #f5f5f5;
+                font-size: .17rem;
+                font-weight: bold;
+              }
+              .list-item {
+                // padding: .1rem .12rem;
+                &:active {
+                  background-color: $activeC;
+                }
+              }
+              .more-text {
+                color: #9c9c9c;
+                font-size: .12rem;
+                padding: .13rem 0;
+                text-align: center;
+                border-top: 1px solid #f5f5f5;
+                &:active {
+                  background-color: $gjColor;
+                }
+              }
+
+              .song {
+
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+}

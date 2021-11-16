@@ -31,15 +31,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '@/styles/variable.scss';
 #app {
   .global-loading {
-    min-height: 100%;
     position: fixed;
-    top: 0;
+    top: $navHeight;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
