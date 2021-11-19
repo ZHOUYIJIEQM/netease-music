@@ -5,9 +5,12 @@
     </keep-alive>
 
     <!-- 全局加载提示 -->
-    <div class="global-loading" v-if="gLoading">
-      <Loading loadingColor="#ca0000" loadingSize=".3rem"></Loading>
-    </div>
+    <Loading 
+      v-if="gLoading" 
+      class="gloading" 
+      loadingColor="#ca0000" 
+      loadingSize=".3rem"
+    ></Loading>
     
   </div>
 </template>
@@ -33,16 +36,12 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/variable.scss';
 #app {
-  .global-loading {
-    position: fixed;
-    top: $navHeight;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  .gloading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>

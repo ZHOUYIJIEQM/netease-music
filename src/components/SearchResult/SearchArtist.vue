@@ -77,7 +77,7 @@ export default {
     font-size: .14rem;
     color: #868686;
     .name {
-      
+      color: #333;
     }
   }
   .right {

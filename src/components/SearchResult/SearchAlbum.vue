@@ -7,7 +7,7 @@
     </div>
     <div class="right">
       <div class="name text-eli">
-        <span class="album-name">{{albumData.name}}</span>
+        <span class="album-name" v-html="albumData.name"></span>
         <span class="album-alias" v-if="albumData.sec">({{albumData.sec}})</span>
       </div>
       <div class="info text-eli">
