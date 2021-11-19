@@ -64,18 +64,18 @@ export default {
       }, 300)
     }
   },
-  beforeRouteLeave (to, from, next) {
-    // 处理直接按返回键
-    // 不是去往 默认页 也不是 结果页
-    if (to.name !== 'SearchDefault' && to.name !== 'SearchResult') {
-      this.$parent.searchText = ''
-      next({
-        name: 'SearchDefault',
-      })
-    } else {
-      next()
-    }
-  },
+  // beforeRouteLeave (to, from, next) {
+  //   // 处理直接按返回键
+  //   // 不是去往 默认页 也不是 结果页
+  //   if (to.name !== 'SearchDefault' && to.name !== 'SearchResult') {
+  //     this.$parent.searchText = ''
+  //     next({
+  //       name: 'SearchDefault',
+  //     })
+  //   } else {
+  //     next()
+  //   }
+  // },
   watch: {
     '$route.query.keyWord': {
       handler: function(newV) {

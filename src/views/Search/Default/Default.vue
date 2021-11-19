@@ -202,6 +202,7 @@ export default {
   },
   activated() {
     this.historyScroll()
+    this.$parent.searchText = ''
   },
   methods: {
     async initData() {

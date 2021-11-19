@@ -16,7 +16,8 @@
         <div class="artist text-eli">
           <!-- 移动端chrome环境下, 不加 lang="" tag 看起来不是垂直居中 -->
           <span class="tag" lang="" v-if="listInfo.sq">SQ</span>
-          <span lang="">{{ listInfo.artist }}</span>
+          <span lang="" v-if="listInfo.artist">{{ listInfo.artist }}</span>
+          <span lang="" v-if="listInfo.artistHtml" v-html="listInfo.artistHtml"></span>
           <span lang="" class="split">-</span>
           <span lang="">{{ listInfo.al }}</span>
         </div>

@@ -22,7 +22,6 @@
           v-for="(item, index) in resultData"
           :key="index"
         >
-        
           <!-- 综合 -->
           <div class="composite-box" v-if="item.type === '综合' && item.complete">
             <div 
@@ -70,7 +69,7 @@
                   v-for="(item2, index2) in item.data.videoList"
                   :key="index2"
                 >
-                  {{item2.name}}
+                  <SearchVdo :searchVdoData="item2"></SearchVdo>
                 </div>
                 <div class="more-text">{{item.data.videoText}}</div>
               </div>
@@ -85,7 +84,7 @@
                   v-for="(item2, index2) in item.data.artistList"
                   :key="index2"
                 >
-                  {{item2.name}}
+                  <SearchArtist :artistData="item2"></SearchArtist>
                 </div>
                 <div class="more-text">{{item.data.artistText}}</div>
               </div>
@@ -100,7 +99,7 @@
                   v-for="(item2, index2) in item.data.albumList"
                   :key="index2"
                 >
-                  {{item2.name}}
+                  <SearchAlbum :albumData="item2"></SearchAlbum>
                 </div>
                 <div class="more-text">{{item.data.albumText}}</div>
               </div>
@@ -115,7 +114,7 @@
                   v-for="(item2, index2) in item.data.userList"
                   :key="index2"
                 >
-                  {{item2.name}}
+                  <SearchUser :userData="item2"></SearchUser>
                 </div>
                 <div class="more-text">{{item.data.userText}}</div>
               </div>
@@ -130,7 +129,7 @@
                   v-for="(item2, index2) in item.data.circle"
                   :key="index2"
                 >
-                  {{item2.name}}
+                  <SearchCloudCircle :cloudCircleData="item2"></SearchCloudCircle>
                 </div>
               </div>
 
@@ -219,6 +218,7 @@
 
   .result-box {
     .result-song {
+      padding: .07rem 0;
       &:active {
         background-color: $activeC;
       }
@@ -230,13 +230,13 @@
       }
     }
     .result-playlist {
-      padding: .04rem .15rem .06rem;
+      padding: .02rem .15rem .02rem;
       .img-box {
         margin-top: .02rem;
         align-self: flex-start;
       }
       .name {
-        padding-top: .04rem;
+        padding-top: .08rem;
       }
       .icon-gengduoxiao {
         color: #999;

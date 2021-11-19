@@ -1,8 +1,13 @@
 import Tabbar from "@/components/Tabbar";
 // 用于显示单曲
-import ResultSong from "@/components/PlayListDetailItem"
+import ResultSong from "@/components/PlayListDetailItem";
 // 用于显示歌单
-import ResultPlaylist from "@/components/PlayListInfoMore"
+import ResultPlaylist from "@/components/PlayListInfoMore";
+import SearchVdo from "@/components/SearchResult/SearchVdo";
+import SearchArtist from "@/components/SearchResult/SearchArtist";
+import SearchAlbum from "@/components/SearchResult/SearchAlbum";
+import SearchCloudCircle from "@/components/SearchResult/SearchCloudCircle";
+import SearchUser from "@/components/SearchResult/SearchUser";
 
 import { keyWordSearch } from "@/api/api";
 import moment from "moment";
@@ -24,8 +29,7 @@ export default {
           // 是否得到了数据
           complete: false,
           // 对应的数据
-          data: {
-          },
+          data: {},
         },
         { type: "单曲", typeNum: 1, hasData: false, data: [] },
         { type: "歌单", typeNum: 1000, hasData: false, data: [] },
@@ -49,6 +53,11 @@ export default {
     Tabbar,
     ResultPlaylist,
     ResultSong,
+    SearchVdo,
+    SearchArtist,
+    SearchAlbum,
+    SearchCloudCircle,
+    SearchUser,
   },
   computed: {
     swiper() {
@@ -57,6 +66,25 @@ export default {
   },
   created() {
     this.navTabData = this.resultData.map((item) => item.type);
+  },
+  mounted() {
+    this.$parent.$refs.navbar.$el.style.background = "#f5f5f5";
+  },
+  activated() {
+    if (this.$parent.searchText !== this.keyWord) {
+      this.keyWord = this.$parent.searchText
+      console.log('加载数据:', this.keyWord);
+      this.resultData.forEach((item, index) => {
+        item.hasData = false
+        if (index === 0) {
+          this.$set(item, 'data', {})
+          item.complete = false
+        } else {
+          this.$set(item, 'data', [])
+        }
+      });
+      this.getData()
+    }
   },
   methods: {
     tabChange(index) {
@@ -68,11 +96,11 @@ export default {
       let index = this.swiper.realIndex;
       this.$refs.tabbar.changeTab(index);
       if (index !== 0) {
-        this.$parent.$refs.navbar.$el.style.background = '#fff'
-        this.$refs.resultContent.style.background = '#fff'
+        this.$parent.$refs.navbar.$el.style.background = "#fff";
+        this.$refs.resultContent.style.background = "#fff";
       } else {
-        this.$parent.$refs.navbar.$el.style.background = '#f5f5f5'
-        this.$refs.resultContent.style.background = '#f5f5f5'
+        this.$parent.$refs.navbar.$el.style.background = "#f5f5f5";
+        this.$refs.resultContent.style.background = "#f5f5f5";
       }
       this.getData();
     },
@@ -95,7 +123,16 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        console.log("catch", error);
+        // 搜索用过10几次就断续出现405, 调试太不得劲
+        if (error.status === 405) {
+          this.$toast({
+            message: "搜索操作频繁，请稍候再试!",
+            className: "toastT",
+            duration: 3000,
+            position: "bottom",
+          });
+        }
       } finally {
         this.$store.commit("changeLoading", false);
       }
@@ -106,7 +143,10 @@ export default {
         return {
           id: item.id,
           name: item.name,
-          artist: item.ar.map(item1 => item1.name).join('/'),
+          artistHtml: item.ar.map((item1) => item1.name).join("/").replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           officialTags: item.officialTags,
           al: item.al.name,
           mvId: item.mv,
@@ -126,7 +166,7 @@ export default {
           playCount: item.playCount,
           officialTags:
             tag && Boolean(item.officialTags.length) && item.officialTags,
-          info: tag && `包含《${this.keyWord}》`,
+          info: tag && `包含《<span class="keyBlue">${this.keyWord}</span>》`,
         };
       });
     },
@@ -134,7 +174,10 @@ export default {
     extractVideo(data) {
       return data.map((item) => {
         return {
-          name: item.title,
+          name: item.title.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           id: item.vid,
           coverUrl: item.coverUrl,
           duration: moment(item.durationms).format("mm:ss"),
@@ -148,8 +191,13 @@ export default {
       return data.map((item) => {
         return {
           id: item.id,
-          name: item.name,
+          name: item.name.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           picUrl: item.picUrl,
+          trans: item.trans,
+          // 综合这里少了个粉丝
         };
       });
     },
@@ -157,7 +205,15 @@ export default {
     extractAlbum(data) {
       return data.map((item) => {
         return {
-          name: item.name,
+          name: item.name.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
+          sec: item.alias.length && item.alias[0],
+          artist: item.artist.name.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           id: item.id,
           picUrl: item.picUrl,
           publishTime: moment(item.publishTime).format("YYYY.M.D"),
@@ -166,11 +222,17 @@ export default {
     },
     // 提取用户
     extractUser(data) {
+      console.log(data);
       return data.map((item) => {
         return {
-          name: item.nickname,
+          name: item.nickname.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           id: item.userId,
           avatarUrl: item.avatarUrl,
+          description: item.description,
+          gender: item.gender
         };
       });
     },
@@ -178,7 +240,10 @@ export default {
     extractCircle(data) {
       return data.map((item) => {
         return {
-          name: item.baseInfo.circle.name,
+          name: item.baseInfo.circle.name.replace(
+            new RegExp(this.keyWord, "ig"),
+            `<span class="keyBlue">${this.keyWord}</span>`
+          ),
           id: item.baseInfo.circle.id,
           image: item.baseInfo.circle.image,
           count: `${item.baseInfo.circle.count.member}人已加入, ${item.baseInfo.circle.count.read}阅读`,
@@ -287,11 +352,11 @@ export default {
           let circle = this.extractCircle(data.circle.resources);
           this.$set(this.resultData[index].data, "circle", circle);
         }
-        
+
         // this.resultData[index].data.complete = true
         this.$set(this.resultData[index], "complete", true);
 
-        console.log('综合:', this.resultData[index].data);
+        console.log("综合:", this.resultData[index].data);
       }
 
       if (type === "单曲") {
@@ -330,6 +395,12 @@ export default {
         console.log(index, data);
       }
     },
+    goPlaylist() {
+      this.$router.push({
+        name: "PlayListDetail",
+        params: { id: "2038254681" },
+      });
+    },
   },
   // beforeRouteLeave(to, from, next) {
   //   // 处理直接按返回键
@@ -343,16 +414,41 @@ export default {
   //   }
   // },
   watch: {
-    "$route.query.keyWord": {
-      handler: function(newV, oldV) {
-        console.log(newV, this.keyWord);
-        this.$nextTick(() => {
-          this.$parent.$refs.navbar.$el.style.background = "#f5f5f5";
-          this.keyWord = newV;
-          this.getData();
-        });
-      },
-      immediate: true,
-    },
+    // // '$route.query.keyWord': {
+    // "$parent.searchText": {
+    //   handler: function(newV, oldV) {
+    //     this.$nextTick(() => {
+    //       console.log(
+    //         "query",
+    //         `新:${newV}`,
+    //         `旧:${oldV}`,
+    //         `搜索词:'${this.keyWord}'`
+    //       );
+    //       if (newV && this.keyWord !== newV) {
+    //         this.keyWord = newV;
+    //         console.log("加载数据");
+    //       }
+    //     });
+    //     // if (newV !== oldV) {
+    //     //   if (newV && newV.length) {
+    //     //     this.keyWord = newV;
+    //     //     this.$nextTick(() => {
+    //     //       this.$parent.$refs.navbar.$el.style.background = "#f5f5f5";
+    //     //       this.resultData.forEach((item, index) => {
+    //     //         item.hasData = false
+    //     //         if (index === 0) {
+    //     //           this.$set(item, 'data', {})
+    //     //           item.complete = false
+    //     //         } else {
+    //     //           this.$set(item, 'data', [])
+    //     //         }
+    //     //       });
+    //     //       this.getData();
+    //     //     });
+    //     //   }
+    //     // }
+    //   },
+    //   immediate: true,
+    // },
   },
 };

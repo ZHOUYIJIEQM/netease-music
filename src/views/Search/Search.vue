@@ -18,7 +18,6 @@
             type="text" 
             :placeholder="inputPlaceHolder"
             v-model="searchText"
-            v-focus
             @input="searchInput"
             @focus="searchFocus"
             @keydown.enter="goSearchResult(searchText)"
@@ -46,7 +45,7 @@ import Navbar from "@/components/Navbar"
 import { global } from "@/mixin/global";
 
 export default {
-  name: 'Search',
+  name: 'SearchInclude',
   mixins: [global],
   components: {
     Navbar,
@@ -65,6 +64,8 @@ export default {
   created() {
     this.getData()
   },
+  activated() {
+  },
   methods: {
     async getData() {
       try {
@@ -77,7 +78,7 @@ export default {
     // 搜索input输入
     searchInput() {
       if (this.searchText.length) {
-        this.$router.replace({name: 'SearchSuggest', query: {'keyWord': this.searchText}})
+        this.$router.push({name: 'SearchSuggest', query: {'keyWord': this.searchText}})
           .catch(err => {})
       }
     },
@@ -105,12 +106,14 @@ export default {
       
       // bug: 在点击历史搜索记录 2次以上偶然触发???, 不停触发热搜榜轮播切换事件 ?????
       // 与 normalizeSlideIndex false  slidesPerView: 'auto' 有关, 改掉后就不会了
-      this.$router.replace({name: 'SearchResult', query: {'keyWord': this.searchText}})
+      this.$router.push({name: 'SearchResult', query: {'keyWord': this.searchText}})
+        .catch(err => {})
     },
     // 清除搜索input内容
     clearSearchText() {
       this.searchText = ''
       this.$router.replace({name: 'SearchDefault'})
+        .catch(err => {})
     },
   },
   beforeRouteEnter (to, from, next) {

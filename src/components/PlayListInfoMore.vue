@@ -22,9 +22,8 @@
           </span>
         </template>
         <template v-if="!playlistInfo.officialTags && playlistInfo.info">
-          <span class="includeInfo">
-            {{playlistInfo.info}}
-          </span>
+          <div class="includeInfo" v-html="playlistInfo.info">
+          </div>
         </template>
       </div>
     </div>
@@ -78,7 +77,8 @@ export default {
       font-size: 0.14rem;
     }
     .other {
-      font-size: 0.12rem;
+      margin-top: .02rem;
+      font-size: 0.11rem;
       color: #7a7a7a;
     }
     .info {
@@ -100,8 +100,9 @@ export default {
         border-radius: .03rem;
       }
       .includeInfo {
+        margin-top: .03rem;
         color: #7a7a7a;
-        font-size: .1rem;
+        font-size: .12rem;
       }
     }
   }

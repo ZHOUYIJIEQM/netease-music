@@ -91,6 +91,10 @@ html, body, #app {
   line-height: 1.5;
 }
 
+.keyBlue {
+  color: #4f7db1;
+}
+
 // chrome input 覆盖自动填充样式
 input:-internal-autofill-selected {
   background-color: transparent!important;
