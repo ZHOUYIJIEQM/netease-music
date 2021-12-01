@@ -60,7 +60,18 @@
 
               }
             }
+
+            .cloud-circle {
+              padding-bottom: .08rem;
+            }
           }
+        }
+
+        .no-result-tip {
+          font-size: .12rem;
+          text-align: center;
+          padding: .5rem 0;
+          color: $greyFontC;
         }
 
       }

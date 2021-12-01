@@ -56,18 +56,19 @@ export default {
     },
     // 获取歌单信息
     async getPlayList() {
-      this.$store.commit('changeLoading', true)
       try {
+        this.$store.commit('changeLoading', true)
         let pl = await playListDetail(this.commentId);
         this.playList = pl.playlist;
         this.loadingData = false
         this.getComment()
       } catch (error) {
         console.log(error);
+      } finally {
+        setTimeout(() => {
+          this.$store.commit('changeLoading', false)
+        }, 100)
       }
-      setTimeout(() => {
-        this.$store.commit('changeLoading', false)
-      }, 100)
     },
     // 获取歌单评论
     async getComment() {
@@ -102,9 +103,10 @@ export default {
         }
       } catch (error) {
         this.loading = false
-        this.$store.commit('changeLoading', false)
         this.$toast('新版评论接口获取数据错误')
         console.log("加载评论错误:\n", error);
+      } finally {
+        this.$store.commit('changeLoading', false)
       }
     },
     // 设置评论标记

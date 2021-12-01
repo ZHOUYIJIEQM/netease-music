@@ -31,9 +31,12 @@
       </template>
     </Navbar>
     <!-- 搜索内容 -->
-    <div class="search-box">
-      <keep-alive :include="/.*Include$/">
+    <div class="search-box" ref="searchBox">
+      <!-- <keep-alive :include="/.*Include$/">
         <router-view></router-view>
+      </keep-alive> -->
+      <keep-alive>
+        <component :is="searchComponent[searchType]"></component>
       </keep-alive>
     </div>
   </div>
@@ -43,6 +46,9 @@
 import { defaultSearch } from '@/api/api'
 import Navbar from "@/components/Navbar"
 import { global } from "@/mixin/global";
+import SearchDefault from './Default/Default.vue'
+import SearchSuggest from './Suggest/Suggest.vue'
+import SearchResult from './Result/Result.vue'
 
 export default {
   name: 'SearchInclude',
@@ -52,8 +58,19 @@ export default {
   },
   data() {
     return {
+      // 搜索input 默认搜索内容
       inputPlaceHolder: '',
+      // 搜索词
       searchText: '',
+      // 动态组件
+      searchComponent: {
+        'default': SearchDefault,
+        'suggest': SearchSuggest,
+        'result': SearchResult
+      },
+      // 默认显示页
+      searchType: 'default',
+
     }
   },
   computed: {
@@ -64,7 +81,29 @@ export default {
   created() {
     this.getData()
   },
-  activated() {
+  mounted() {
+    // 不想移动端一不小心下拉刷新
+    document.querySelector('body').style.overflow = 'hidden'
+  },
+  beforeRouteLeave (to, from, next) {
+    document.querySelector('body').style.overflow = ''
+    console.log('去往的组件页', to.name);
+    // 可以离开的组件名
+    let nextList = ['PlayListDetail']
+    // 处理直接按返回
+    if (this.searchType !== 'default') {
+      // 如果去的页面在可以离开的数组里才离开
+      if (nextList.includes(to.name)) {
+        next()
+      } else {
+        // 不离开
+        next(false)
+        // 动态组件切换到默认
+        this.searchType = 'default'
+      }
+    } else {
+      next()
+    }
   },
   methods: {
     async getData() {
@@ -77,9 +116,15 @@ export default {
     },
     // 搜索input输入
     searchInput() {
+      // 输入搜索词, 动态组件跳转到 搜索建议组件
       if (this.searchText.length) {
-        this.$router.push({name: 'SearchSuggest', query: {'keyWord': this.searchText}})
-          .catch(err => {})
+        // this.$router.push({name: 'SearchSuggest', query: {'keyWord': this.searchText}})
+        //   .catch(err => {})
+        this.searchType = 'suggest'
+        // this.$router.replace({name: 'Search', query: {
+        //   keyWord: this.searchText,
+        //   type: this.searchType
+        // }})
       }
     },
     // 搜索input聚焦
@@ -106,14 +151,14 @@ export default {
       
       // bug: 在点击历史搜索记录 2次以上偶然触发???, 不停触发热搜榜轮播切换事件 ?????
       // 与 normalizeSlideIndex false  slidesPerView: 'auto' 有关, 改掉后就不会了
-      this.$router.push({name: 'SearchResult', query: {'keyWord': this.searchText}})
-        .catch(err => {})
+      // 跳到搜索结果
+      this.searchType = 'result'      
     },
     // 清除搜索input内容
     clearSearchText() {
       this.searchText = ''
-      this.$router.replace({name: 'SearchDefault'})
-        .catch(err => {})
+      this.searchType = 'default'
+      this.$refs.navbar.$el.style.background = '#fff'
     },
   },
   beforeRouteEnter (to, from, next) {
@@ -124,15 +169,16 @@ export default {
     })
   },
   watch: {
-    $route(newV) {
-      // 限定只在 搜索路由
-      if (/Search/.test(newV.name)) {
-        // 修改头部背景色
-        if (newV.name === 'SearchResult') {
-          this.$refs.navbar.$el.style.background = '#f5f5f5'
-        } else {
-          this.$refs.navbar.$el.style.background = '#fff'
-        }
+    searchType(newV) {
+      if (newV === 'result') {
+        this.$refs.navbar.$el.style.background = '#f5f5f5'
+      } else {
+        this.$refs.navbar.$el.style.background = '#fff'
+        this.$children.forEach(item => {
+          if (item.$el.className === 'result-content') {
+            item.$refs.tabbar.changeTab(0) 
+          }
+        })
       }
     }
   }

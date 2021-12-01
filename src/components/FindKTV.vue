@@ -1,4 +1,5 @@
 <template>
+  <!-- 发现页 ktv -->
   <div class="ktv-comp" @click="clickKtv(ktvData.id)">
     <div class="title">
       <div class="loader">
@@ -82,7 +83,7 @@ export default {
     align-items: flex-start;
     padding-top:15%;
     img {
-      width: .45rem;
+      width: 53%;
       aspect-ratio: 1;
       border-radius: 50%;
       border: .02rem solid #fff;

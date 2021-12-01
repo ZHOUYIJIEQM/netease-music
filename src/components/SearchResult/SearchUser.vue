@@ -28,9 +28,6 @@ export default {
       require: true
     }
   },
-  mounted() {
-    console.log(this.userData);
-  },
   methods: {
     clickArtist(id) {
       this.$toast({

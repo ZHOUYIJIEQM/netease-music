@@ -25,7 +25,15 @@ const getters = {
     } else {
       return []
     }
-  }
+  },
+  playList: state => {
+    if (state.playList) {
+      return JSON.parse(state.playList)
+    } else {
+      return []
+    }
+  },
+  playingIndex: state => state.playingIndex
 }
 
 export default getters

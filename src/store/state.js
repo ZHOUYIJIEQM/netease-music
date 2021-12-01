@@ -15,9 +15,14 @@ const state = {
   redirect: window.localStorage.getItem('musicRedirect') || '',
   // 是否显示底部播放器
   showPlayer: false,
+  // 要播放的歌曲列表
+  // playList: [],
+  playList: window.localStorage.getItem('musicPlayList'),
+  // 当前播放歌曲在列表里是第几个
+  playingIndex: 0,
   // 正在播放的mv id, 保持只有一个播放器在播放
   mvId: 0,
-  // 正在播放的歌曲 id
+  // 正在播放的歌曲 id 
   songId: 0,
   // 是否显示了更多回复
   showReply: false,

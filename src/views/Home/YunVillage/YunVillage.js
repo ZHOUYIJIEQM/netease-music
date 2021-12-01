@@ -77,9 +77,9 @@ export default {
           this.pageNum++
         }
         this.loading = false;
-        this.$store.commit("changeLoading", false);
       } catch (error) {
         console.log(error);
+      } finally {
         this.$store.commit("changeLoading", false);
       }
     },

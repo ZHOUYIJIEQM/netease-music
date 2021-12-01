@@ -1,19 +1,20 @@
+// 记录滚动高度
 export let saveEleScrollH = {
   data() {
     return {
       scrollH: 0,
+      scrollTimer: null,
     }
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.$nextTick(() => {
-        vm.$refs.contentBox.scrollTop = vm.scrollH
-      })
+  mounted() {
+    this.$refs.contentBox.addEventListener('scroll', () => {
+      this.scrollTimer && clearTimeout(this.scrollTimer)
+      this.scrollTimer = setTimeout(() => {
+        this.scrollH = this.$refs.contentBox.scrollTop
+      }, 100)
     })
   },
-  beforeRouteLeave (to, from, next) {
-    let boxEle = this.$refs.contentBox
-    this.scrollH = boxEle.scrollTop
-    next()
-  }
+  activated() {
+    this.$refs.contentBox.scrollTop = this.scrollH
+  },
 }

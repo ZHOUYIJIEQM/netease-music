@@ -108,10 +108,18 @@ input:-internal-autofill-selected {
   transition: all .5s;
 }
 
-.fadeDown-enter-active, .fadeDown-leave-active {
-  transition: all .15s ease-out;
+.fadeInUp-enter-active, .fadeInUp-leave-active {
+  transition: all .25s ease-out;
 }
-.fadeDown-enter, .fadeDown-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fadeInUp-enter, .fadeInUp-leave-to {
+  opacity: 0;
+  transform: translateY(30%);
+}
+
+.fadeInDown-enter-active, .fadeInDown-leave-active {
+  transition: all .25s ease-out;
+}
+.fadeInDown-enter, .fadeInDown-leave-to {
   opacity: 0;
   transform: translateY(-30%);
 }

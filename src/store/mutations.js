@@ -62,6 +62,11 @@ const mutations = {
    * 是否显示底部播放器
    */
   changeShowPlayer(state, value) {
+    if (value) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
     state.showPlayer = value
   },
   changeMvId(state, value) {
@@ -80,8 +85,15 @@ const mutations = {
     let history = JSON.stringify(arr)
     state.searchHistoryArr = history
     window.localStorage.setItem('musicSearchHistory', history)
+  },
+  setPlayList(state, arr) {
+    let playlist = JSON.stringify(arr)
+    state.playList = playlist
+    window.localStorage.setItem('musicPlayList', playlist)
+  },
+  setPlayingIndex(state, index) {
+    state.playingIndex = index
   }
-
 }
 
 export default mutations

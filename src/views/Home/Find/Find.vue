@@ -167,6 +167,7 @@
                   <div class="rcmd-song-item"
                     v-for="(item2, index2) in item1"
                     :key="index2"
+                    @click="clickSong(item2.id)"
                   >
                     <FindSongItem :songInfo="item2"></FindSongItem>
                   </div>
@@ -340,6 +341,7 @@
                     <div class="rcmd-song-item"
                       v-for="(item2, index2) in item1"
                       :key="index2"
+                      @click="clickSong(item2.id)"
                     >
                       <FindSongItem :songInfo="item2"></FindSongItem>
                     </div>

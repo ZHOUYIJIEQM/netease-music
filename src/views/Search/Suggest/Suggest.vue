@@ -14,8 +14,8 @@
       </div>
     </template>
     <template v-else-if="!loading && !suggestMatch.length">
-      <div class="no-suggest" @click="goSearchRes($route.query.keyWord)">
-        搜索 <pre>“{{$route.query.keyWord}}”</pre>
+      <div class="no-suggest" @click="goSearchRes($parent.searchText)">
+        <span>搜索</span> <pre class="text-eli">“{{$parent.searchText}}”</pre>
       </div>
     </template>
   </div>
@@ -64,21 +64,10 @@ export default {
       }, 300)
     }
   },
-  // beforeRouteLeave (to, from, next) {
-  //   // 处理直接按返回键
-  //   // 不是去往 默认页 也不是 结果页
-  //   if (to.name !== 'SearchDefault' && to.name !== 'SearchResult') {
-  //     this.$parent.searchText = ''
-  //     next({
-  //       name: 'SearchDefault',
-  //     })
-  //   } else {
-  //     next()
-  //   }
-  // },
   watch: {
-    '$route.query.keyWord': {
+    '$parent.searchText': {
       handler: function(newV) {
+        console.log('new searchText');
         this.getSuggest(newV)
       },
       immediate: true
@@ -118,10 +107,17 @@ export default {
       background-color: #d6d6d6;
     }
     color: #6399fd;
-    padding: .15rem 0 .15rem .15rem;
+    padding: .15rem;
     border-bottom: 1px solid #d6d6d6;
     font-size: .14rem;
+    display: flex;
+    align-items: center;
+    span {
+      flex-shrink: 0;
+    }
     pre {
+      flex: 1;
+      overflow: hidden;
       display: inline-block;
     }
   }

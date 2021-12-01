@@ -262,7 +262,7 @@ export function commentFloor(params = {}) {
  * /song/detail?ids=347230, /song/detail?ids=347230,347231
  */
 export function songDetail(songIds) {
-  return post(`/song/detail`, { ids: songIds });
+  return post(`/song/detail`, { ids: String(songIds) });
 }
 
 /**
@@ -363,6 +363,13 @@ export function getMvDetail(id) {
  */
 export function mvUrl(id, r=480) {
   return get(`/mv/url?id=${id}&r=${r}`)
+}
+
+// 获取音乐 url
+// 传入的音乐 id( 可多个 , 用逗号隔开 )
+// /song/url?id=33894312  /song/url?id=405998841,33894312
+export function songUrl(ids) {
+  return get(`/song/url?id=${ids}`)
 }
 
 /**

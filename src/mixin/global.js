@@ -1,5 +1,6 @@
 // 一些在组件共用的属性, 函数
 
+import { songDetail, songUrl } from '@/api/api'
 export let global = {
   data() {
     return {};
@@ -8,6 +9,9 @@ export let global = {
     // 获取登录状态
     loginStatus() {
       return this.$store.getters.loginStatus;
+    },
+    playerPlayList() {
+      return this.$store.getters.playList
     },
   },
   methods: {
@@ -50,9 +54,58 @@ export let global = {
       console.log("点击歌单:", id);
       this.$router.push({ name: "PlayListDetail", params: { id } });
     },
-    clickSong(id) {
-      console.log('歌曲', id);
-      this.$store.commit('changeSongId', Number(id))
+    async clickSong(id) {
+      try {
+        // console.log('歌曲', id);
+        this.$store.commit("changeLoading", true);
+        this.$store.commit('changeShowPlayer', true)
+        // this.$router.push(this.$route.path+"?player=show")
+        // 去重处理 
+        let playlist = this.playerPlayList
+        let index = playlist.findIndex(item => String(item.id) === String(id))
+        // index !== -1 && playlist.splice(index, 1)
+        if (index !== -1) {
+          this.$store.commit('setPlayingIndex', index)
+          this.$store.commit('changeSongId', String(id))
+          return
+        }
+
+        let songInfo = await songDetail(id)
+        if (songInfo.code === 200) {
+          let songInfoUrl = await songUrl(String(id))
+          if (songInfoUrl.code === 200) {
+            // 添加到播放器列表末尾
+            playlist.push({
+              id: songInfo.songs[0].id,
+              name: songInfo.songs[0].name,
+              artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
+              bgImg: songInfo.songs[0].al.picUrl,
+              songUrl: songInfoUrl.data[0].url
+            })
+            this.$store.commit('setPlayList', playlist)
+            this.$store.commit('setPlayingIndex', playlist.length - 1)
+            this.$store.commit('changeSongId', String(id))
+            // console.log(this.playerPlayList);
+          }
+        } else {
+          this.$toast({
+            message: `获取歌曲信息错误! 无法播放!`,
+            className: "toastT",
+            duration: 2000,
+            position: "bottom",
+          });
+        }
+      } catch (error) {
+        this.$toast({
+          message: `获取歌曲信息错误! 无法播放!`,
+          className: "toastT",
+          duration: 2000,
+          position: "bottom",
+        });
+        this.$store.commit('changeShowPlayer', false)
+      } finally {
+        this.$store.commit("changeLoading", false);
+      }
     },
     clickMvIcon(id) {
       console.log('mv', id);

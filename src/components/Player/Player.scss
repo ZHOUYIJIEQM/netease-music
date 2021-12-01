@@ -1,0 +1,86 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+
+.player-comp {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: palegoldenrod;
+
+  .player-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    .bg-inner {
+      transition: all 1s;
+    }
+  }
+  @include gaussBlur(.25rem, .35, .5rem);
+  // @include gaussBlur(0, 1, 0);
+
+  .player-box {
+    height: 100%;
+    @include df(column);
+    .navbar {
+      flex-shrink: 0;
+      @include df();
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      .iconfont {
+        font-size: .22rem;
+        padding: .18rem;
+      }
+      .navbar-text {
+        text-align: center;
+        .artist {
+          font-size: .12rem;
+          color: rgb(225 225 225 / 50%);
+          margin-top: .06rem;
+        }
+      }
+    }
+    .middle-box {
+      flex: 1;
+    }
+    .bottom-box {
+      flex-shrink: 0;
+      color: rgba(255, 255, 255, .7);
+      .song-bar {
+        @include df();
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 1.8vh;
+        .iconfont {
+          font-size: .24rem;
+        }
+      }
+      .progress-bar {
+        padding: 1.8vh;
+      }
+      .control-bar {
+        @include df();
+        color: rgba(255, 255, 255, .8);
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 1.8vh;
+        margin-bottom: 2.7vh;
+        .iconfont {
+          font-size: .26rem;
+        }
+        .icon-bofang2 {
+          color: #fff;
+        }
+        .icon-PlayListbofangliebiao {
+          font-size: .28rem;
+        }
+      }
+    }
+  }
+}

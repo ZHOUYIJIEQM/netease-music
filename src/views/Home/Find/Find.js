@@ -323,10 +323,10 @@ export default {
               playCount: item.resource.mlogExtVO.playCount,
             })
           })
-          this.$store.commit('changeLoading', false)
         } catch (error) {
-          this.$store.commit('changeLoading', false)
           console.log(error);
+        } finally {
+          this.$store.commit('changeLoading', false)
         }
       } else {
         this.$toast('登录后才能换一批音乐视频哦!')

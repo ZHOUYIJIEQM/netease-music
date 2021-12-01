@@ -148,8 +148,8 @@ export default {
     // 注册或修改密码
     async next() {
       if (this.canNext) {
-        this.$store.commit('changeLoading', true)
         try {
+          this.$store.commit('changeLoading', true)
           let s = await signIn({
             phone: this.phone,
             password: this.passwd,
@@ -183,10 +183,11 @@ export default {
             position: "bottom",
           });
           console.log(error);
+        } finally {
+          setTimeout(() => {
+            this.$store.commit('changeLoading', false)
+          }, 300)
         }
-        setTimeout(() => {
-          this.$store.commit('changeLoading', false)
-        }, 300)
       }
     },
     // 发送验证码
@@ -226,14 +227,6 @@ export default {
         });
       }
     },
-  },
-  beforeRouteUpdate(to, from, next) {
-    // console.log('rupdate query', this.$route.query)
-    // console.log('rupdate', to);
-    // bug: 莫名更新 url , query 没了 (原因还未知) 
-    // 期望得到: http://xxx.com/#/Register?navName=xxx
-    // 结果得到: http://xxx.com/#/Register
-    next(false)
   },
 }
 </script>

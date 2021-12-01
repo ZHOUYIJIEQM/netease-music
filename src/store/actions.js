@@ -41,10 +41,11 @@ const actions = {
         position: "bottom",
       });
       console.log("登录接口错误:", err);
+    } finally {
+      setTimeout(() => {
+        commit("changeLoading", false);
+      }, 300);
     }
-    setTimeout(() => {
-      commit("changeLoading", false);
-    }, 300);
   },
   // 保存登录信息
   saveLoginData({ commit }, data) {

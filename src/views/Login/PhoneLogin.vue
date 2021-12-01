@@ -95,9 +95,9 @@ export default {
               console.log(err);
             })
         }
-        this.$store.commit("changeLoading", false);
       } catch (error) {
         console.log(error);
+      } finally {
         this.$store.commit("changeLoading", false);
       }
     },

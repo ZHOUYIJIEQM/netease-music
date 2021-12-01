@@ -203,6 +203,9 @@ export default {
   activated() {
     this.historyScroll()
     this.$parent.searchText = ''
+    this.$nextTick(() => {
+      this.$parent.$refs.navbar.$el.style.background = "#fff";
+    })
   },
   methods: {
     async initData() {
@@ -380,7 +383,7 @@ export default {
         margin-right: .03rem;
         display: flex;
         flex-wrap: wrap;
-        padding: .1rem 0 .15rem .15rem;
+        padding: .1rem 0 .1rem .15rem;
         box-shadow: 0px 0px 5px 1px #e0e0e0;
         border-radius: .1rem;
         .inner-item {

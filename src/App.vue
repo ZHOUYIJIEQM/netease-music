@@ -12,9 +12,12 @@
       loadingSize=".3rem"
     ></Loading>
     
+    <Player></Player>
   </div>
 </template>
 <script>
+import Player from '@/components/Player/Player.vue'
+
 export default {
   name: 'App',
   data() {
@@ -23,7 +26,8 @@ export default {
   },
   components: {
     // 加载
-    Loading: () => import('@/components/Loading')
+    Loading: () => import('@/components/Loading'),
+    Player
   },
   computed: {
     // 加载状态
@@ -31,6 +35,11 @@ export default {
       return this.$store.getters.gLoading
     }
   },
+  watch: {
+    $route(newV) {
+      console.log('路由变化', newV);
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -38,7 +47,8 @@ export default {
 #app {
   position: relative;
   .gloading {
-    position: absolute;
+    z-index: calc($playerZIndex + 1);
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

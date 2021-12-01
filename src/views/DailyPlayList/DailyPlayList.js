@@ -67,13 +67,13 @@ export default {
           }
         })
         // console.log(this.dailySongs);
-        this.$store.commit("changeLoading", false);
         this.$nextTick(() => {
           this.setAttr()
         })
       } catch (error) {
-        this.$store.commit("changeLoading", false);
         console.log(error);
+      } finally {
+        this.$store.commit("changeLoading", false);
       }
     },
     // 获取一些滚动需要的参数

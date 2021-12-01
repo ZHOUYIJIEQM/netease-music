@@ -1,4 +1,5 @@
 <template>
+  <!-- 每层评论 -->
   <div class="comment-item-comp">
     <div class="comment-box">
       <div class="img-box">

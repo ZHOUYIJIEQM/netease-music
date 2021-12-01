@@ -8,7 +8,8 @@
       </template>
       <div class="song-info">
         <div class="name text-eli">
-          <span class="main-name">{{ listInfo.name }}</span>
+          <!-- <span class="main-name" v-if="listInfo.name">{{ listInfo.name }}</span> -->
+          <span class="main-name" v-html="listInfo.name"></span>
           <span class="sec-name" v-if="listInfo.secName">
             ({{ listInfo.secName }})
           </span>
@@ -19,7 +20,7 @@
           <span lang="" v-if="listInfo.artist">{{ listInfo.artist }}</span>
           <span lang="" v-if="listInfo.artistHtml" v-html="listInfo.artistHtml"></span>
           <span lang="" class="split">-</span>
-          <span lang="">{{ listInfo.al }}</span>
+          <span lang="" v-html="listInfo.al"></span>
         </div>
       </div>
       <i

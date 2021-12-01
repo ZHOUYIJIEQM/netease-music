@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     async getData() {
-      this.$store.commit("changeLoading", true);
       try {
+        this.$store.commit("changeLoading", true);
         let data = await toplistDetail();
         let list = data.list.map(item => {
           return {
@@ -100,11 +100,12 @@ export default {
 
       } catch (error) {
         console.log(error);
+      } finally {
+        this.show = true;
+        setTimeout(() => {
+          this.$store.commit("changeLoading", false);
+        }, 300);
       }
-      this.show = true;
-      setTimeout(() => {
-        this.$store.commit("changeLoading", false);
-      }, 300);
     },
     // 获取随机数 [start, end]
     getRandom(start, end) {

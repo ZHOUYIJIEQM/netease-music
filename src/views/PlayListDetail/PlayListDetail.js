@@ -281,8 +281,9 @@ export default {
           this.$store.commit('changeLoading', false)
         } catch (error) {
           this.$toast('收藏错误, 请重试!')
-          this.$store.commit('changeLoading', false)
           console.log(error);
+        } finally {
+          this.$store.commit('changeLoading', false)
         }
       }
     },
@@ -306,6 +307,10 @@ export default {
     },
     // 保存封面
     async downloadImg(imageSrc) {
+      this.$toast({
+        message: `开始下载!`,
+        position: "bottom",
+      });
       // 使用浏览器自带的 fetch
       const suffix = this.playList.coverImgUrl.split('.').slice(-1)[0]
       const fileName = `${this.playList.name}.${suffix}`

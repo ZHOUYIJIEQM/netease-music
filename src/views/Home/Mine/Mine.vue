@@ -13,7 +13,7 @@
         <i class="iconfont icon-weibiaoti12"></i>
       </template>
       <template #middle>
-        <transition name="fadeDown">
+        <transition name="fadeInDown">
           <div class="navbar-content" v-show="navbarMiddleShow" @click="goLogin">
             <template v-if="loginStatus">
               <img v-lazy="userInfo.avatarUrl" alt="">
