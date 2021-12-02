@@ -182,6 +182,18 @@ export default {
       } else {
         this.topFlag = false
       }
+
+      // 导航条背景图 透明度, 描述背景图弧形边框
+      if (this.scrollT <= this.playlistT - this.navH) {
+        let opacity = +(this.scrollT / (this.playlistT - this.navH)).toFixed(2)
+        opacity = opacity >= 1 ? 1 : opacity
+        this.navBgEle.style.opacity = opacity
+        let r = 50 - 18 * opacity
+        // console.log(r);
+        this.detailBgEle.style.borderRadius = `0 0 ${r}% ${r}%`
+      } else {
+        this.navBgEle.style.opacity = 1
+      }
       
       if (this.scrollT <= this.playlistT) {
 
@@ -197,18 +209,6 @@ export default {
           let opacity = +((this.scrollT - this.navH) / this.descriptionEle.offsetHeight).toFixed(2)
           opacity = opacity >= 1 ? 1 : opacity
           this.descriptionEle.style.opacity = 1 - opacity
-        }
-        
-        // 导航条背景图 透明度, 描述背景图弧形边框
-        if (this.scrollT <= this.playlistT - this.navH) {
-          let opacity = +(this.scrollT / (this.playlistT - this.navH)).toFixed(2)
-          opacity = opacity >= 1 ? 1 : opacity
-          this.navBgEle.style.opacity = opacity
-          let r = 50 - 18 * opacity
-          // console.log(r);
-          this.detailBgEle.style.borderRadius = `0 0 ${r}% ${r}%`
-        } else {
-          this.navBgEle.style.opacity = 1
         }
         
         // 订阅 评论 分享 透明度

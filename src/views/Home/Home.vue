@@ -85,12 +85,14 @@ export default {
   },
   created() {
     console.log('%c在 pc 浏览, 按 F12 切换手机模式后 swiper 左右滑动异常, 需要刷新一次', 'font-size: 16px; color: #fff; background: #1989fa; padding: 3px;');
+    this.initTab(this.$route)
   },
   methods: {
-    // 初始化路由
-    initTab(to, from) {
-      // 需要限制在哪些路由页触发
+    // 首次进入, 根据路由名设置对应的 tabbar
+    initTab(to) {
+      // keep-alive watch $route 时需要限制在哪些路由页触发
       let routeName = to.name;
+      console.log(routeName);
       if (routeName === 'Find' || routeName === 'Mine' || routeName === 'YunVillage') {
         this.$router.push({ name: routeName })
           .catch((err) => {});
@@ -118,10 +120,10 @@ export default {
   },
   watch: {
     // 因为 keep-alive 所以只要路由变化就会触发, 即进入其他路由也会执行 initTab, 所以需要限制在哪些路由页才能触发
-    $route: {
-      handler: "initTab",
-      immediate: true,
-    },
+    // $route: {
+    //   handler: "initTab",
+    //   immediate: true,
+    // },
   },
 };
 </script>

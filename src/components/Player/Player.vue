@@ -15,7 +15,7 @@
     icon-shangyishoushangyige 下一曲
     icon-PlayListbofangliebiao 播放列表
   -->
-  <transition name="fadeInUp">
+  <transition name="playerTrans">
     <div class="player-comp" v-show="showPlayer">
       <!-- 高斯模糊背景 -->
       <div class="player-bg bg-outer">
@@ -32,8 +32,8 @@
         <div class="navbar">
           <i class="iconfont icon-jiantouyou-copy" @click="hidePlayer"></i>
           <div class="navbar-text">
-            <div class="name">{{songInfo.name}}</div>
-            <div class="artist">{{songInfo.artist}}</div>
+            <div class="name text-eli">{{songInfo.name}}</div>
+            <div class="artist text-eli">{{songInfo.artist}}</div>
           </div>
           <i class="iconfont icon-fenxiang"></i>
         </div>

@@ -1,6 +1,14 @@
 @import '@/styles/variable.scss';
 @import '@/styles/mixin.scss';
 
+.playerTrans-enter-active, .playerTrans-leave-active {
+  transition: all .3s ease-out;
+}
+.playerTrans-enter, .playerTrans-leave-to {
+  opacity: 0;
+  transform: translateY(10%);
+}
+
 .player-comp {
   z-index: 100;
   position: fixed;
@@ -8,7 +16,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: palegoldenrod;
+  will-change: auto;
 
   .player-bg {
     position: absolute;
@@ -21,10 +29,11 @@
       transition: all 1s;
     }
   }
-  @include gaussBlur(.25rem, .35, .5rem);
+  @include gaussBlur(.3rem, .6, .5rem);
   // @include gaussBlur(0, 1, 0);
 
   .player-box {
+    background: rgb(0 0 0 / 35%);
     height: 100%;
     @include df(column);
     .navbar {
@@ -39,10 +48,12 @@
       }
       .navbar-text {
         text-align: center;
+        line-height: 1.5;
+        overflow: hidden;
         .artist {
           font-size: .12rem;
           color: rgb(225 225 225 / 50%);
-          margin-top: .06rem;
+          // margin-top: .06rem;
         }
       }
     }
@@ -70,7 +81,7 @@
         align-items: center;
         justify-content: space-evenly;
         padding: 1.8vh;
-        margin-bottom: 2.7vh;
+        margin-bottom: 3.5vh;
         .iconfont {
           font-size: .26rem;
         }

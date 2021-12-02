@@ -35,11 +35,6 @@ export default {
       return this.$store.getters.gLoading
     }
   },
-  watch: {
-    $route(newV) {
-      console.log('路由变化', newV);
-    }
-  }
 }
 </script>
 <style lang="scss" scoped>

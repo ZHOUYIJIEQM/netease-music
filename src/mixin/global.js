@@ -27,6 +27,7 @@ export let global = {
     toggleMenu() {
       this.$store.commit("toggleMenu");
     },
+    // http://localhost:8080
     // 路由返回, 如果第一次进入的页面有导航返回键, go(-1), 是无效的, 把访问过的路由记录到 sessionStorage, 只有一个路由还点了返回键, 就直接跳到首页
     goBack() {
       let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
@@ -57,9 +58,11 @@ export let global = {
     async clickSong(id) {
       try {
         // console.log('歌曲', id);
+        // this.$router.push({name: this.$route.name, query: {player: 'show'}})
+        //   .catch(err => {})
+        window.location.href+='?player=show'
         this.$store.commit("changeLoading", true);
         this.$store.commit('changeShowPlayer', true)
-        // this.$router.push(this.$route.path+"?player=show")
         // 去重处理 
         let playlist = this.playerPlayList
         let index = playlist.findIndex(item => String(item.id) === String(id))
@@ -102,7 +105,8 @@ export let global = {
           duration: 2000,
           position: "bottom",
         });
-        this.$store.commit('changeShowPlayer', false)
+        // this.$router.go(-1)
+        // this.$store.commit('changeShowPlayer', false)
       } finally {
         this.$store.commit("changeLoading", false);
       }

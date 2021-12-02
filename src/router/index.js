@@ -1,7 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 Vue.use(VueRouter);
+
+const vue = new Vue()
 
 const routes = [
   // 首页
@@ -107,6 +110,16 @@ const router = new VueRouter({
   routes,
   scrollBehavior,
 });
+
+router.beforeEach((to, from, next) => {
+  // 每次跳转前, 如果存在播放器, 先隐藏 (直接按了返回键)
+  if (store.getters.showPlayer) {
+    store.commit('changeShowPlayer', false)
+    // next(false)
+  } else {
+    next()
+  }
+})
 
 router.afterEach((to, from) => {
   // 这还是不太好用, 不能判断是 push 过来的 还是 replace 

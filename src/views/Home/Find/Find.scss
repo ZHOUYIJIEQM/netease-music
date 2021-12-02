@@ -150,6 +150,7 @@
           border-radius: .5rem;
           border: 1px solid #e6e6e6;
           padding: .03rem .07rem;
+          flex-shrink: 0;
           // @include df();
           // align-items: center;
           .iconfont {

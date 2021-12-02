@@ -74,7 +74,7 @@
 
         <div class="find-data-item bottom-border" v-if="item.type === '推荐歌单'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -146,7 +146,7 @@
 
         <div class="find-data-item" v-if="item.type === '推荐歌曲'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span class="iconfont icon-bofang2"></span>
               <span>{{item.text}}</span>
@@ -179,7 +179,7 @@
 
         <div class="find-data-item" v-if="item.type === '精选音乐视频'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text" @click="refreshMlog">
               <span class="iconfont icon-icon_refresh"></span>
               <!-- <span>{{item.text}}</span> -->
@@ -208,7 +208,7 @@
 
         <div class="find-data-item" v-if="item.type === '雷达歌单'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -238,7 +238,7 @@
 
         <div class="find-data-item" v-if="item.type === '热门播客'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -280,7 +280,7 @@
 
         <div class="find-data-item" v-if="item.type === '专属场景歌单'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -310,7 +310,7 @@
 
         <div class="find-data-item" v-if="item.type === '新歌新碟数字专辑'">
           <div class="item-title">
-            <div class="title">
+            <div class="title text-eli">
               <span class="title-item"
                 v-for="(item1, index1) in item.title"
                 :key="index1"
@@ -398,7 +398,7 @@
 
         <div class="find-data-item" v-if="item.type === '音乐日历'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -430,7 +430,7 @@
 
         <div class="find-data-item" v-if="item.type === '云村ktv'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
@@ -457,7 +457,7 @@
 
         <div class="find-data-item" v-if="item.type === '广播电台'">
           <div class="item-title">
-            <div class="title">
+            <div class="title text-eli">
               <span class="title-item"
                 v-for="(item1, index1) in item.title"
                 :key="index1"
@@ -514,7 +514,7 @@
 
         <div class="find-data-item" v-if="item.type === '视频合辑'">
           <div class="item-title">
-            <div class="title">{{item.title}}</div>
+            <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
               <span>{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>

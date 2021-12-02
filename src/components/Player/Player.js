@@ -45,7 +45,8 @@ export default {
   },
   methods: {
     hidePlayer() {
-      this.$store.commit('changeShowPlayer', false)
+      // this.$store.commit('changeShowPlayer', false)
+      this.$router.go(-1)
     },
     togglePlayStatus() {
       if(this.playStatus === 'paused') {
@@ -57,8 +58,8 @@ export default {
   },
   watch: {
     songId(newV) {
-      console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
-      console.log('背景图', this.bgImg);
+      // console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
+      // console.log('背景图', this.bgImg);
       let bgImage = new Image()
       bgImage.src = this.bgImg
       // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
@@ -88,5 +89,5 @@ export default {
     playingIndex(newV) {
       console.log('指针:', newV);
     }
-  }
+  },
 }
