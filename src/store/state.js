@@ -24,6 +24,8 @@ const state = {
   mvId: 0,
   // 正在播放的歌曲 id 
   songId: 0,
+  // 播放音频的元素
+  adoEl: null,
   // 是否显示了更多回复
   showReply: false,
   // 搜索历史记录数组

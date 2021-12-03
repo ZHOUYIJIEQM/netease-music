@@ -93,6 +93,9 @@ const mutations = {
   },
   setPlayingIndex(state, index) {
     state.playingIndex = index
+  },
+  setAdoEl(state, element) {
+    state.adoEl = element
   }
 }
 

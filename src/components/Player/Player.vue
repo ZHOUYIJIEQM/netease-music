@@ -39,7 +39,12 @@
         </div>
         <!-- 中部 -->
         <div class="middle-box">
-
+          <div class="needle-box">
+            <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
+          </div>
+          <div class="disk-box" ref="disk">
+            <img :src="defaultBg" ref="diskImg" alt="">
+          </div>
         </div>
         <!-- 底部 -->
         <div class="bottom-box">
@@ -73,7 +78,13 @@
       </div>
 
       <!-- 播放 -->
-      <audio ref="audioPlayer"></audio>
+      <audio 
+        ref="audioPlayer"
+        @play="audioPlay"
+        @pause="audioPause"
+        @error="audioError"
+        @waiting="audioWaiting"
+      ></audio>
 
     </div>
   </transition>

@@ -1,4 +1,5 @@
 import logo from '@/assets/player/defaultBg.png'
+import { songDetail, songUrl } from '@/api/api'
 export default {
   name: 'Player',
   data() {
@@ -27,6 +28,10 @@ export default {
     }
   },
   mounted() {
+    this.adoEl = this.$refs.audioPlayer
+    this.needle = this.$refs.needle
+    this.disk = this.$refs.disk
+    this.$store.commit('setAdoEl', this.adoEl)
     // 播放列表测试
     // 清空
     this.$store.commit('setPlayList', [])
@@ -42,6 +47,11 @@ export default {
     // list.push({id: '00006', name: '06', img: '6.jpg'})
     // this.$store.commit('setPlayList', list)
     // console.log(this.playList);
+    
+    this.adoEl = this.$refs.audioPlayer
+    this.needle = this.$refs.needle
+    this.disk = this.$refs.disk
+    
   },
   methods: {
     hidePlayer() {
@@ -51,8 +61,119 @@ export default {
     togglePlayStatus() {
       if(this.playStatus === 'paused') {
         this.playStatus = 'playing'
+        this.needle.classList.add('playing')
+
+        this.disk.classList.remove('paused')
+        this.disk.classList.add('playing')
+
+        this.adoEl.play()
       } else if(this.playStatus === 'playing'){
         this.playStatus = 'paused'
+        this.needle.classList.remove('playing')
+        
+        this.disk.classList.remove('playing')
+        this.disk.classList.add('paused')
+        
+        this.adoEl.pause()
+      }
+    },
+    audioPlay() {
+      console.log('播放');
+      this.playStatus = 'playing'
+    },
+    audioPause() {
+      console.log('暂停');
+      this.playStatus = 'paused'
+    },
+    audioError() {
+      console.log('播放错误');
+    },
+    audioWaiting() {
+      console.log('加载');
+    },
+    async setSongInfo(songId) {
+      try {
+        if (!window.location.href.includes('?player=show')) {
+          window.location.href+='?player=show'
+        }
+        this.$store.commit('changeShowPlayer', true)
+        this.$store.commit("changeLoading", true);
+        // 去重处理 
+        let playlist = this.playList
+
+        let index = playlist.findIndex(item => String(item.id) === String(this.songId))
+        // index !== -1 && playlist.splice(index, 1)
+        if (index !== -1) {
+          this.$store.commit('setPlayingIndex', index)
+          this.$store.commit('changeSongId', String(this.songId))
+          return
+        }
+
+        let songInfo = await songDetail(this.songId)
+        console.log(songInfo);
+        if (songInfo.code === 200) {
+          let songInfoUrl = await songUrl(String(this.songId))
+          console.log(songInfoUrl);
+          if (songInfoUrl.code === 200) {
+            // 添加到播放器列表末尾
+            playlist.push({
+              id: songInfo.songs[0].id,
+              name: songInfo.songs[0].name,
+              artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
+              bgImg: songInfo.songs[0].al.picUrl+'?param=400y400',
+              songUrl: songInfoUrl.data[0].url,
+            })
+            this.$store.commit('setPlayList', playlist)
+            this.$store.commit('setPlayingIndex', playlist.length - 1)
+            this.$store.commit('changeSongId', String(this.songId))
+            // console.log(this.playList);
+          }
+
+          let bgImage = new Image()
+          bgImage.src = this.bgImg
+          // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
+          this.$nextTick(() => {
+            bgImage.onload = () => {
+              this.$refs.bgInnerEle.style.backgroundImage = `url(${bgImage.src})`
+              this.$refs.diskImg.src = bgImage.src
+            }
+            bgImage.onerror = () => {
+              this.$toast({
+                message: `加载背景图错误!`,
+                className: "toastT",
+                duration: 2000,
+                position: "bottom",
+              });
+              // 替换为默认背景
+              this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
+              this.$refs.diskImg.src = this.defaultBg
+            }
+            // 设置歌曲信息
+            this.songInfo = this.playList[this.playingIndex]
+            this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
+            this.togglePlayStatus()
+            this.$refs.audioPlayer.play()
+          })
+        } else {
+          this.$toast({
+            message: `获取歌曲信息错误! 无法播放!`,
+            className: "toastT",
+            duration: 2000,
+            position: "bottom",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        this.$toast({
+          message: `获取歌曲信息错误! 无法播放!`,
+          className: "toastT",
+          duration: 2000,
+          position: "bottom",
+        });
+        // this.$router.go(-1)
+        // this.$store.commit('changeShowPlayer', false)
+      } finally {
+        this.$store.commit("changeLoading", false);
       }
     }
   },
@@ -60,28 +181,13 @@ export default {
     songId(newV) {
       // console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
       // console.log('背景图', this.bgImg);
-      let bgImage = new Image()
-      bgImage.src = this.bgImg
-      // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
-      this.$nextTick(() => {
-        bgImage.onload = () => {
-          this.$refs.bgInnerEle.style.backgroundImage = `url(${bgImage.src})`
-        }
-        bgImage.onerror = () => {
-          this.$toast({
-            message: `加载背景图错误!`,
-            className: "toastT",
-            duration: 2000,
-            position: "bottom",
-          });
-          // 替换为默认背景
-          this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
-        }
-        // 设置歌曲信息
-        this.songInfo = this.playList[this.playingIndex]
-        this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
-        // this.$refs.audioPlayer.play()
-      })
+      // 如果歌曲换了audio是播放状态, 暂停播放
+      if (!this.adoEl.paused) {
+        this.adoEl.pause()
+      }
+
+      this.setSongInfo(newV)
+      
     },
     playList(newV) {
       // console.log('播放器列表', this.playList);

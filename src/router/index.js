@@ -113,8 +113,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // 每次跳转前, 如果存在播放器, 先隐藏 (直接按了返回键)
+  console.log('beforeeach no if');
   if (store.getters.showPlayer) {
+    console.log('showPlayer beforeeach', store.getters.showPlayer);
     store.commit('changeShowPlayer', false)
+    console.log('showPlayer', store.getters.showPlayer);
     // next(false)
   } else {
     next()

@@ -33,7 +33,8 @@ const getters = {
       return []
     }
   },
-  playingIndex: state => state.playingIndex
+  playingIndex: state => state.playingIndex,
+  adoEl: state => state.adoEl,
 }
 
 export default getters
