@@ -93,10 +93,7 @@ export default {
     },
     async setSongInfo(songId) {
       try {
-        if (!window.location.href.includes('?player=show')) {
-          window.location.href+='?player=show'
-        }
-        this.$store.commit('changeShowPlayer', true)
+        
         this.$store.commit("changeLoading", true);
         // 去重处理 
         let playlist = this.playList
@@ -182,6 +179,7 @@ export default {
       // console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
       // console.log('背景图', this.bgImg);
       // 如果歌曲换了audio是播放状态, 暂停播放
+      console.log(newV);
       if (!this.adoEl.paused) {
         this.adoEl.pause()
       }

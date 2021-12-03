@@ -64,7 +64,11 @@ export let global = {
     async clickSong(id) {
       console.log('点击歌曲', id);
       this.$store.commit('changeSongId', String(id))
-      this.$store.commit('changeShowPlayer', true)
+      if (!window.location.href.includes('?player=show')) {
+        window.location.href+='?player=show'
+        this.$store.commit('changeShowPlayer', true)
+      }
+      
     },
     clickMvIcon(id) {
       console.log('mv', id);
