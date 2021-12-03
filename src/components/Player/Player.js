@@ -7,7 +7,9 @@ export default {
       defaultBg: logo,
       songInfo: {},
       // 播放状态
-      playStatus: 'paused'
+      playStatus: 'paused',
+      // 是否可以播放
+      adoReady: false,
     }
   },
   computed: {
@@ -29,8 +31,8 @@ export default {
   },
   mounted() {
     this.adoEl = this.$refs.audioPlayer
-    this.needle = this.$refs.needle
-    this.disk = this.$refs.disk
+    this.needleEl = this.$refs.needle
+    this.diskEl = this.$refs.disk
     this.$store.commit('setAdoEl', this.adoEl)
     // 播放列表测试
     // 清空
@@ -49,8 +51,8 @@ export default {
     // console.log(this.playList);
     
     this.adoEl = this.$refs.audioPlayer
-    this.needle = this.$refs.needle
-    this.disk = this.$refs.disk
+    this.needleEl = this.$refs.needle
+    this.diskEl = this.$refs.disk
     
   },
   methods: {
@@ -61,72 +63,81 @@ export default {
     togglePlayStatus() {
       if(this.playStatus === 'paused') {
         this.playStatus = 'playing'
-        this.needle.classList.add('playing')
+        this.needleEl.classList.add('playing')
 
-        this.disk.classList.remove('paused')
-        this.disk.classList.add('playing')
+        this.diskEl.classList.remove('paused')
+        this.diskEl.classList.add('playing')
 
         this.adoEl.play()
       } else if(this.playStatus === 'playing'){
         this.playStatus = 'paused'
-        this.needle.classList.remove('playing')
+        this.needleEl.classList.remove('playing')
         
-        this.disk.classList.remove('playing')
-        this.disk.classList.add('paused')
+        this.diskEl.classList.remove('playing')
+        this.diskEl.classList.add('paused')
         
         this.adoEl.pause()
       }
     },
     audioPlay() {
-      console.log('播放');
+      // console.log('播放');
       this.playStatus = 'playing'
     },
+    audioCanplay() {
+      this.adoReady = true
+    },
     audioPause() {
-      console.log('暂停');
+      // console.log('暂停');
       this.playStatus = 'paused'
     },
     audioError() {
-      console.log('播放错误');
+      // console.log('播放错误');
     },
     audioWaiting() {
-      console.log('加载');
+      // console.log('加载');
     },
     async setSongInfo(songId) {
       try {
-        
+        console.log('--------');
         this.$store.commit("changeLoading", true);
         // 去重处理 
         let playlist = this.playList
 
-        let index = playlist.findIndex(item => String(item.id) === String(this.songId))
+        let index = playlist.findIndex(item => String(item.id) === String(songId))
         // index !== -1 && playlist.splice(index, 1)
         if (index !== -1) {
           this.$store.commit('setPlayingIndex', index)
-          this.$store.commit('changeSongId', String(this.songId))
-          return
-        }
-
-        let songInfo = await songDetail(this.songId)
-        console.log(songInfo);
-        if (songInfo.code === 200) {
-          let songInfoUrl = await songUrl(String(this.songId))
-          console.log(songInfoUrl);
-          if (songInfoUrl.code === 200) {
-            // 添加到播放器列表末尾
-            playlist.push({
-              id: songInfo.songs[0].id,
-              name: songInfo.songs[0].name,
-              artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
-              bgImg: songInfo.songs[0].al.picUrl+'?param=400y400',
-              songUrl: songInfoUrl.data[0].url,
-            })
-            this.$store.commit('setPlayList', playlist)
-            this.$store.commit('setPlayingIndex', playlist.length - 1)
-            this.$store.commit('changeSongId', String(this.songId))
-            // console.log(this.playList);
+          this.$store.commit('changeSongId', String(songId))
+        } else {
+          let songInfo = await songDetail(songId)
+          // console.log(songInfo);
+          if (songInfo.code === 200) {
+            let songInfoUrl = await songUrl(String(songId))
+            // console.log(songInfoUrl);
+            if (songInfoUrl.code === 200) {
+              // 添加到播放器列表末尾
+              playlist.push({
+                id: songInfo.songs[0].id,
+                name: songInfo.songs[0].name,
+                artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
+                bgImg: songInfo.songs[0].al.picUrl+'?param=400y400',
+                songUrl: songInfoUrl.data[0].url,
+              })
+              this.$store.commit('setPlayList', playlist)
+              this.$store.commit('setPlayingIndex', playlist.length - 1)
+              this.$store.commit('changeSongId', String(songId))
+              // console.log(this.playList);
+            }
+          } else {
+            this.$toast({
+              message: `获取歌曲信息错误! 无法播放!`,
+              className: "toastT",
+              duration: 2000,
+              position: "bottom",
+            });
           }
-
-          let bgImage = new Image()
+        }
+        let bgImage = new Image()
           bgImage.src = this.bgImg
           // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
           this.$nextTick(() => {
@@ -148,17 +159,10 @@ export default {
             // 设置歌曲信息
             this.songInfo = this.playList[this.playingIndex]
             this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
+            this.diskEl.classList.remove('ready')
             this.togglePlayStatus()
-            this.$refs.audioPlayer.play()
+            // this.$refs.audioPlayer.play()
           })
-        } else {
-          this.$toast({
-            message: `获取歌曲信息错误! 无法播放!`,
-            className: "toastT",
-            duration: 2000,
-            position: "bottom",
-          });
-        }
       } catch (error) {
         console.log(error);
         this.$toast({
@@ -181,7 +185,7 @@ export default {
       // 如果歌曲换了audio是播放状态, 暂停播放
       console.log(newV);
       if (!this.adoEl.paused) {
-        this.adoEl.pause()
+        this.togglePlayStatus()
       }
 
       this.setSongInfo(newV)
@@ -191,7 +195,7 @@ export default {
       // console.log('播放器列表', this.playList);
     },
     playingIndex(newV) {
-      console.log('指针:', newV);
+      // console.log('指针:', newV);
     }
   },
 }

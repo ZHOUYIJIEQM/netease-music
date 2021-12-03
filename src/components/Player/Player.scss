@@ -100,7 +100,7 @@
             }
           }
         }
-        @media screen and (min-height: 900px) and (max-height: 1100px) {
+        @media screen and (min-height: 900px) and (max-height: 1450px) {
           .needle {
             height: 16vh;
             &.playing {
@@ -147,6 +147,25 @@
           object-fit: cover;
           border-radius: 50%;
         }
+        &.ready {
+          animation: rotate 10s linear infinite;
+          &.pause {
+            animation-play-state: paused;
+          }
+          &.playing {
+            animation-play-state: running;
+          }
+        }
+        
+        @keyframes rotate {
+          0% {
+            transform: rotate(0);
+          }
+        
+          100% {
+            transform: rotate(360deg);
+          }
+        }
       }
     }
     .bottom-box {
@@ -180,8 +199,8 @@
           padding: .12rem;
           .iconfont {
             font-size: .24rem;
-            width: .24rem;
-            height: .24rem;
+            // width: .24rem;
+            // height: .24rem;
           }
         }
         .iconfont {
@@ -194,6 +213,15 @@
           font-size: .28rem;
         }
       }
+    }
+  }
+}
+
+
+@media screen and (min-height: 300px) and (max-height: 450px) {
+  .control-bar, .song-bar {
+    .iconfont {
+      font-size: .16rem!important;
     }
   }
 }

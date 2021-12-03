@@ -42,7 +42,9 @@
           <div class="needle-box">
             <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
           </div>
-          <div class="disk-box" ref="disk">
+          <div class="disk-box" ref="disk"
+            :class="[playStatus === 'paused' ? 'pause' : 'playing', {'ready': adoReady}]"
+          >
             <img :src="defaultBg" ref="diskImg" alt="">
           </div>
         </div>
@@ -80,6 +82,7 @@
       <!-- 播放 -->
       <audio 
         ref="audioPlayer"
+        @canplay="audioCanplay"
         @play="audioPlay"
         @pause="audioPause"
         @error="audioError"
