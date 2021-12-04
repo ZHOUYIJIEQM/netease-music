@@ -62,8 +62,21 @@
             <i class="iconfont icon-gengduoxiao"></i>
           </div>
           <!-- 进度条 -->
-          <div class="progress-bar">
-            
+          <div class="progress-box">
+            <!-- 当前时间 -->
+            <div class="current-time">{{fCurrentTime}}</div>
+            <div class="music-progress">
+              <van-slider 
+                v-model="progressTime" 
+                bar-height="1.5px"
+                button-size=".06rem"
+                :active-color="activeColor"
+                :inactive-color="inActiveColor"
+                @input="progressChange"
+                @change="progressChangeEnd"
+              />
+            </div>
+            <div class="duration-time">{{durationTime}}</div>
           </div>
           <!-- 歌曲控制 -->
           <div class="control-bar">
@@ -74,19 +87,22 @@
               <i class="iconfont icon-weibiaoti519" v-else></i>
             </div>
             <i class="iconfont icon-shangyishoushangyige"></i>
-            <i class="iconfont icon-PlayListbofangliebiao"></i>
+            <i class="iconfont icon-PlayListbofangliebiao" @click="showPlayList"></i>
           </div>
         </div>
       </div>
 
-      <!-- 播放 -->
+      <!-- 播放音频 -->
       <audio 
+        id="adoEl"
         ref="audioPlayer"
         @canplay="audioCanplay"
         @play="audioPlay"
         @pause="audioPause"
         @error="audioError"
         @waiting="audioWaiting"
+        @ended="audioEnded"
+        @timeupdate="audioTimeUpdate"
       ></audio>
 
     </div>

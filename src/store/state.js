@@ -15,6 +15,8 @@ const state = {
   redirect: window.localStorage.getItem('musicRedirect') || '',
   // 是否显示底部播放器
   showPlayer: false,
+  // 播放列表
+  showPlayList: false,
   // 要播放的歌曲列表
   // playList: [],
   playList: window.localStorage.getItem('musicPlayList'),

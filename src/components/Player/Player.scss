@@ -64,9 +64,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      $circleWidth: 2vh;
       
       .needle-box {
-        $circleWidth: 2vh;
         position: absolute;
         left: calc(50% - ($circleWidth / 2));
         top: 0;
@@ -79,54 +79,104 @@
           border-radius: 50%;
           background-color: white;
         }
+      }
+      .needle {
+        z-index: -1;
+        position: absolute;
+        top: calc($circleWidth / 2);
+        left: calc($circleWidth / 2);
+        filter: drop-shadow(0px 2px 3px rgb(63, 63, 63));
+        transform-origin: left top;
+        height: 15vh;
+        transition: all .5s cubic-bezier(0, 0, 0.2, 1);
+        // 播放状态添加类名 playing
+        &.playing {
+          transform: rotate(26deg);
+        }
+      }
+      @media screen and (min-height: 300px) and (max-height: 400px) {
         .needle {
-          z-index: -1;
-          position: absolute;
-          top: calc($circleWidth / 2);
-          left: calc($circleWidth / 2);
-          filter: drop-shadow(0px 2px 3px rgb(63, 63, 63));
-          transform-origin: left top;
-          height: 15vh;
-          transition: all .5s cubic-bezier(0, 0, 0.2, 1);
-          // 播放状态添加类名 playing
+          height: 10vh;
+          transform: rotate(-15deg);
           &.playing {
-            transform: rotate(26deg);
+            transform: rotate(15deg);
           }
         }
-        @media screen and (min-height: 750px) and (max-height: 900px) {
+      }
+      @media screen and (min-height: 400px) and (max-height: 500px) {
+        .needle {
+          height: 10vh;
+          transform: rotate(-10deg);
+          &.playing {
+            transform: rotate(15deg);
+          }
+        }
+      }
+      @media screen and (min-height: 500px) and (max-height: 600px) {
+        .needle {
+          height: 10vh;
+          transform: rotate(-10deg);
+          &.playing {
+            transform: rotate(15deg);
+          }
+        }
+      }
+      @media screen and (min-height: 600px) and (max-height: 750px) {
+        .needle-box {
+          top: 1vh;
           .needle {
+            height: 15vh;
+            transform: rotate(0deg);
+            &.playing {
+              transform: rotate(25deg);
+            }
+          }
+        }
+      }
+      @media screen and (min-height: 600px) and (max-height: 750px) and (min-width: 200px) and (max-width: 350px) {
+        .needle-box {
+          top: 8vh;
+          .needle {
+            height: 12vh;
+            transform: rotate(0deg);
+            &.playing {
+              transform: rotate(25deg);
+            }
+          }
+        }
+      }
+      @media screen and (min-height: 750px) and (max-height: 900px) {
+        .needle-box {
+          top: 4vh;
+          .needle {
+            &.playing {
+              transform: rotate(25deg);
+            }
+          }
+        }
+      }
+      @media screen and (min-height: 900px) and (max-height: 1100px) {
+        .needle-box {
+          top: 3vh;
+          .needle {
+            height: 14vh;
             &.playing {
               transform: rotate(30deg);
             }
           }
         }
-        @media screen and (min-height: 900px) and (max-height: 1450px) {
+      }
+      @media screen and (min-height: 1100px) and (max-height: 1450px) {
+        .needle-box {
+          top: 5vh;
           .needle {
-            height: 16vh;
             &.playing {
-              transform: rotate(32deg);
-            }
-          }
-        }
-        @media screen and (min-height: 400px) and (max-height: 500px) {
-          .needle {
-            height: 10vh;
-            transform: rotate(-10deg);
-            &.playing {
-              transform: rotate(15deg);
-            }
-          }
-        }
-        @media screen and (min-height: 300px) and (max-height: 400px) {
-          .needle {
-            height: 10vh;
-            transform: rotate(-15deg);
-            &.playing {
-              transform: rotate(15deg);
+              transform: rotate(26deg);
             }
           }
         }
       }
+      
       .disk-box {
         $paddingW: 12vh;
         $borderW: .8vh;
@@ -136,6 +186,7 @@
         border-radius: 50%;
         overflow: hidden;
         height: 40vh;
+        max-height: 80vw;
         aspect-ratio: 1;
         padding: calc($paddingW / 2);
         border: $borderW solid rgb(233 233 233 / 10%);
@@ -180,8 +231,27 @@
           font-size: .24rem;
         }
       }
-      .progress-bar {
-        padding: 1.8vh;
+      .progress-box {
+        padding: .8vh 1.5vw;
+        padding-top: 1.2vh;
+        @include df();
+        color: rgba(255, 255, 255, 0.4);
+        align-items: center;
+        .music-progress {
+          flex: 1;
+        }
+        .current-time, .duration-time {
+          font-family: system-ui;
+          min-width: 5em;
+          font-size: .09rem;
+          text-align: center;
+          padding: 0 .12rem;
+        }
+        .current-time {
+          color: rgba(255, 255, 255, .7);
+        }
+        .duration-time {
+        }
       }
       .control-bar {
         @include df();

@@ -96,6 +96,9 @@ const mutations = {
   },
   setAdoEl(state, element) {
     state.adoEl = element
+  },
+  changeShowPlayList(state, value) {
+    state.showPlayList = value
   }
 }
 

@@ -85,6 +85,7 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
 1. swiper 设置了循环自动播放, 切换到其它路由再换回来, 不能自动播放。监听路由, 离开就暂停播放, 换回来就继续播放
 1. 如果浏览器在歌单页面关闭, 下次打开按导航返回没有效果, 用sessionStorage 记录进去过的路由, 如果是第一个, 点返回直接回到 /home
 1. 因为设置了 ```keep-alive```, 在组件页里侦听 ```$route```, 处理函数在其他路由页也会触发, 可能会造成一些奇怪的问题, 比如处理函数里面有网络请求, 路由一改变也会触发里面的请求, 每次进入其它路由页就会发起请求, 造成不好影响
+1. 使用弹出层组件时, v-model 绑定 vuex 的 state 值, 给 computed 设置 get set, 详细看 App.vue 的 showList
 
 ## Project setup
 

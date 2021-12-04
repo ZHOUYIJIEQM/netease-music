@@ -92,7 +92,7 @@ export default {
     initTab(to) {
       // keep-alive watch $route 时需要限制在哪些路由页触发
       let routeName = to.name;
-      console.log(routeName);
+      // console.log(routeName);
       if (routeName === 'Find' || routeName === 'Mine' || routeName === 'YunVillage') {
         this.$router.push({ name: routeName })
           .catch((err) => {});

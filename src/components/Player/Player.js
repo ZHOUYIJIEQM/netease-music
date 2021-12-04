@@ -1,5 +1,7 @@
 import logo from '@/assets/player/defaultBg.png'
 import { songDetail, songUrl } from '@/api/api'
+import moment from "moment"
+
 export default {
   name: 'Player',
   data() {
@@ -10,6 +12,21 @@ export default {
       playStatus: 'paused',
       // 是否可以播放
       adoReady: false,
+      // 进度值
+      progressTime: 0,
+      // activeColor: 'rgba(255, 255, 255, .6)',
+      // 进度条激活部分的颜色
+      activeColor: 'hsl(0deg 0% 90% / 50%)',
+      // 进度条未激活的颜色
+      inActiveColor: 'rgba(255, 255, 255, .2)',
+      // 当前播放时间
+      currentTime: 0,
+      // 格式化后
+      fCurrentTime: '00:00',
+      // 全曲时间
+      durationTime: '00:00',
+      // 是否按住了进度条
+      isDrag: false,
     }
   },
   computed: {
@@ -27,7 +44,7 @@ export default {
     },
     bgImg() {
       return this.playList[this.playingIndex].bgImg
-    }
+    },
   },
   mounted() {
     this.adoEl = this.$refs.audioPlayer
@@ -60,45 +77,87 @@ export default {
       // this.$store.commit('changeShowPlayer', false)
       this.$router.go(-1)
     },
+    // 改变播放/暂停动画状态
+    changeAnimation() {
+      if (this.playStatus === 'paused') {
+        this.needleEl.classList.remove('playing')
+        this.diskEl.classList.remove('playing')
+        this.diskEl.classList.add('paused')
+      } else if(this.playStatus === 'playing') {
+        this.needleEl.classList.add('playing')
+        this.diskEl.classList.remove('paused')
+        this.diskEl.classList.add('playing')
+      }
+    },
     togglePlayStatus() {
       if(this.playStatus === 'paused') {
         this.playStatus = 'playing'
-        this.needleEl.classList.add('playing')
-
-        this.diskEl.classList.remove('paused')
-        this.diskEl.classList.add('playing')
-
         this.adoEl.play()
-      } else if(this.playStatus === 'playing'){
+      } else if(this.playStatus === 'playing') {
         this.playStatus = 'paused'
-        this.needleEl.classList.remove('playing')
-        
-        this.diskEl.classList.remove('playing')
-        this.diskEl.classList.add('paused')
-        
         this.adoEl.pause()
       }
+      this.changeAnimation()
     },
     audioPlay() {
       // console.log('播放');
       this.playStatus = 'playing'
     },
     audioCanplay() {
+      console.log('可以开始播放');
       this.adoReady = true
+      this.durationTime = this.formatTime(this.adoEl.duration)
     },
     audioPause() {
-      // console.log('暂停');
+      console.log('暂停');
       this.playStatus = 'paused'
     },
+    audioEnded() {
+      console.log('播完');
+      this.changeAnimation()
+    },
+    audioTimeUpdate() {
+      if (!this.isDrag ) {
+        this.currentTime = this.adoEl.currentTime
+        this.progressTime = this.currentTime / this.adoEl.duration * 100
+      }
+    },
     audioError() {
-      // console.log('播放错误');
+      console.log('播放错误');
     },
     audioWaiting() {
-      // console.log('加载');
+      console.log('加载');
+    },
+    formatTime(time) {
+      // 如果音频时长超过1小时, 格式
+      if (this.adoEl.duration >= 60 * 60) {
+        let duration = moment.duration(time * 1000)
+        let h = duration.hours() >= 10 ? duration.hours() : '0'+duration.hours()
+        let m = duration.minutes() >= 10 ? duration.minutes() : '0'+duration.minutes()
+        let s = duration.seconds() >= 10 ? duration.seconds() : '0'+duration.seconds()
+        return h+':'+m+':'+s
+      } else {
+        // 分:秒格式
+        return moment(time * 1000).format('mm:ss')
+      }
+    },
+    // 进度变化
+    progressChange() {
+      // console.log(this.progressTime / 100 * this.adoEl.duration);
+      this.isDrag = true
+      this.currentTime = this.progressTime / 100 * this.adoEl.duration
+    },
+    // 进度变化且结束拖动后触发
+    progressChangeEnd() {
+      this.adoEl.currentTime = this.currentTime
+      this.isDrag = false
+    },
+    showPlayList() {
+      console.log('---');
+      this.$store.commit('changeShowPlayList', true)
     },
     async setSongInfo(songId) {
       try {
-        console.log('--------');
         this.$store.commit("changeLoading", true);
         // 去重处理 
         let playlist = this.playList
@@ -161,6 +220,7 @@ export default {
             this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
             this.diskEl.classList.remove('ready')
             this.togglePlayStatus()
+            this.progressTime = 0
             // this.$refs.audioPlayer.play()
           })
       } catch (error) {
@@ -196,6 +256,9 @@ export default {
     },
     playingIndex(newV) {
       // console.log('指针:', newV);
+    },
+    currentTime(newV) {
+      this.fCurrentTime = this.formatTime(newV)
     }
   },
 }
