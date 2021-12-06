@@ -53,7 +53,7 @@ export default {
     this.$store.commit('setAdoEl', this.adoEl)
     // 播放列表测试
     // 清空
-    this.$store.commit('setPlayList', [])
+    // this.$store.commit('setPlayList', [])
     // let list = [
     //   {id: '00001', name: '01', img: '1.jpg'},
     //   {id: '00002', name: '02', img: '2.jpg'},
@@ -66,10 +66,6 @@ export default {
     // list.push({id: '00006', name: '06', img: '6.jpg'})
     // this.$store.commit('setPlayList', list)
     // console.log(this.playList);
-    
-    this.adoEl = this.$refs.audioPlayer
-    this.needleEl = this.$refs.needle
-    this.diskEl = this.$refs.disk
     
   },
   methods: {
@@ -104,16 +100,16 @@ export default {
       this.playStatus = 'playing'
     },
     audioCanplay() {
-      console.log('可以开始播放');
+      // console.log('可以开始播放');
       this.adoReady = true
       this.durationTime = this.formatTime(this.adoEl.duration)
     },
     audioPause() {
-      console.log('暂停');
+      // console.log('暂停');
       this.playStatus = 'paused'
     },
     audioEnded() {
-      console.log('播完');
+      // console.log('播完');
       this.changeAnimation()
     },
     audioTimeUpdate() {
@@ -123,10 +119,16 @@ export default {
       }
     },
     audioError() {
-      console.log('播放错误');
+      this.$toast({
+        message: `无法播放这一首歌曲!`,
+        className: "playerToast",
+        duration: 2000,
+        position: "bottom",
+      });
+      // console.log('播放错误');
     },
     audioWaiting() {
-      console.log('加载');
+      // console.log('加载');
     },
     formatTime(time) {
       // 如果音频时长超过1小时, 格式
@@ -150,10 +152,13 @@ export default {
     // 进度变化且结束拖动后触发
     progressChangeEnd() {
       this.adoEl.currentTime = this.currentTime
+      // 如果是暂停状态就继续开始播放
+      if (this.adoEl.paused) {
+        this.togglePlayStatus()
+      }
       this.isDrag = false
     },
     showPlayList() {
-      console.log('---');
       this.$store.commit('changeShowPlayList', true)
     },
     async setSongInfo(songId) {

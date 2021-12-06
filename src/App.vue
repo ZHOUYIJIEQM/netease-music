@@ -21,13 +21,15 @@
       v-model="showList"
       round
       position="bottom"
+      :overlay-style="{'background-color': 'rgb(0 0 0 / 30%)'}"
     >
-      播放列表------------
+      <PlayerPlayList></PlayerPlayList>
     </van-popup>
   </div>
 </template>
 <script>
 import Player from '@/components/Player/Player.vue'
+import PlayerPlayList from '@/components/PlayerPlayList.vue'
 
 export default {
   name: 'App',
@@ -38,7 +40,8 @@ export default {
   components: {
     // 加载
     Loading: () => import('@/components/Loading'),
-    Player
+    Player,
+    PlayerPlayList
   },
   computed: {
     // 加载状态
@@ -76,14 +79,17 @@ export default {
   }
   .music-playlist {
     // bottom: 10%;
-    $width: 80%;
-    height: 50vh;
+    $width: 90%;
+    height: 63vh;
     width: $width;
     left: calc((100% - $width) / 2);
-    bottom: 10%;
+    bottom: 5vh;
     // left: 50%;
     // transform: translateX(-50%);
-    border-radius: .1rem;
+    border-radius: .15rem;
+  }
+  .music-playlist-overlay {
+    background-color: rgba(0, 0, 0, 0.3);
   }
 }
 </style>

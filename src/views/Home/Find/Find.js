@@ -42,7 +42,7 @@ export default {
       // 轮播配置
       swiperOptions: {
         // 滑轮切换
-        mousewheel: true,
+        // mousewheel: true,
         pagination: {
           // 分页器
           el: ".swiper-pagination",

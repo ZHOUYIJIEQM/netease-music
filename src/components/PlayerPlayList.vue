@@ -1,0 +1,140 @@
+<template>
+  <!-- 播放器里的播放列表 -->
+  <div class="player-playlist-comp">
+    <div class="title">当前播放<span>({{playlist.length}})</span></div>
+    <div class="navbar">
+      <div class="icon">
+        <i class="iconfont icon-xunhuan"></i>
+        <span>列表循环</span>
+      </div>
+      <div class="right">
+        <i class="iconfont icon-xiazai1"></i>
+        <i class="iconfont icon-jia1"></i>
+        <i class="iconfont icon-laji"></i>
+      </div>
+    </div>
+    <div class="list-box">
+      <div class="list"
+        v-for="(item, index) in playlist"
+        :key="index"
+      >
+        <div class="info text-eli">
+          <span class="icon-paixingbang iconfont"></span>
+          <span class="name">{{item.name}}</span>
+          <span class="split">-</span>
+          <span class="artist">{{item.artist}}</span>
+        </div>
+        <div class="del" @click="delList(index)">
+          <i class="iconfont icon-cuowu"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    playlist() {
+      return this.$store.getters.playList
+    }
+  },
+  methods: {
+    // 删除某一曲
+    delList(index) {
+      let playlist = this.playlist
+      playlist.splice(index, 1)
+      this.$store.commit('setPlayList', playlist)
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+.player-playlist-comp {
+  height: 100%;
+  padding: .15rem 0 0;
+  color: $black;
+  @include df(column);
+  i {
+    color: #929292;
+    font-size: .2rem;
+  }
+  .title {
+    padding: .04rem .15rem;
+    font-weight: bold;
+    font-size: .17rem;
+    span {
+      font-size: .12rem;
+      color: #929292;
+      font-weight: normal;
+      margin-left: .05rem;
+    }
+  }
+  .navbar {
+    padding: .06rem .15rem .1rem;
+    @include df();
+    align-items: center;
+    .icon {
+      @include df();
+      font-family: system-ui;
+      font-size: .14rem;
+      align-items: center;
+      i {
+        color: #555;
+        margin-right: .1rem;
+      }
+    }
+    .right {
+      margin-left: auto;
+      
+      i:nth-child(2) {
+        padding: 0 .22rem;
+      }
+    }
+  }
+  .list-box {
+    flex: 1;
+    overflow-y: scroll;
+    .list {
+      padding: .14rem .15rem;
+      @include df();
+      align-items: center;
+      &:active {
+        background-color: #d3d3d3;
+      }
+      .info {
+        line-height: 1.3;
+        width: 80%;
+        font-size: .14rem;
+        color: #a6a6a6;
+        .icon-paixingbang {
+          color: red;
+          margin-right: .1rem;
+        }
+        .name {
+          color: $black;
+        }
+        .split {
+          padding: 0 .08rem;
+        }
+        .artist {
+          font-size: .12rem;
+        }
+      }
+      .del {
+        margin-left: auto;
+        i {
+          font-size: .16rem;
+          color: #b5b5b5;
+        }
+      }
+    }
+  }
+}  
+</style>
