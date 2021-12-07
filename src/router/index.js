@@ -120,6 +120,13 @@ router.beforeEach((to, from, next) => {
   }
   if (store.getters.showPlayer) {
     store.commit('changeShowPlayer', false)
+    // console.log(to, from, window.location.href.includes('player=show'));
+    if (from.query.player === 'show') {
+      console.log('有player=show');
+      next()
+    } else {
+      next(false)
+    }
     // next(false)
   } else {
     next()

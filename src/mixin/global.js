@@ -63,8 +63,10 @@ export let global = {
     },
     async clickSong(id) {
       // console.log('点击歌曲', id);
+      // http://localhost:8080/#/Home/Find
       this.$store.commit('changeSongId', String(id))
-      if (!window.location.href.includes('?player=show')) {
+      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      if (history.length <= 1 && !window.location.href.includes('?player=show')) {
         window.location.href+='?player=show'
       }
       this.$store.commit('changeShowPlayer', true)

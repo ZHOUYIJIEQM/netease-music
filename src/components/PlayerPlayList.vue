@@ -19,7 +19,7 @@
         :key="index"
       >
         <div class="info text-eli">
-          <span class="icon-paixingbang iconfont"></span>
+          <span v-if="songId == item.id" class="icon-paixingbang iconfont"></span>
           <span class="name">{{item.name}}</span>
           <span class="split">-</span>
           <span class="artist">{{item.artist}}</span>
@@ -41,6 +41,9 @@ export default {
   computed: {
     playlist() {
       return this.$store.getters.playList
+    },
+    songId() {
+      return this.$store.getters.songId
     }
   },
   methods: {
