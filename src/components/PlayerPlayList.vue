@@ -13,8 +13,10 @@
         <i class="iconfont icon-laji" @click="delAll"></i>
       </div>
     </div>
-    <div class="list-box">
-      <div class="list"
+    <div class="list-box" ref="listBox">
+      <div 
+        class="list"
+        ref="song"
         v-for="(item, index) in playlist"
         :key="index"
         @click="clickSong(item.id)"
@@ -48,7 +50,13 @@ export default {
     },
     songId() {
       return this.$store.getters.songId
-    }
+    },
+    showPlayList() {
+      return this.$store.getters.showPlayList
+    },
+    playingIndex() {
+      return this.$store.getters.playingIndex
+    },
   },
   methods: {
     // 删除某一曲
@@ -62,6 +70,13 @@ export default {
     },
     clickSong(id) {
       this.$store.commit('changeSongId', String(id))
+    },
+  },
+  watch: {
+    showPlayList(newV) {
+      if (newV) {
+        this.$refs.listBox.scrollTop = this.$refs.song[this.playingIndex].offsetTop
+      }
     }
   }
 }
@@ -114,6 +129,7 @@ export default {
   .list-box {
     flex: 1;
     overflow-y: scroll;
+    position: relative;
     .list {
       padding: .14rem .15rem;
       @include df();
