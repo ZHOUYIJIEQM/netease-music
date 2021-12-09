@@ -75,15 +75,17 @@ export default {
     },
     // 改变播放/暂停动画状态
     changeAnimation() {
-      if (this.playStatus === 'paused') {
-        this.needleEl.classList.remove('playing')
-        this.diskEl.classList.remove('playing')
-        this.diskEl.classList.add('paused')
-      } else if(this.playStatus === 'playing') {
-        this.needleEl.classList.add('playing')
-        this.diskEl.classList.remove('paused')
-        this.diskEl.classList.add('playing')
-      }
+      this.$nextTick(() => {
+        if (this.playStatus === 'paused') {
+          this.needleEl.classList.remove('playing')
+          this.diskEl.classList.remove('playing')
+          this.diskEl.classList.add('paused')
+        } else if(this.playStatus === 'playing') {
+          this.needleEl.classList.add('playing')
+          this.diskEl.classList.remove('paused')
+          this.diskEl.classList.add('playing')
+        }
+      })
     },
     togglePlayStatus() {
       if(this.playStatus === 'paused') {

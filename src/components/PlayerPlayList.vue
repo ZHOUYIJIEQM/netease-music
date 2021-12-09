@@ -1,7 +1,7 @@
 <template>
   <!-- 播放器里的播放列表 -->
   <div class="player-playlist-comp">
-    <div class="title">当前播放<span>({{playlist.length}})</span></div>
+    <div class="title">当前播放<span v-if="playlist.length">({{playlist.length}})</span></div>
     <div class="navbar">
       <div class="icon">
         <i class="iconfont icon-xunhuan"></i>
@@ -28,6 +28,9 @@
         <div class="del" @click="delList(index)">
           <i class="iconfont icon-cuowu"></i>
         </div>
+      </div>
+      <div class="tip" v-if="!playlist.length">
+        播放列表暂无歌曲!
       </div>
     </div>
   </div>
@@ -144,6 +147,12 @@ export default {
           color: #b5b5b5;
         }
       }
+    }
+    .tip {
+      color: #929292;
+      font-size: .14rem;
+      text-align: center;
+      margin-top: .25rem;
     }
   }
 }  
