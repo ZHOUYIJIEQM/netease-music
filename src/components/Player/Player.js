@@ -14,7 +14,6 @@ export default {
       adoReady: false,
       // 进度值
       progressTime: 0,
-      // activeColor: 'rgba(255, 255, 255, .6)',
       // 进度条激活部分的颜色
       activeColor: 'hsl(0deg 0% 90% / 50%)',
       // 进度条未激活的颜色
@@ -27,6 +26,8 @@ export default {
       durationTime: '00:00',
       // 是否按住了进度条
       isDrag: false,
+      // 重新获取歌曲地址次数
+      errNum: 0,
     }
   },
   computed: {
@@ -51,22 +52,6 @@ export default {
     this.needleEl = this.$refs.needle
     this.diskEl = this.$refs.disk
     this.$store.commit('setAdoEl', this.adoEl)
-    // 播放列表测试
-    // 清空
-    // this.$store.commit('setPlayList', [])
-    // let list = [
-    //   {id: '00001', name: '01', img: '1.jpg'},
-    //   {id: '00002', name: '02', img: '2.jpg'},
-    //   {id: '00003', name: '03', img: '3.jpg'},
-    //   {id: '00004', name: '04', img: '4.jpg'},
-    //   {id: '00005', name: '05', img: '5.jpg'},
-    // ]
-    // this.$store.commit('setPlayList', list)
-    // list = this.playList
-    // list.push({id: '00006', name: '06', img: '6.jpg'})
-    // this.$store.commit('setPlayList', list)
-    // console.log(this.playList);
-    
   },
   methods: {
     hidePlayer() {
@@ -75,17 +60,15 @@ export default {
     },
     // 改变播放/暂停动画状态
     changeAnimation() {
-      this.$nextTick(() => {
-        if (this.playStatus === 'paused') {
-          this.needleEl.classList.remove('playing')
-          this.diskEl.classList.remove('playing')
-          this.diskEl.classList.add('paused')
-        } else if(this.playStatus === 'playing') {
-          this.needleEl.classList.add('playing')
-          this.diskEl.classList.remove('paused')
-          this.diskEl.classList.add('playing')
-        }
-      })
+      if (this.playStatus === 'paused') {
+        this.needleEl.classList.remove('playing')
+        this.diskEl.classList.remove('playing')
+        this.diskEl.classList.add('paused')
+      } else if(this.playStatus === 'playing') {
+        this.needleEl.classList.add('playing')
+        this.diskEl.classList.remove('paused')
+        this.diskEl.classList.add('playing')
+      }
     },
     togglePlayStatus() {
       if(this.playStatus === 'paused') {
@@ -95,6 +78,7 @@ export default {
         this.playStatus = 'paused'
         this.adoEl.pause()
       }
+      console.log(this.playStatus);
       this.changeAnimation()
     },
     audioPlay() {
@@ -188,12 +172,10 @@ export default {
         this.$store.commit("changeLoading", true);
         // 去重处理 
         let playlist = this.playList
-
         let index = playlist.findIndex(item => String(item.id) === String(songId))
         // index !== -1 && playlist.splice(index, 1)
         if (index !== -1) {
           this.$store.commit('setPlayingIndex', index)
-          this.$store.commit('changeSongId', String(songId))
         } else {
           let songInfo = await songDetail(songId)
           // console.log(songInfo);
@@ -223,6 +205,7 @@ export default {
             });
           }
         }
+
         let bgImage = new Image()
         bgImage.src = this.bgImg
         // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
@@ -244,11 +227,10 @@ export default {
           }
           // 设置歌曲信息
           this.songInfo = this.playList[this.playingIndex]
-          this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
+          this.$refs.audioPlayer.setAttribute('src', this.songInfo.songUrl)
           this.diskEl.classList.remove('ready')
           this.togglePlayStatus()
           this.progressTime = 0
-          // this.$refs.audioPlayer.play()
         })
       } catch (error) {
         console.log(error);
@@ -265,10 +247,7 @@ export default {
   },
   watch: {
     songId(newV) {
-      // console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
-      // console.log('背景图', this.bgImg);
       // 如果歌曲换了audio是播放状态, 暂停播放
-      
       if (!this.adoEl.paused) {
         this.togglePlayStatus()
       }
