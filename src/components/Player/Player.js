@@ -202,32 +202,32 @@ export default {
           }
         }
         let bgImage = new Image()
-          bgImage.src = this.bgImg
-          // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
-          this.$nextTick(() => {
-            bgImage.onload = () => {
-              this.$refs.bgInnerEle.style.backgroundImage = `url(${bgImage.src})`
-              this.$refs.diskImg.src = bgImage.src
-            }
-            bgImage.onerror = () => {
-              this.$toast({
-                message: `加载背景图错误!`,
-                className: "toastT",
-                duration: 2000,
-                position: "bottom",
-              });
-              // 替换为默认背景
-              this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
-              this.$refs.diskImg.src = this.defaultBg
-            }
-            // 设置歌曲信息
-            this.songInfo = this.playList[this.playingIndex]
-            this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
-            this.diskEl.classList.remove('ready')
-            this.togglePlayStatus()
-            this.progressTime = 0
-            // this.$refs.audioPlayer.play()
-          })
+        bgImage.src = this.bgImg
+        // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
+        this.$nextTick(() => {
+          bgImage.onload = () => {
+            this.$refs.bgInnerEle.style.backgroundImage = `url(${bgImage.src})`
+            this.$refs.diskImg.src = bgImage.src
+          }
+          bgImage.onerror = () => {
+            this.$toast({
+              message: `加载背景图错误!`,
+              className: "toastT",
+              duration: 2000,
+              position: "bottom",
+            });
+            // 替换为默认背景
+            this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
+            this.$refs.diskImg.src = this.defaultBg
+          }
+          // 设置歌曲信息
+          this.songInfo = this.playList[this.playingIndex]
+          this.$refs.audioPlayer.setAttribute('src', this.playList[this.playingIndex].songUrl)
+          this.diskEl.classList.remove('ready')
+          this.togglePlayStatus()
+          this.progressTime = 0
+          // this.$refs.audioPlayer.play()
+        })
       } catch (error) {
         console.log(error);
         this.$toast({
@@ -236,8 +236,6 @@ export default {
           duration: 2000,
           position: "bottom",
         });
-        // this.$router.go(-1)
-        // this.$store.commit('changeShowPlayer', false)
       } finally {
         this.$store.commit("changeLoading", false);
       }
@@ -248,7 +246,7 @@ export default {
       // console.log('当前歌名:', this.playList[this.playingIndex].name, '\t指针:', this.playingIndex);
       // console.log('背景图', this.bgImg);
       // 如果歌曲换了audio是播放状态, 暂停播放
-      console.log(newV);
+      
       if (!this.adoEl.paused) {
         this.togglePlayStatus()
       }

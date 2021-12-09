@@ -10,13 +10,14 @@
       <div class="right">
         <i class="iconfont icon-xiazai1"></i>
         <i class="iconfont icon-jia1"></i>
-        <i class="iconfont icon-laji"></i>
+        <i class="iconfont icon-laji" @click="delAll"></i>
       </div>
     </div>
     <div class="list-box">
       <div class="list"
         v-for="(item, index) in playlist"
         :key="index"
+        @click="clickSong(item.id)"
       >
         <div class="info text-eli">
           <span v-if="songId == item.id" class="icon-paixingbang iconfont"></span>
@@ -52,6 +53,12 @@ export default {
       let playlist = this.playlist
       playlist.splice(index, 1)
       this.$store.commit('setPlayList', playlist)
+    },
+    delAll() {
+      this.$store.commit('setPlayList', [])
+    },
+    clickSong(id) {
+      this.$store.commit('changeSongId', String(id))
     }
   }
 }
