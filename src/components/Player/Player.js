@@ -120,14 +120,34 @@ export default {
         this.progressTime = this.currentTime / this.adoEl.duration * 100
       }
     },
-    audioError() {
-      this.$toast({
-        message: `无法播放这一首歌曲!`,
-        className: "playerToast",
-        duration: 2000,
-        position: "bottom",
-      });
-      // console.log('播放错误');
+    async audioError() {
+      console.error('播放错误, 歌曲地址过期了, 重新获取!');
+      try {
+        this.$store.commit("changeLoading", true);
+        if (this.errNum <= 1) {
+          let songInfoUrl = await songUrl(String(this.songId))
+          if (songInfoUrl.code === 200) {
+            let url = songInfoUrl.data[0].url
+            this.$refs.audioPlayer.setAttribute('src', url)
+            this.togglePlayStatus()
+            let playlist = this.playList
+            playlist[this.playingIndex].songUrl = url
+            this.$store.commit('setPlayList', playlist)
+          }
+          this.errNum++
+        } else {
+          this.$toast({
+            message: `无法播放这一首歌曲!`,
+            className: "playerToast",
+            duration: 2000,
+            position: "bottom",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.$store.commit("changeLoading", false);
+      }
     },
     audioWaiting() {
       // console.log('加载');
