@@ -1,12 +1,14 @@
 import logo from '@/assets/player/defaultBg.png'
-import { songDetail, songUrl } from '@/api/api'
+import { songDetail, songUrl, songLyric } from '@/api/api'
 import moment from "moment"
 
 export default {
   name: 'Player',
   data() {
     return {
+      // 默认背景图
       defaultBg: logo,
+      // 当前歌曲信息
       songInfo: {},
       // 播放状态
       playStatus: 'paused',
@@ -14,20 +16,26 @@ export default {
       adoReady: false,
       // 进度值
       progressTime: 0,
+      // 音量
+      volume: 50,
       // 进度条激活部分的颜色
       activeColor: 'hsl(0deg 0% 90% / 50%)',
       // 进度条未激活的颜色
       inActiveColor: 'rgba(255, 255, 255, .2)',
+      volumeActiveColor: 'rgba(255, 255, 255, .6)',
+      volumeInActiveColor: 'rgba(255, 255, 255, .4)',
       // 当前播放时间
       currentTime: 0,
       // 格式化后
-      fCurrentTime: '00:00',
+      // fCurrentTime: '00:00',
       // 全曲时间
       durationTime: '00:00',
       // 是否按住了进度条
       isDrag: false,
       // 重新获取歌曲地址次数
       errNum: 0,
+      // 默认碟子界面
+      playerImg: true,
     }
   },
   computed: {
@@ -46,57 +54,89 @@ export default {
     bgImg() {
       return this.playList[this.playingIndex].bgImg
     },
+    durationT() {
+      return this.songInfo.duration
+    },
+    fCurrentTime() {
+      return this.formatTime(this.currentTime)
+    },
   },
   mounted() {
+    // 默认音量 80%
+    this.volume = Number(window.localStorage.getItem('music_volume')) || 80
+    // console.log('音量', this.volume);
     this.adoEl = this.$refs.audioPlayer
+    this.adoEl.volume = this.volume / 100
     this.needleEl = this.$refs.needle
     this.diskEl = this.$refs.disk
     this.$store.commit('setAdoEl', this.adoEl)
+    // 播放器组件页的过渡时间
+    // this.pageTransTime = 300
+    // 指针过渡动画的时间
+    this.duration = document.defaultView.getComputedStyle(this.needleEl, null).transitionDuration
+    this.duration = parseFloat(this.duration) * 1000
   },
   methods: {
     hidePlayer() {
-      // this.$store.commit('changeShowPlayer', false)
       this.$router.go(-1)
     },
-    // 改变播放/暂停动画状态
-    changeAnimation() {
-      if (this.playStatus === 'paused') {
-        this.needleEl.classList.remove('playing')
-        this.diskEl.classList.remove('playing')
-        this.diskEl.classList.add('paused')
-      } else if(this.playStatus === 'playing') {
-        this.needleEl.classList.add('playing')
-        this.diskEl.classList.remove('paused')
-        this.diskEl.classList.add('playing')
-      }
+    // 拖动进度变化时
+    progressChange() {
+      this.isDrag = true
+      this.currentTime = this.progressTime / 100 * this.adoEl.duration
     },
-    togglePlayStatus() {
-      if(this.playStatus === 'paused') {
-        this.playStatus = 'playing'
+    // 进度变化且结束拖动后触发
+    progressChangeEnd() {
+      this.adoEl.currentTime = this.currentTime
+      // 如果是暂停状态就继续开始播放
+      if (this.adoEl.paused) {
         this.adoEl.play()
-      } else if(this.playStatus === 'playing') {
-        this.playStatus = 'paused'
+      }
+      this.isDrag = false
+    },
+    volumeChange() {
+      this.$nextTick(() => {
+        this.adoEl.volume = this.volume / 100
+        // console.log('设置音量', this.volume);
+        this.$toast({
+          message: `音量: ${this.volume}%`,
+          className: "playerToast", duration: 500, position: "bottom",
+        });
+        window.localStorage.setItem('music_volume', this.volume)
+      })
+    },
+    // 切换碟子界面/歌词界面
+    togglePlayerImg() {
+      this.playerImg = !this.playerImg
+    },
+    togglePlay() {
+      if (this.adoEl.paused) {
+        this.adoEl.play()
+      } else {
         this.adoEl.pause()
       }
-      console.log(this.playStatus);
-      this.changeAnimation()
-    },
-    audioPlay() {
-      // console.log('播放');
-      this.playStatus = 'playing'
     },
     audioCanplay() {
-      // console.log('可以开始播放');
       this.adoReady = true
       this.durationTime = this.formatTime(this.adoEl.duration)
     },
+    audioPlay() {
+      this.playStatus = 'playing'
+    },
     audioPause() {
-      // console.log('暂停');
       this.playStatus = 'paused'
     },
+    audioError() {
+      this.$toast({
+        message: `播放错误!`,
+        className: "playerToast", duration: 2000, position: "bottom",
+      });
+    },
+    audioWaiting() {
+
+    },
     audioEnded() {
-      // console.log('播完');
-      this.changeAnimation()
+
     },
     audioTimeUpdate() {
       if (!this.isDrag ) {
@@ -104,41 +144,14 @@ export default {
         this.progressTime = this.currentTime / this.adoEl.duration * 100
       }
     },
-    async audioError() {
-      console.error('播放错误, 歌曲地址过期了, 重新获取!');
-      try {
-        this.$store.commit("changeLoading", true);
-        if (this.errNum <= 1) {
-          let songInfoUrl = await songUrl(String(this.songId))
-          if (songInfoUrl.code === 200) {
-            let url = songInfoUrl.data[0].url
-            this.$refs.audioPlayer.setAttribute('src', url)
-            this.togglePlayStatus()
-            let playlist = this.playList
-            playlist[this.playingIndex].songUrl = url
-            this.$store.commit('setPlayList', playlist)
-          }
-          this.errNum++
-        } else {
-          this.$toast({
-            message: `无法播放这一首歌曲!`,
-            className: "playerToast",
-            duration: 2000,
-            position: "bottom",
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.$store.commit("changeLoading", false);
-      }
+    // 显示播放列表
+    showPlayList() {
+      this.$store.commit('changeShowPlayList', true)
     },
-    audioWaiting() {
-      // console.log('加载');
-    },
+    // 格式化时间
     formatTime(time) {
       // 如果音频时长超过1小时, 格式
-      if (this.adoEl.duration >= 60 * 60) {
+      if (this.durationT >= 60 * 60) {
         let duration = moment.duration(time * 1000)
         let h = duration.hours() >= 10 ? duration.hours() : '0'+duration.hours()
         let m = duration.minutes() >= 10 ? duration.minutes() : '0'+duration.minutes()
@@ -149,120 +162,107 @@ export default {
         return moment(time * 1000).format('mm:ss')
       }
     },
-    // 进度变化
-    progressChange() {
-      // console.log(this.progressTime / 100 * this.adoEl.duration);
-      this.isDrag = true
-      this.currentTime = this.progressTime / 100 * this.adoEl.duration
-    },
-    // 进度变化且结束拖动后触发
-    progressChangeEnd() {
-      this.adoEl.currentTime = this.currentTime
-      // 如果是暂停状态就继续开始播放
-      if (this.adoEl.paused) {
-        this.togglePlayStatus()
-      }
-      this.isDrag = false
-    },
-    showPlayList() {
-      this.$store.commit('changeShowPlayList', true)
-    },
-    async setSongInfo(songId) {
+    // 歌曲id, 改变触发
+    async songIdChange(newId) {
       try {
         this.$store.commit("changeLoading", true);
+
+        // 切换另一首, 如果歌曲在播放时, 暂停播放
+        if (!this.adoEl.paused) {
+          this.adoEl.pause()
+        }
+
+        // id 对应的 音乐url
+        let url = ''
         // 去重处理 
         let playlist = this.playList
-        let index = playlist.findIndex(item => String(item.id) === String(songId))
-        // index !== -1 && playlist.splice(index, 1)
+        let index = playlist.findIndex(item => String(item.id) === String(newId))
+        // 如果在播放列表已经存在
         if (index !== -1) {
           this.$store.commit('setPlayingIndex', index)
         } else {
-          let songInfo = await songDetail(songId)
-          // console.log(songInfo);
+          // 没有就保存起来
+          let songInfo = await songDetail(newId)
           if (songInfo.code === 200) {
-            let songInfoUrl = await songUrl(String(songId))
-            // console.log(songInfoUrl);
-            if (songInfoUrl.code === 200) {
-              // 添加到播放器列表末尾
-              playlist.push({
-                id: songInfo.songs[0].id,
-                name: songInfo.songs[0].name,
-                artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
-                bgImg: songInfo.songs[0].al.picUrl+'?param=400y400',
-                songUrl: songInfoUrl.data[0].url,
-              })
-              this.$store.commit('setPlayList', playlist)
-              this.$store.commit('setPlayingIndex', playlist.length - 1)
-              this.$store.commit('changeSongId', String(songId))
-              // console.log(this.playList);
-            }
+            playlist.push({
+              id: songInfo.songs[0].id,
+              name: songInfo.songs[0].name,
+              artist: songInfo.songs[0].ar.map(item => item.name).join('/'),
+              duration: parseInt(songInfo.songs[0].dt / 1000),
+              bgImg: songInfo.songs[0].al.picUrl+'?param=400y400',
+            })
+            this.$store.commit('setPlayList', playlist)
+            this.$store.commit('setPlayingIndex', playlist.length - 1)
           } else {
             this.$toast({
-              message: `获取歌曲信息错误! 无法播放!`,
-              className: "toastT",
-              duration: 2000,
-              position: "bottom",
+              message: `歌曲信息请求错误, 无法保存到播放列表!`,
+              className: "playerToast", duration: 2000, position: "bottom",
             });
           }
         }
 
-        let bgImage = new Image()
-        bgImage.src = this.bgImg
-        // 可以让背景图变换的比较平滑, 但可能会因为图片较大, 加载慢看起来像反应慢
+        // 歌曲url不是固定的, 不好直接保存到播放列表, 每次听重新请求
+        let songUrlData = await songUrl(newId)
+        if (songUrlData.code === 200) {
+          url = songUrlData.data[0].url
+        } else {
+          this.$toast({
+            message: `获取音乐url出错!`,
+            className: "playerToast", duration: 2000, position: "bottom",
+          });
+        }
+
+        this.songInfo = this.playList[this.playingIndex]
+        this.adoEl.setAttribute('src', url)
+        this.diskEl.classList.remove('ready')
+        
+        // 让指针有个过渡时间
+        setTimeout(() => {
+          this.adoEl.play()
+        }, this.duration)
+        // }, this.duration + this.pageTransTime)
+
+        // 获取歌词
+        let lyric = await songLyric(newId)
+        console.log(lyric);
+
         this.$nextTick(() => {
+          // 播放器背景图
+          let bgImage = new Image()
+          bgImage.src = this.bgImg
           bgImage.onload = () => {
+            // 表示图片加载完成了
             this.$refs.bgInnerEle.style.backgroundImage = `url(${bgImage.src})`
             this.$refs.diskImg.src = bgImage.src
           }
           bgImage.onerror = () => {
             this.$toast({
-              message: `加载背景图错误!`,
-              className: "toastT",
-              duration: 2000,
-              position: "bottom",
+              message: `背景图加载错误!`,
+              className: "playerToast", duration: 2000, position: "bottom",
             });
             // 替换为默认背景
             this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
             this.$refs.diskImg.src = this.defaultBg
           }
-          // 设置歌曲信息
-          this.songInfo = this.playList[this.playingIndex]
-          this.$refs.audioPlayer.setAttribute('src', this.songInfo.songUrl)
-          this.diskEl.classList.remove('ready')
-          this.togglePlayStatus()
-          this.progressTime = 0
         })
+        
       } catch (error) {
         console.log(error);
-        this.$toast({
-          message: `获取歌曲信息错误! 无法播放!`,
-          className: "toastT",
-          duration: 2000,
-          position: "bottom",
-        });
       } finally {
         this.$store.commit("changeLoading", false);
       }
     }
   },
   watch: {
-    songId(newV) {
-      // 如果歌曲换了audio是播放状态, 暂停播放
-      if (!this.adoEl.paused) {
-        this.togglePlayStatus()
+    songId(newId) {
+      this.songIdChange(newId)
+    },
+    playStatus(newV) {
+      if (newV === 'playing') {
+        this.needleEl.classList.add('playing')
+      } else {
+        this.needleEl.classList.remove('playing')
       }
-
-      this.setSongInfo(newV)
-      
-    },
-    playList(newV) {
-      // console.log('播放器列表', this.playList);
-    },
-    playingIndex(newV) {
-      // console.log('指针:', newV);
-    },
-    currentTime(newV) {
-      this.fCurrentTime = this.formatTime(newV)
     }
-  },
+  }
 }

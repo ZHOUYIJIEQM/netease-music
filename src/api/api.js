@@ -381,4 +381,10 @@ export function vdoRcmd(offset) {
   return get(`/video/timeline/recommend?offset=${offset}`)
 }
 
-
+/**
+ * 获取歌词
+ * @param {String} id 歌曲id
+ */
+export function songLyric(id) {
+  return get(`/lyric?id=${id}`)
+}

@@ -22,7 +22,7 @@ $topHeight: 2.2rem;
       bottom: 0;
       left: 0;
     }
-    @include gaussBlur(.4rem, .6, 1rem);
+    @include gaussBlur(.3rem, .6, 1rem);
     .daily-info {
       position: absolute;
       width: 100%;

@@ -144,7 +144,7 @@ $playlistBarH: .4rem;
           width: 100vw;
         }
       }
-      @include gaussBlur(.4rem, .6, 1rem);
+      @include gaussBlur(.3rem, .6, 1rem);
     }
     .playlist-bar {
       will-change: auto;

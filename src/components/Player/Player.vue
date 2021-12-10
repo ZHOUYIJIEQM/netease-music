@@ -38,29 +38,49 @@
           <i class="iconfont icon-fenxiang"></i>
         </div>
         <!-- 中部 -->
-        <div class="middle-box">
-          <div class="needle-box">
-            <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
+          <div class="middle-box" @click="togglePlayerImg">
+            <transition-group name="fadeIn" mode="out-in">
+              <div class="player-img" key="img" v-show="playerImg">
+                <div class="top">
+                  <div class="needle-box">
+                    <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
+                  </div>
+                  <div class="disk-box" ref="disk"
+                    :class="[playStatus === 'paused' ? 'paused' : 'playing', {'ready': adoReady}]"
+                  >
+                    <img :src="defaultBg" ref="diskImg" alt="">
+                  </div>
+                </div>
+                <!-- 收藏 下载 铃声 评论 更多 -->
+                <div class="song-bar">
+                  <!-- 空心 -->
+                  <i class="iconfont icon-icon-test"></i>
+                  <!-- 实心 -->
+                  <!-- <i class="iconfont icon-aixin"></i> -->
+                  <i class="iconfont icon-xiazai1"></i>
+                  <i class="iconfont icon-lingsheng"></i>
+                  <i class="iconfont icon-pinglun2"></i>
+                  <i class="iconfont icon-gengduoxiao"></i>
+                </div>
+              </div>
+              <div class="player-lyric" key="lyric" v-show="!playerImg">
+                <div class="volume-box">
+                  <i class="iconfont icon-yinlianglabashengyin"></i>
+                  <van-slider 
+                    class="volume-slider"
+                    v-model="volume"
+                    bar-height="2px"
+                    button-size=".08rem"
+                    :active-color="volumeActiveColor"
+                    :inactive-color="volumeInActiveColor"
+                    @input="volumeChange"
+                  />
+                </div>
+              </div>
+            </transition-group>
           </div>
-          <div class="disk-box" ref="disk"
-            :class="[playStatus === 'paused' ? 'pause' : 'playing', {'ready': adoReady}]"
-          >
-            <img :src="defaultBg" ref="diskImg" alt="">
-          </div>
-        </div>
         <!-- 底部 -->
         <div class="bottom-box">
-          <!-- 收藏 下载 铃声 评论 更多 -->
-          <div class="song-bar">
-            <!-- 空心 -->
-            <i class="iconfont icon-icon-test"></i>
-            <!-- 实心 -->
-            <!-- <i class="iconfont icon-aixin"></i> -->
-            <i class="iconfont icon-xiazai1"></i>
-            <i class="iconfont icon-lingsheng"></i>
-            <i class="iconfont icon-pinglun2"></i>
-            <i class="iconfont icon-gengduoxiao"></i>
-          </div>
           <!-- 进度条 -->
           <div class="progress-box">
             <!-- 当前时间 -->
@@ -82,7 +102,7 @@
           <div class="control-bar">
             <i class="iconfont icon-xunhuan"></i>
             <i class="iconfont icon-shangyishou"></i>
-            <div class="status" @click="togglePlayStatus">
+            <div class="status" @click="togglePlay">
               <i class="iconfont icon-bofang2" v-if="playStatus==='paused'"></i>
               <i class="iconfont icon-weibiaoti519" v-else></i>
             </div>
