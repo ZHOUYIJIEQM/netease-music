@@ -303,6 +303,10 @@
           border-radius: 50%;
           border: 1px solid #fff;
           padding: .12rem;
+          transition: all .1s;
+          &:active {
+            box-shadow: 0 0 .03rem #fff;
+          }
           .iconfont {
             font-size: .24rem;
             // width: .24rem;
@@ -311,6 +315,10 @@
         }
         .iconfont {
           font-size: .26rem;
+          transition: all .1s;
+          &:active {
+            text-shadow: 0 0 .03rem #fff;
+          }
         }
         .icon-bofang2 {
           color: #fff;

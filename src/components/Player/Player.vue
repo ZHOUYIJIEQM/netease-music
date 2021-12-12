@@ -48,11 +48,11 @@
                   <div class="disk-box" ref="disk"
                     :class="[playStatus === 'paused' ? 'paused' : 'playing', {'ready': adoReady}]"
                   >
-                    <img :src="defaultBg" ref="diskImg" alt="">
+                    <img ref="diskImg" alt="">
                   </div>
                 </div>
                 <!-- 收藏 下载 铃声 评论 更多 -->
-                <div class="song-bar">
+                <div class="song-bar" @click.stop="clickSong">
                   <!-- 空心 -->
                   <i class="iconfont icon-icon-test"></i>
                   <!-- 实心 -->
@@ -76,6 +76,7 @@
                     @input="volumeChange"
                   />
                 </div>
+
               </div>
             </transition-group>
           </div>
@@ -101,12 +102,12 @@
           <!-- 歌曲控制 -->
           <div class="control-bar">
             <i class="iconfont icon-xunhuan"></i>
-            <i class="iconfont icon-shangyishou"></i>
+            <i class="iconfont icon-shangyishou" @click="preSong"></i>
             <div class="status" @click="togglePlay">
               <i class="iconfont icon-bofang2" v-if="playStatus==='paused'"></i>
               <i class="iconfont icon-weibiaoti519" v-else></i>
             </div>
-            <i class="iconfont icon-shangyishoushangyige"></i>
+            <i class="iconfont icon-shangyishoushangyige" @click="nextSong"></i>
             <i class="iconfont icon-PlayListbofangliebiao" @click="showPlayList"></i>
           </div>
         </div>

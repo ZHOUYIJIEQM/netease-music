@@ -73,10 +73,15 @@ export default {
     },
   },
   watch: {
-    showPlayList(newV) {
-      if (newV) {
-        this.$refs.listBox.scrollTop = this.$refs.song[this.playingIndex].offsetTop
-      }
+    showPlayList: {
+      handler: function (newV) {
+        if (newV) {
+          this.$nextTick(() => {
+            this.$refs.listBox.scrollTop = this.$refs.song[this.playingIndex].offsetTop
+          })
+        }
+      },
+      immediate: true
     }
   }
 }

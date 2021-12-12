@@ -94,14 +94,12 @@ export default {
       }
       this.isDrag = false
     },
+    // 音量改变
     volumeChange() {
       this.$nextTick(() => {
         this.adoEl.volume = this.volume / 100
         // console.log('设置音量', this.volume);
-        this.$toast({
-          message: `音量: ${this.volume}%`,
-          className: "playerToast", duration: 500, position: "bottom",
-        });
+        this.toast(`音量: ${this.volume}%`)
         window.localStorage.setItem('music_volume', this.volume)
       })
     },
@@ -109,12 +107,39 @@ export default {
     togglePlayerImg() {
       this.playerImg = !this.playerImg
     },
+    // 切换播放状态
     togglePlay() {
       if (this.adoEl.paused) {
         this.adoEl.play()
       } else {
         this.adoEl.pause()
       }
+    },
+    // 提示未开发
+    clickSong() {
+      this.toast('未开发!')
+    },
+    // 上一曲
+    preSong() {
+      console.log('第几首:', this.playingIndex);
+      if (this.playingIndex > 0) {
+        this.$store.commit('changeSongId', String(this.playList[this.playingIndex - 1].id))
+      }
+      // todo: 如果是列表循环, 跳转到最后一首
+      if (this.playingIndex === 0) {
+        this.$store.commit('changeSongId', String(this.playList.slice(-1)[0].id))
+      }
+      this.toast('上一曲')
+    },
+    // 下一曲
+    nextSong() {
+      if (this.playingIndex < this.playList.length - 1) {
+        this.$store.commit('changeSongId', String(this.playList[this.playingIndex + 1].id))
+      }
+      if (this.playingIndex >= this.playList.length - 1) {
+        this.$store.commit('changeSongId', String(this.playList[0].id))
+      }
+      this.toast(`下一曲`)
     },
     audioCanplay() {
       this.adoReady = true
@@ -127,10 +152,7 @@ export default {
       this.playStatus = 'paused'
     },
     audioError() {
-      this.$toast({
-        message: `播放错误!`,
-        className: "playerToast", duration: 2000, position: "bottom",
-      });
+      this.toast('播放错误!', 2000)
     },
     audioWaiting() {
 
@@ -161,6 +183,13 @@ export default {
         // 分:秒格式
         return moment(time * 1000).format('mm:ss')
       }
+    },
+    // 提示
+    toast(msg, durationT = 300) {
+      this.$toast({
+        message: msg,
+        className: "playerToast", duration: durationT, position: "bottom",
+      });
     },
     // 歌曲id, 改变触发
     async songIdChange(newId) {
@@ -194,10 +223,7 @@ export default {
             this.$store.commit('setPlayList', playlist)
             this.$store.commit('setPlayingIndex', playlist.length - 1)
           } else {
-            this.$toast({
-              message: `歌曲信息请求错误, 无法保存到播放列表!`,
-              className: "playerToast", duration: 2000, position: "bottom",
-            });
+            this.toast(`歌曲信息请求错误, 无法保存到播放列表!`, 2000)
           }
         }
 
@@ -206,10 +232,7 @@ export default {
         if (songUrlData.code === 200) {
           url = songUrlData.data[0].url
         } else {
-          this.$toast({
-            message: `获取音乐url出错!`,
-            className: "playerToast", duration: 2000, position: "bottom",
-          });
+          this.toast(`获取音乐url出错!`, 2000)
         }
 
         this.songInfo = this.playList[this.playingIndex]
@@ -236,13 +259,10 @@ export default {
             this.$refs.diskImg.src = bgImage.src
           }
           bgImage.onerror = () => {
-            this.$toast({
-              message: `背景图加载错误!`,
-              className: "playerToast", duration: 2000, position: "bottom",
-            });
+            this.toast(`背景图加载错误!`, 2000)
             // 替换为默认背景
             this.$refs.bgInnerEle.style.backgroundImage = `url(${this.defaultBg})`
-            this.$refs.diskImg.src = this.defaultBg
+            // this.$refs.diskImg.src = this.defaultBg
           }
         })
         
@@ -263,6 +283,9 @@ export default {
       } else {
         this.needleEl.classList.remove('playing')
       }
+    },
+    currentTime(newV) {
+      // console.log('播放时间', newV);
     }
   }
 }
