@@ -12,7 +12,7 @@
   opacity: 0;
 }
 .fadeIn-enter-active, .fadeIn-leave-active {
-  transition: all .35s;
+  transition: all .25s;
 }
 
 .player-comp {
@@ -72,13 +72,13 @@
         position: absolute;
         top: 0;
         width: 100%;
-      }
-      
-      .player-img {
         height: 100%;
         @include df(column);
         position: relative;
-        
+        overflow: hidden;
+      }
+      
+      .player-img {
         .top {
           flex: 1;
           @include df();
@@ -253,6 +253,7 @@
 
       .player-lyric {
         .volume-box {
+          flex-shrink: 0;
           @include df();
           align-items: center;
           padding-right: .38rem;
@@ -260,6 +261,19 @@
             padding: 0 .22rem;
             font-size: .16rem;
             color: rgba(255, 255, 255, 0.7);
+          }
+        }
+        .lyric-box {
+          color: rgba(255, 255, 255, 0.7);
+          overflow: scroll;
+          position: relative;
+          margin: .25rem 0;
+          .lyric-text {
+            padding: 3rem 0;
+          }
+          p {
+            text-align: center;
+            padding: .06rem 0;
           }
         }
       }

@@ -39,7 +39,7 @@
         </div>
         <!-- 中部 -->
           <div class="middle-box" @click="togglePlayerImg">
-            <transition-group name="fadeIn" mode="out-in">
+            <transition-group name="fadeIn" mode="in-out">
               <div class="player-img" key="img" v-show="playerImg">
                 <div class="top">
                   <div class="needle-box">
@@ -76,7 +76,11 @@
                     @input="volumeChange"
                   />
                 </div>
-
+                <div class="lyric-box">
+                  <div class="lyric-text">
+                    <p v-for="(item, index) in lyricText" :key="index">{{item.text}}</p>
+                  </div>
+                </div>
               </div>
             </transition-group>
           </div>

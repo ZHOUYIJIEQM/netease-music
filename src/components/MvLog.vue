@@ -3,7 +3,6 @@
   <div class="mvlog-comp">
     <!-- @click="clickMvLog(mvLogData.id)" -->
     <div class="mv-box">
-      <img ref="coverUrl" v-lazy="mvLogData.img" alt="" />
       <video 
         ref="mlogVideo" 
         @click="playVideo"
@@ -11,6 +10,7 @@
         @pause="vdoPause"
         @error="vdoError"
       ></video>
+      <img ref="coverUrl" v-lazy="mvLogData.img" alt="" />
       <!-- 右上角的数据 -->
       <span class="tr-text" v-if="mvLogData.playCount">
         <span class="iconfont icon-bofangsanjiaoxing"></span>

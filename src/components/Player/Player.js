@@ -36,6 +36,8 @@ export default {
       errNum: 0,
       // 默认碟子界面
       playerImg: true,
+      // 歌词
+      lyricText: []
     }
   },
   computed: {
@@ -77,6 +79,7 @@ export default {
     this.duration = parseFloat(this.duration) * 1000
   },
   methods: {
+    // 隐藏
     hidePlayer() {
       this.$router.go(-1)
     },
@@ -140,6 +143,31 @@ export default {
         this.$store.commit('changeSongId', String(this.playList[0].id))
       }
       this.toast(`下一曲`)
+    },
+    /**
+     * 处理歌词
+     * @param {String} text 歌词字符串
+     */
+    handlerLyric(text) {
+      let lyricArr = text.split('\n')
+      let resArr = []
+      lyricArr.forEach((item, index) => {
+        try {
+          let patt = /^\[(\d*:\d*.\d*)\](.*)$/g
+          let res = patt.exec(item)
+          if (res) {
+            let time = res[1].split(':')
+            let m = +time[0] * 60
+            let s = +time[1].split('.')[0]
+            let ms = time[1].split('.').slice(-1)[0].slice(0, 2)
+            time = `${m+s}.${ms}`
+            resArr.push({time: parseFloat(time), text: res[2]})
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      return resArr
     },
     audioCanplay() {
       this.adoReady = true
@@ -245,10 +273,6 @@ export default {
         }, this.duration)
         // }, this.duration + this.pageTransTime)
 
-        // 获取歌词
-        let lyric = await songLyric(newId)
-        console.log(lyric);
-
         this.$nextTick(() => {
           // 播放器背景图
           let bgImage = new Image()
@@ -265,6 +289,14 @@ export default {
             // this.$refs.diskImg.src = this.defaultBg
           }
         })
+
+        // 获取歌词
+        let lyricData = await songLyric(newId)
+        console.log(lyricData);
+        if (lyricData.code === 200) {
+          this.lyricText = this.handlerLyric(lyricData.lrc.lyric)
+        }
+
         
       } catch (error) {
         console.log(error);
