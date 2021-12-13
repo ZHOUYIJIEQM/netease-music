@@ -81,14 +81,19 @@
                   ref="lyricBox" 
                   @touchstart="lyricBoxTouchS"
                   @touchend="lyricBoxTouchE"
+                  @scroll="lyricBoxScroll"
                 >
                   <div class="lyric-text" v-if="lyricText.length">
-                    <p 
+                    <div 
+                      class="line"
                       ref="lyricText" 
                       v-for="(item, index) in lyricText" 
                       :key="index"
                       :class="{'active': lyricActiveIndex === index}"
-                    >{{item.text}}</p>
+                    >
+                      <p>{{item.text}}</p>
+                      <p v-if="item.transText">{{item.transText}}</p>
+                    </div>
                   </div>
                   <div class="no-lyric" v-else>暂无歌词!</div>
                 </div>

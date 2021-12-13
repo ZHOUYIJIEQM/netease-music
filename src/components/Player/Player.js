@@ -42,6 +42,8 @@ export default {
       lyricTimer: null,
       // 滚动的活动歌词
       lyricActiveIndex: 0,
+      // 标记歌词能否自动滚动
+      lyricCanScroll: true,
     }
   },
   computed: {
@@ -66,24 +68,31 @@ export default {
     fCurrentTime() {
       return this.formatTime(this.currentTime)
     },
+    lyricRollIndex() {
+      return this.lyricActiveIndex > 0 ? this.lyricActiveIndex - 1 : 0
+    }
   },
   mounted() {
-    // 默认音量 80%
-    this.volume = Number(window.localStorage.getItem('music_volume')) || 80
-    // console.log('音量', this.volume);
-    this.adoEl = this.$refs.audioPlayer
-    this.adoEl.volume = this.volume / 100
-    this.needleEl = this.$refs.needle
-    this.diskEl = this.$refs.disk
-    this.lyricBoxEl = this.$refs.lyricBox
-    this.$store.commit('setAdoEl', this.adoEl)
-    // 播放器组件页的过渡时间
-    // this.pageTransTime = 300
-    // 指针过渡动画的时间
-    this.duration = document.defaultView.getComputedStyle(this.needleEl, null).transitionDuration
-    this.duration = parseFloat(this.duration) * 1000
+    this.initSet()
   },
   methods: {
+    // 设置一些初始化
+    initSet() {
+      // 默认音量 80%
+      this.volume = Number(window.localStorage.getItem('music_volume')) || 80
+      // console.log('音量', this.volume);
+      this.adoEl = this.$refs.audioPlayer
+      this.adoEl.volume = this.volume / 100
+      this.needleEl = this.$refs.needle
+      this.diskEl = this.$refs.disk
+      this.lyricBoxEl = this.$refs.lyricBox
+      this.$store.commit('setAdoEl', this.adoEl)
+      // 播放器组件页的过渡时间
+      // this.pageTransTime = 300
+      // 指针过渡动画的时间
+      this.duration = document.defaultView.getComputedStyle(this.needleEl, null).transitionDuration
+      this.duration = parseFloat(this.duration) * 1000
+    },
     // 隐藏
     hidePlayer() {
       this.$router.go(-1)
@@ -91,7 +100,19 @@ export default {
     // 拖动进度变化时
     progressChange() {
       this.isDrag = true
+      clearInterval(this.lyricTimer)
       this.currentTime = this.progressTime / 100 * this.adoEl.duration
+      if (this.lyricText.length > 1) {
+        this.lyricText.forEach((item, index) => {
+          if (this.currentTime >= item.time && this.currentTime < this.lyricText[index+1].time) {
+            this.lyricActiveIndex = index + 1
+            console.log(index, this.lyricText[index].time, this.lyricText[index].text);
+            return
+          }
+        })
+      } else {
+        this.lyricActiveIndex = 0
+      }
     },
     // 进度变化且结束拖动后触发
     progressChangeEnd() {
@@ -100,6 +121,8 @@ export default {
       if (this.adoEl.paused) {
         this.adoEl.play()
       }
+      // 继续使用歌词定时器
+      this.lyricRollTimer()
       this.isDrag = false
     },
     // 音量改变
@@ -150,32 +173,60 @@ export default {
       this.toast(`下一曲`)
     },
     /**
-     * 处理歌词
-     * @param {String} text 歌词字符串
+     * 格式化歌词
+     * @param lyricData 歌词对象 {text: '歌词', transText: '翻译歌词'}
      */
-    handlerLyric(text) {
-      let lyricArr = text.split('\n')
+    formatLyric(lyricData) {
       let resArr = []
+      let textArr = lyricData.text.split('\n')
+      // 提取
+      textArr = this.extractLyric(textArr)
+      let transTextArr = []
+      // 如果存在翻译歌词, 就提取
+      if (lyricData.transText && lyricData.transText.length) {
+        transTextArr = lyricData.transText.split('\n')
+        transTextArr = this.extractLyric(transTextArr)
+      }
+      
+      // 遍历可枚举属性
+      let textArrKeys = Object.keys(textArr)
+      textArrKeys.forEach((item, index) => {
+        let lyr = {time: +item, text: textArr[item]}
+        // 99:00.00
+        if (item == 99 * 60) {
+          lyr.time = textArrKeys[index-1] + 1
+        }
+        // 可枚举属性长度, 判断transTextArr是否空对象
+        if (Object.keys(transTextArr).length) {
+          transTextArr[item] && (lyr.transText = transTextArr[item])
+        }
+        resArr.push(lyr)
+      })
+
+      return resArr
+    },
+    /**
+     * 提取歌词 返回对象
+     * @param lyricArr 歌词数组
+     */
+    extractLyric(lyricArr) {
+      let resObj = {}
+      let patt = /^\[(\d*:\d*.\d*)\]\s*(.*)$/
       lyricArr.forEach((item, index) => {
-        try {
-          let patt = /^\[(\d*:\d*.\d*)\](.*)$/g
-          let res = patt.exec(item)
-          if (res) {
-            let time = res[1].split(':')
-            // 分
-            let m = +time[0] * 60
-            // 秒
-            let s = +time[1].split('.')[0]
-            // 毫秒保留小数点1位
-            let ms = time[1].split('.').slice(-1)[0].slice(0, 1)
-            time = `${m+s}.${ms}`
-            resArr.push({time, text: res[2]})
-          }
-        } catch (error) {
-          console.log(error);
+        let res = patt.exec(item)
+        if (res) {
+          let time = res[1].split(":");
+          // 分
+          let m = +time[0] * 60;
+          // 秒
+          let s = +time[1].split(".")[0];
+          // 毫秒保留小数点2位
+          let ms = time[1].split(".").slice(-1)[0].slice(0, 2);
+          time = `${m + s}.${ms}`;
+          resObj[time] = res[2]
         }
       })
-      return resArr
+      return resObj
     },
     audioCanplay() {
       this.adoReady = true
@@ -188,7 +239,7 @@ export default {
       this.playStatus = 'paused'
     },
     audioError() {
-      this.toast('播放错误!', 2000)
+      this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
     },
     audioWaiting() {
 
@@ -305,7 +356,15 @@ export default {
         let lyricData = await songLyric(newId)
         console.log(lyricData);
         if (lyricData.code === 200) {
-          this.lyricText = this.handlerLyric(lyricData.lrc.lyric)
+          let lyrObj = { text: lyricData.lrc.lyric }
+          if (lyricData.tlyric && lyricData.tlyric.lyric) {
+            lyrObj.transText = lyricData.tlyric.lyric
+          }
+          console.log(lyrObj);
+          this.lyricText = this.formatLyric(lyrObj)
+          this.$nextTick(() => {
+            this.lyricLineRoll(this.lyricRollIndex)
+          })
           // this.lyricText.forEach(item => {
           //   console.log(JSON.stringify(item));
           // })
@@ -313,7 +372,6 @@ export default {
 
         // todo: 歌词滚动 (保持滚动位置在容器中部) 对应歌词 (index), 
         // lyricBox.scrollTop = lyricText[index].offsetTop - lyricBox.offsetHeight / 2
-
         
       } catch (error) {
         console.log(error);
@@ -323,32 +381,63 @@ export default {
     },
     // 歌词滚动定时器
     lyricRollTimer() {
-      this.handlerLyricRoll()
       this.lyricTimer && clearInterval(this.lyricTimer)
-      // 设置歌词定时器, 100ms触发一次
-      this.lyricTimer = setInterval(this.handlerLyricRoll, 100)
+      // 设置歌词定时器, 10ms触发一次 精确到小数点后2位
+      this.lyricTimer = setInterval(this.handlerLyricRoll, 10)
     },
-    // 处理滚动
+    // todo: 活动歌词index 与 滚动需分开处理  处理滚动 
     handlerLyricRoll() {
       if (this.lyricText.length) {
         // 只精确到小数点后1位
-        let currentT = this.adoEl.currentTime.toFixed(1)
-        let index = this.lyricText.findIndex(item => item.time === currentT)
-        if (index !== -1 && this.lyricText[index].text.length) {
-          this.lyricActiveIndex = index
+        let currentT = this.adoEl.currentTime.toFixed(2)
+
+        // 判断 currentTime 有没有在 lyricText 数组里, 找出 index
+        // let index = this.lyricText.findIndex(item => item.time === currentT)
+        // console.log(currentT, this.lyricText[index].text);
+        // if (index !== -1 && this.lyricText[index].text.length) {
+        //   this.lyricActiveIndex = index
+        // }
+        // 滚动居中
+        // this.lyricBoxEl.scrollTop = this.$refs.lyricText[this.lyricActiveIndex].offsetTop - this.lyricBoxEl.offsetHeight / 2
+        
+        // 播放时间 >= 歌词时间, 就加上去
+        // console.log(this.lyricActiveIndex, this.lyricText[this.lyricActiveIndex].time, this.adoEl.currentTime);
+        console.log('活动', this.lyricActiveIndex, this.lyricText[this.lyricActiveIndex].text);
+        if (this.lyricText[this.lyricActiveIndex].time <= this.adoEl.currentTime) {
+          // console.log(this.lyricText[this.lyricActiveIndex].text);
+          this.lyricActiveIndex++
+          if (this.lyricActiveIndex >= this.lyricText.length) {
+            this.lyricActiveIndex = this.lyricText.length - 1
+          }
         }
-        this.lyricBoxEl.scrollTop = this.$refs.lyricText[this.lyricActiveIndex].offsetTop - this.lyricBoxEl.offsetHeight / 2
       }
     },
     // 触摸了歌词容器
     lyricBoxTouchS() {
-      clearInterval(this.lyricTimer)
+      this.lyricCanScroll = false
     },
     // 触摸离开
     lyricBoxTouchE() {
-      setTimeout(() => {
-        this.lyricRollTimer()
-      }, 500);
+      this.lyricCanScroll = true
+      this.scrollTimer && clearTimeout(this.scrollTimer)
+      this.scrollTimer = setTimeout(() => {
+        this.lyricLineRoll(this.lyricRollIndex)
+      }, 100);
+    },
+    // 执行滚动操作
+    lyricLineRoll(index) {
+      if (this.lyricText.length) {
+        this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
+      }
+    },
+    // todo: 需修改 滚动事件 
+    lyricBoxScroll() {
+      if (this.lyricCanScroll) {
+        this.scrollTimer && clearTimeout(this.scrollTimer)
+        this.scrollTimer = setTimeout(() => {
+          this.lyricLineRoll(this.lyricRollIndex)
+        }, 150)
+      }
     }
   },
   watch: {
@@ -364,5 +453,20 @@ export default {
         clearInterval(this.lyricTimer)
       }
     },
+    lyricRollIndex: {
+      handler: function (newV) {
+        if (this.lyricCanScroll) {
+          this.lyricLineRoll(newV)
+        }
+      },
+      // immediate: true
+    },
+    playerImg(newV) {
+      if (!newV) {
+        this.$nextTick(() => {
+          this.lyricLineRoll(this.lyricRollIndex)
+        })
+      }
+    }
   }
 }
