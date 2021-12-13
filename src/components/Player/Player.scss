@@ -264,16 +264,29 @@
           }
         }
         .lyric-box {
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.6);
           overflow: scroll;
           position: relative;
           margin: .25rem 0;
+          height: 100%;
+          scroll-behavior: smooth;
           .lyric-text {
             padding: 3rem 0;
           }
           p {
             text-align: center;
             padding: .06rem 0;
+            font-size: .15rem;
+            &.active {
+              color: rgba(255, 255, 255, 0.9);
+              font-size: .17rem;
+            }
+          }
+          .no-lyric {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
           }
         }
       }

@@ -37,7 +37,11 @@ export default {
       // 默认碟子界面
       playerImg: true,
       // 歌词
-      lyricText: []
+      lyricText: [],
+      // 歌词滚动定时器
+      lyricTimer: null,
+      // 滚动的活动歌词
+      lyricActiveIndex: 0,
     }
   },
   computed: {
@@ -71,6 +75,7 @@ export default {
     this.adoEl.volume = this.volume / 100
     this.needleEl = this.$refs.needle
     this.diskEl = this.$refs.disk
+    this.lyricBoxEl = this.$refs.lyricBox
     this.$store.commit('setAdoEl', this.adoEl)
     // 播放器组件页的过渡时间
     // this.pageTransTime = 300
@@ -157,11 +162,14 @@ export default {
           let res = patt.exec(item)
           if (res) {
             let time = res[1].split(':')
+            // 分
             let m = +time[0] * 60
+            // 秒
             let s = +time[1].split('.')[0]
-            let ms = time[1].split('.').slice(-1)[0].slice(0, 2)
+            // 毫秒保留小数点1位
+            let ms = time[1].split('.').slice(-1)[0].slice(0, 1)
             time = `${m+s}.${ms}`
-            resArr.push({time: parseFloat(time), text: res[2]})
+            resArr.push({time, text: res[2]})
           }
         } catch (error) {
           console.log(error);
@@ -223,6 +231,9 @@ export default {
     async songIdChange(newId) {
       try {
         this.$store.commit("changeLoading", true);
+
+        this.lyricText = []
+        this.lyricActiveIndex = 0
 
         // 切换另一首, 如果歌曲在播放时, 暂停播放
         if (!this.adoEl.paused) {
@@ -295,7 +306,13 @@ export default {
         console.log(lyricData);
         if (lyricData.code === 200) {
           this.lyricText = this.handlerLyric(lyricData.lrc.lyric)
+          // this.lyricText.forEach(item => {
+          //   console.log(JSON.stringify(item));
+          // })
         }
+
+        // todo: 歌词滚动 (保持滚动位置在容器中部) 对应歌词 (index), 
+        // lyricBox.scrollTop = lyricText[index].offsetTop - lyricBox.offsetHeight / 2
 
         
       } catch (error) {
@@ -303,6 +320,35 @@ export default {
       } finally {
         this.$store.commit("changeLoading", false);
       }
+    },
+    // 歌词滚动定时器
+    lyricRollTimer() {
+      this.handlerLyricRoll()
+      this.lyricTimer && clearInterval(this.lyricTimer)
+      // 设置歌词定时器, 100ms触发一次
+      this.lyricTimer = setInterval(this.handlerLyricRoll, 100)
+    },
+    // 处理滚动
+    handlerLyricRoll() {
+      if (this.lyricText.length) {
+        // 只精确到小数点后1位
+        let currentT = this.adoEl.currentTime.toFixed(1)
+        let index = this.lyricText.findIndex(item => item.time === currentT)
+        if (index !== -1 && this.lyricText[index].text.length) {
+          this.lyricActiveIndex = index
+        }
+        this.lyricBoxEl.scrollTop = this.$refs.lyricText[this.lyricActiveIndex].offsetTop - this.lyricBoxEl.offsetHeight / 2
+      }
+    },
+    // 触摸了歌词容器
+    lyricBoxTouchS() {
+      clearInterval(this.lyricTimer)
+    },
+    // 触摸离开
+    lyricBoxTouchE() {
+      setTimeout(() => {
+        this.lyricRollTimer()
+      }, 500);
     }
   },
   watch: {
@@ -312,12 +358,11 @@ export default {
     playStatus(newV) {
       if (newV === 'playing') {
         this.needleEl.classList.add('playing')
+        this.lyricRollTimer()
       } else {
         this.needleEl.classList.remove('playing')
+        clearInterval(this.lyricTimer)
       }
     },
-    currentTime(newV) {
-      // console.log('播放时间', newV);
-    }
   }
 }

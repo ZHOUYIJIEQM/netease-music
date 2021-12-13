@@ -76,10 +76,21 @@
                     @input="volumeChange"
                   />
                 </div>
-                <div class="lyric-box">
-                  <div class="lyric-text">
-                    <p v-for="(item, index) in lyricText" :key="index">{{item.text}}</p>
+                <div 
+                  class="lyric-box" 
+                  ref="lyricBox" 
+                  @touchstart="lyricBoxTouchS"
+                  @touchend="lyricBoxTouchE"
+                >
+                  <div class="lyric-text" v-if="lyricText.length">
+                    <p 
+                      ref="lyricText" 
+                      v-for="(item, index) in lyricText" 
+                      :key="index"
+                      :class="{'active': lyricActiveIndex === index}"
+                    >{{item.text}}</p>
                   </div>
+                  <div class="no-lyric" v-else>暂无歌词!</div>
                 </div>
               </div>
             </transition-group>
