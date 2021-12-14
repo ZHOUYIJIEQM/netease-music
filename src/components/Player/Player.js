@@ -366,9 +366,6 @@ export default {
           // })
         }
 
-        // todo: 歌词滚动 (保持滚动位置在容器中部) 对应歌词 (index), 
-        // lyricBox.scrollTop = lyricText[index].offsetTop - lyricBox.offsetHeight / 2
-        
       } catch (error) {
         console.log(error);
       } finally {
@@ -396,6 +393,7 @@ export default {
       let maxTime = 0
       for (let i = 0, len=this.lyricTextTime.length; i < len; i++) {
         if (time >= this.lyricTextTime[i]) {
+          // 最后一个的后一个是 undefined
           if (this.lyricTextTime[i+1]) {
             maxTime = this.lyricTextTime[i+1]
           } else {
@@ -408,7 +406,6 @@ export default {
         }
       }
     },
-    // todo: 活动歌词index 与 滚动需分开处理  处理滚动 
     handlerLyricRoll() {
       if (this.lyricText.length) {
         // 只精确到小数点后1位
@@ -423,29 +420,28 @@ export default {
     // 触摸离开
     lyricBoxTouchE() {
       this.lyricCanScroll = true
-      this.scrollTimer && clearTimeout(this.scrollTimer)
-      this.scrollTimer = setTimeout(() => {
-        this.lyricLineRoll(this.lyricActiveIndex)
-      }, 100);
+      // this.scrollTimer && clearTimeout(this.scrollTimer)
+      // this.scrollTimer = setTimeout(() => {
+      //   this.lyricLineRoll(this.lyricActiveIndex)
+      // }, 300);
     },
     // 执行滚动操作
     lyricLineRoll(index) {
       if (this.lyricText.length) {
         // this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
         this.lyricBoxEl.scrollTo({
-          top: this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2,
+          top: this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2 + this.$refs.lyricText[index].offsetHeight / 2,
           behavior: 'smooth'
         })
       }
     },
-    // todo: 需修改 滚动事件 
     lyricBoxScroll() {
-      if (this.lyricCanScroll) {
-        this.scrollTimer && clearTimeout(this.scrollTimer)
-        this.scrollTimer = setTimeout(() => {
+      this.scrollTimer && clearTimeout(this.scrollTimer)
+      this.scrollTimer = setTimeout(() => {
+        if (this.lyricCanScroll) {
           this.lyricLineRoll(this.lyricActiveIndex)
-        }, 150)
-      }
+        }
+      }, 800)
     }
   },
   watch: {
@@ -471,7 +467,7 @@ export default {
     },
     playerImg(newV) {
       // 刚开始播放有点空, 直接滚动居中
-      if (!newV) {
+      if (!newV && this.lyricActiveIndex < 5) {
         this.rollT && clearTimeout(this.rollT)
         this.rollT = setTimeout(() => {
           this.lyricLineRoll(this.lyricActiveIndex)

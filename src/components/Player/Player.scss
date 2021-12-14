@@ -290,6 +290,7 @@
             text-align: center;
             padding: .12rem 0;
             font-size: .14rem;
+            transition: color .1s;
             &.active {
               color: #fff;
             }
