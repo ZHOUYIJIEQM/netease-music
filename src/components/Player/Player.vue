@@ -51,6 +51,9 @@
                     <img ref="diskImg" alt="">
                   </div>
                 </div>
+                <!-- <div class="ly">
+                  <p class="text-eli" v-if="lyricText[lyricActiveIndex]">{{lyricText[lyricActiveIndex].text}}</p>
+                </div> -->
                 <!-- 收藏 下载 铃声 评论 更多 -->
                 <div class="song-bar" @click.stop="clickSong">
                   <!-- 空心 -->

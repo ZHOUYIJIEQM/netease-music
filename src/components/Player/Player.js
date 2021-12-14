@@ -38,12 +38,12 @@ export default {
       playerImg: true,
       // 歌词
       lyricText: [],
+      // 歌曲里的时间
+      lyricTextTime: [],
       // 歌词滚动定时器
       lyricTimer: null,
       // 滚动的活动歌词
       lyricActiveIndex: 0,
-      // 临时中转index
-      lyricTempIndex: 0,
       // 标记歌词能否自动滚动
       lyricCanScroll: true,
     }
@@ -182,11 +182,15 @@ export default {
       let textArrKeys = Object.keys(textArr)
       textArrKeys.forEach((item, index) => {
         let lyr = {time: +item, text: textArr[item]}
-        // 99:00.00
+        // [99:00.00]纯音乐，请欣赏
         if (item == 99 * 60) {
-          lyr.time = +textArrKeys[index-1] + 1
+          if (textArrKeys.length > 1) {
+            lyr.time = +textArrKeys[index-1] + 1
+          } else {
+            lyr.time = 0
+          }
         }
-        // 可枚举属性长度, 判断transTextArr是否空对象
+        // 可枚举属性长度, 判断transTextArr是否空对象, 合并
         if (Object.keys(transTextArr).length) {
           transTextArr[item] && (lyr.transText = transTextArr[item])
         }
@@ -352,6 +356,8 @@ export default {
           }
           console.log(lyrObj);
           this.lyricText = this.formatLyric(lyrObj)
+          // 提取歌词时间
+          this.lyricTextTime = this.lyricText.map(item => item.time)
           this.$nextTick(() => {
             this.lyricLineRoll(this.lyricActiveIndex)
           })
@@ -377,10 +383,29 @@ export default {
     },
     // 传入时间 定位歌词的index
     setActiveIndex(time) {
-      let maxL = this.lyricText.length
-      let nextTime = this.lyricText[this.lyricActiveIndex + 1] 
-      if (nextTime && time > nextTime.time) {
-        this.lyricActiveIndex++
+      // ----- start
+      // 不用很多次循环, 但定位只能从头播到尾, 不能用于切换进度
+      // let maxL = this.lyricText.length
+      // let nextTime = this.lyricText[this.lyricActiveIndex + 1] 
+      // if (nextTime && time > nextTime.time) {
+      //   this.lyricActiveIndex++
+      // }
+      // ----- end
+
+      // 判断当前播放时间在歌词时间里的那个区域
+      let maxTime = 0
+      for (let i = 0, len=this.lyricTextTime.length; i < len; i++) {
+        if (time >= this.lyricTextTime[i]) {
+          if (this.lyricTextTime[i+1]) {
+            maxTime = this.lyricTextTime[i+1]
+          } else {
+            maxTime = this.adoEl.duration
+          }
+          if (time < maxTime) {
+            this.lyricActiveIndex = i
+            break
+          }
+        }
       }
     },
     // todo: 活动歌词index 与 滚动需分开处理  处理滚动 
@@ -405,11 +430,13 @@ export default {
     },
     // 执行滚动操作
     lyricLineRoll(index) {
-      // this.$nextTick(() => {
-        if (this.lyricText.length) {
-          this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
-        }
-      // })
+      if (this.lyricText.length) {
+        // this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
+        this.lyricBoxEl.scrollTo({
+          top: this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2,
+          behavior: 'smooth'
+        })
+      }
     },
     // todo: 需修改 滚动事件 
     lyricBoxScroll() {
@@ -443,10 +470,12 @@ export default {
       // immediate: true
     },
     playerImg(newV) {
+      // 刚开始播放有点空, 直接滚动居中
       if (!newV) {
-        // this.$nextTick(() => {
+        this.rollT && clearTimeout(this.rollT)
+        this.rollT = setTimeout(() => {
           this.lyricLineRoll(this.lyricActiveIndex)
-        // })
+        }, 500)
       }
     }
   }
