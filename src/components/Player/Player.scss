@@ -109,6 +109,7 @@
             transform-origin: left top;
             height: 14.5vh;
             transition: all .5s cubic-bezier(0, 0, 0.2, 1);
+            will-change: transform;
             // 播放状态添加类名 playing
             &.playing {
               transform: rotate(26deg);

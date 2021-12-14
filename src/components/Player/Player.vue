@@ -2,18 +2,21 @@
   <!-- 播放器 -->
   <!-- 
     icon-jiantouyou-copy 返回
-    icon-fenxiang 分享
+    icon-fenxiangpt 分享
     icon-icon-test 空心 
     icon-aixin  实心
-    icon-xiazai1 下载
-    icon-pinglun2 评论
+    icon-xiazaipt 下载
+    icon-pinglunpt-wangyiicon 评论
     icon-gengduoxiao 更多
-    icon-xunhuan 循环
-    icon-shangyishou 上一曲
+    icon-list-loop 列表循环
+    icon-danquxunhuan 单曲循环
+    icon-suijibofang-wangyiicon 随机播放
+    icon-shangyiqu-wangyiicon 上一曲
     icon-bofang 播放
     icon-zanting 暂停
-    icon-shangyishoushangyige 下一曲
-    icon-PlayListbofangliebiao 播放列表
+    icon-shangyiqu-wangyiicon 下一曲
+    icon-caidan 播放列表
+    icon-laba 喇叭
   -->
   <transition name="playerTrans">
     <div class="player-comp" v-show="showPlayer">
@@ -35,7 +38,7 @@
             <div class="name text-eli">{{songInfo.name}}</div>
             <div class="artist text-eli">{{songInfo.artist}}</div>
           </div>
-          <i class="iconfont icon-fenxiang"></i>
+          <i class="iconfont icon-fenxiangpt"></i>
         </div>
         <!-- 中部 -->
           <div class="middle-box" @click="togglePlayerImg">
@@ -60,15 +63,15 @@
                   <i class="iconfont icon-icon-test"></i>
                   <!-- 实心 -->
                   <!-- <i class="iconfont icon-aixin"></i> -->
-                  <i class="iconfont icon-xiazai1"></i>
+                  <i class="iconfont icon-xiazaipt"></i>
                   <i class="iconfont icon-lingsheng"></i>
-                  <i class="iconfont icon-pinglun2"></i>
+                  <i class="iconfont icon-pinglunpt-wangyiicon"></i>
                   <i class="iconfont icon-gengduoxiao"></i>
                 </div>
               </div>
               <div class="player-lyric" key="lyric" v-show="!playerImg">
                 <div class="volume-box">
-                  <i class="iconfont icon-yinlianglabashengyin"></i>
+                  <i class="iconfont icon-laba"></i>
                   <van-slider 
                     class="volume-slider"
                     v-model="volume"
@@ -124,14 +127,21 @@
           </div>
           <!-- 歌曲控制 -->
           <div class="control-bar">
-            <i class="iconfont icon-xunhuan"></i>
-            <i class="iconfont icon-shangyishou" @click="preSong"></i>
+            <div class="sort" @click="changeSortType">
+              <!-- 列表循环 -->
+              <i class="iconfont icon-list-loop" v-if="playSortType === 'listCycle'"></i>
+              <!-- 单曲循环 -->
+              <i class="iconfont icon-danquxunhuan" v-if="playSortType === 'singleCycle'"></i>
+              <!-- 随机播放 -->
+              <i class="iconfont icon-suijibofang-wangyiicon" v-if="playSortType === 'random'"></i>
+            </div>
+            <i class="iconfont icon-shangyiqu-wangyiicon" @click="preSong"></i>
             <div class="status" @click="togglePlay">
               <i class="iconfont icon-bofang2" v-if="playStatus==='paused'"></i>
               <i class="iconfont icon-weibiaoti519" v-else></i>
             </div>
-            <i class="iconfont icon-shangyishoushangyige" @click="nextSong"></i>
-            <i class="iconfont icon-PlayListbofangliebiao" @click="showPlayList"></i>
+            <i class="iconfont icon-nextsong" @click="nextSong"></i>
+            <i class="iconfont icon-caidan" @click="showPlayList"></i>
           </div>
         </div>
       </div>

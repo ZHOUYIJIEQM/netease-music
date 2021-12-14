@@ -46,6 +46,13 @@ export default {
       lyricActiveIndex: 0,
       // 标记歌词能否自动滚动
       lyricCanScroll: true,
+      // 列表循环   单曲循环  列表里随机
+      playSortTypeArr: ['listCycle', 'singleCycle', 'random'],
+      // 播放顺序
+      playSortType: window.localStorage.getItem('music_player_sortType') || 'listCycle',
+      // 播放记录
+      recordArr: [],
+      recordIndex: 0,
     }
   },
   computed: {
@@ -96,6 +103,47 @@ export default {
     hidePlayer() {
       this.$router.go(-1)
     },
+    audioCanplay() {
+      this.adoReady = true
+      this.durationTime = this.formatTime(this.adoEl.duration)
+    },
+    audioPlay() {
+      this.playStatus = 'playing'
+    },
+    audioPause() {
+      this.playStatus = 'paused'
+    },
+    audioError() {
+      this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
+    },
+    audioWaiting() {
+
+    },
+    audioEnded() {
+      // 播完就下一曲
+      this.nextSong()
+    },
+    audioTimeUpdate() {
+      if (!this.isDrag ) {
+        this.currentTime = this.adoEl.currentTime
+        this.progressTime = this.currentTime / this.adoEl.duration * 100
+      }
+    },
+    // 获取 区域内随机整数
+    getRandom(start, end) {
+      return Math.round(Math.random() * (end - start) + start)
+    },
+    // 改变播放顺序
+    changeSortType() {
+      let tipArr = { 'listCycle': '列表循环', 'singleCycle': '单曲循环', 'random': '随机播放', }
+      this.playSortType = localStorage.music_player_sortType || 'listCycle'
+      let index = this.playSortTypeArr.findIndex(item => item === this.playSortType)
+      index++
+      index >= this.playSortTypeArr.length && (index = 0)
+      this.playSortType = this.playSortTypeArr[index]
+      localStorage.music_player_sortType = this.playSortType
+      this.toast(tipArr[this.playSortType], 1000)
+    },
     // 拖动进度变化时
     progressChange() {
       this.isDrag = true
@@ -142,25 +190,58 @@ export default {
     },
     // 上一曲
     preSong() {
-      console.log('第几首:', this.playingIndex);
-      if (this.playingIndex > 0) {
-        this.$store.commit('changeSongId', String(this.playList[this.playingIndex - 1].id))
+      // 列表循环
+      if (this.playSortType === 'listCycle') {
+        if (this.playingIndex > 0) {
+          this.$store.commit('changeSongId', String(this.playList[this.playingIndex - 1].id))
+        }
+        if (this.playingIndex === 0) {
+          this.$store.commit('changeSongId', String(this.playList.slice(-1)[0].id))
+        }
+        this.toast('上一曲')
       }
-      // todo: 如果是列表循环, 跳转到最后一首
-      if (this.playingIndex === 0) {
-        this.$store.commit('changeSongId', String(this.playList.slice(-1)[0].id))
+      // 随机播放
+      if (this.playSortType === 'random') {
+        // console.log(this.recordArr);
+        if (this.recordArr.length > 1) {
+          let id = this.recordArr.splice(this.recordArr.length - 2, 2)[0]
+          this.$store.commit('changeSongId', String(id))
+          // this.recordArr.push(id)
+          this.toast('上一曲')
+        } else {
+          let id = this.playList[this.getRandom(0, this.playList.length - 1)].id
+          this.$store.commit('changeSongId', String(id))
+        }
       }
-      this.toast('上一曲')
+      // 单曲循环
+      if (this.playSortType === 'singleCycle') {
+        this.adoEl.currentTime = 0
+      }
     },
     // 下一曲
     nextSong() {
-      if (this.playingIndex < this.playList.length - 1) {
-        this.$store.commit('changeSongId', String(this.playList[this.playingIndex + 1].id))
+      // 列表循环
+      if (this.playSortType === 'listCycle') {
+        if (this.playingIndex < this.playList.length - 1) {
+          this.$store.commit('changeSongId', String(this.playList[this.playingIndex + 1].id))
+        }
+        if (this.playingIndex >= this.playList.length - 1) {
+          this.$store.commit('changeSongId', String(this.playList[0].id))
+        }
+        this.toast(`下一曲`)
       }
-      if (this.playingIndex >= this.playList.length - 1) {
-        this.$store.commit('changeSongId', String(this.playList[0].id))
+      // 随机播放
+      if (this.playSortType === 'random') {
+        let id = this.playList[this.getRandom(0, this.playList.length - 1)].id
+        this.$store.commit('changeSongId', String(id))
+        this.toast(`下一曲`)
       }
-      this.toast(`下一曲`)
+      // 单曲循环
+      if (this.playSortType === 'singleCycle') {
+        setTimeout(() => {
+          this.adoEl.play()
+        }, 500)
+      }
     },
     /**
      * 格式化歌词
@@ -197,6 +278,11 @@ export default {
         resArr.push(lyr)
       })
 
+      // 有些歌词时间没排序 按时间升序排序
+      resArr = resArr.sort((a, b) => {
+        return a.time - b.time
+      })
+      
       return resArr
     },
     /**
@@ -221,31 +307,6 @@ export default {
         }
       })
       return resObj
-    },
-    audioCanplay() {
-      this.adoReady = true
-      this.durationTime = this.formatTime(this.adoEl.duration)
-    },
-    audioPlay() {
-      this.playStatus = 'playing'
-    },
-    audioPause() {
-      this.playStatus = 'paused'
-    },
-    audioError() {
-      this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
-    },
-    audioWaiting() {
-
-    },
-    audioEnded() {
-
-    },
-    audioTimeUpdate() {
-      if (!this.isDrag ) {
-        this.currentTime = this.adoEl.currentTime
-        this.progressTime = this.currentTime / this.adoEl.duration * 100
-      }
     },
     // 显示播放列表
     showPlayList() {
@@ -277,6 +338,7 @@ export default {
       try {
         this.$store.commit("changeLoading", true);
 
+        this.recordArr.push(newId)
         this.lyricText = []
         this.lyricActiveIndex = 0
 
@@ -354,7 +416,7 @@ export default {
           if (lyricData.tlyric && lyricData.tlyric.lyric) {
             lyrObj.transText = lyricData.tlyric.lyric
           }
-          console.log(lyrObj);
+          // console.log(lyrObj);
           this.lyricText = this.formatLyric(lyrObj)
           // 提取歌词时间
           this.lyricTextTime = this.lyricText.map(item => item.time)
@@ -406,6 +468,7 @@ export default {
         }
       }
     },
+    // 歌词定位
     handlerLyricRoll() {
       if (this.lyricText.length) {
         // 只精确到小数点后1位
@@ -435,6 +498,7 @@ export default {
         })
       }
     },
+    // 滚动事件
     lyricBoxScroll() {
       this.scrollTimer && clearTimeout(this.scrollTimer)
       this.scrollTimer = setTimeout(() => {
