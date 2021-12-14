@@ -1,6 +1,6 @@
 import logo from '@/assets/player/defaultBg.png'
 import { songDetail, songUrl, songLyric } from '@/api/api'
-import moment from "moment"
+import moment, { max } from "moment"
 
 export default {
   name: 'Player',
@@ -42,6 +42,8 @@ export default {
       lyricTimer: null,
       // 滚动的活动歌词
       lyricActiveIndex: 0,
+      // 临时中转index
+      lyricTempIndex: 0,
       // 标记歌词能否自动滚动
       lyricCanScroll: true,
     }
@@ -68,9 +70,6 @@ export default {
     fCurrentTime() {
       return this.formatTime(this.currentTime)
     },
-    lyricRollIndex() {
-      return this.lyricActiveIndex > 0 ? this.lyricActiveIndex - 1 : 0
-    }
   },
   mounted() {
     this.initSet()
@@ -102,17 +101,8 @@ export default {
       this.isDrag = true
       clearInterval(this.lyricTimer)
       this.currentTime = this.progressTime / 100 * this.adoEl.duration
-      if (this.lyricText.length > 1) {
-        this.lyricText.forEach((item, index) => {
-          if (this.currentTime >= item.time && this.currentTime < this.lyricText[index+1].time) {
-            this.lyricActiveIndex = index + 1
-            console.log(index, this.lyricText[index].time, this.lyricText[index].text);
-            return
-          }
-        })
-      } else {
-        this.lyricActiveIndex = 0
-      }
+      this.lyricTempIndex = 0
+      this.setActiveIndex(this.currentTime)
     },
     // 进度变化且结束拖动后触发
     progressChangeEnd() {
@@ -194,7 +184,7 @@ export default {
         let lyr = {time: +item, text: textArr[item]}
         // 99:00.00
         if (item == 99 * 60) {
-          lyr.time = textArrKeys[index-1] + 1
+          lyr.time = +textArrKeys[index-1] + 1
         }
         // 可枚举属性长度, 判断transTextArr是否空对象
         if (Object.keys(transTextArr).length) {
@@ -363,7 +353,7 @@ export default {
           console.log(lyrObj);
           this.lyricText = this.formatLyric(lyrObj)
           this.$nextTick(() => {
-            this.lyricLineRoll(this.lyricRollIndex)
+            this.lyricLineRoll(this.lyricActiveIndex)
           })
           // this.lyricText.forEach(item => {
           //   console.log(JSON.stringify(item));
@@ -385,31 +375,20 @@ export default {
       // 设置歌词定时器, 10ms触发一次 精确到小数点后2位
       this.lyricTimer = setInterval(this.handlerLyricRoll, 10)
     },
+    // 传入时间 定位歌词的index
+    setActiveIndex(time) {
+      let maxL = this.lyricText.length
+      let nextTime = this.lyricText[this.lyricActiveIndex + 1] 
+      if (nextTime && time > nextTime.time) {
+        this.lyricActiveIndex++
+      }
+    },
     // todo: 活动歌词index 与 滚动需分开处理  处理滚动 
     handlerLyricRoll() {
       if (this.lyricText.length) {
         // 只精确到小数点后1位
-        let currentT = this.adoEl.currentTime.toFixed(2)
-
-        // 判断 currentTime 有没有在 lyricText 数组里, 找出 index
-        // let index = this.lyricText.findIndex(item => item.time === currentT)
-        // console.log(currentT, this.lyricText[index].text);
-        // if (index !== -1 && this.lyricText[index].text.length) {
-        //   this.lyricActiveIndex = index
-        // }
-        // 滚动居中
-        // this.lyricBoxEl.scrollTop = this.$refs.lyricText[this.lyricActiveIndex].offsetTop - this.lyricBoxEl.offsetHeight / 2
-        
-        // 播放时间 >= 歌词时间, 就加上去
-        // console.log(this.lyricActiveIndex, this.lyricText[this.lyricActiveIndex].time, this.adoEl.currentTime);
-        console.log('活动', this.lyricActiveIndex, this.lyricText[this.lyricActiveIndex].text);
-        if (this.lyricText[this.lyricActiveIndex].time <= this.adoEl.currentTime) {
-          // console.log(this.lyricText[this.lyricActiveIndex].text);
-          this.lyricActiveIndex++
-          if (this.lyricActiveIndex >= this.lyricText.length) {
-            this.lyricActiveIndex = this.lyricText.length - 1
-          }
-        }
+        let currentT = +this.adoEl.currentTime.toFixed(2)
+        this.setActiveIndex(currentT)
       }
     },
     // 触摸了歌词容器
@@ -421,21 +400,23 @@ export default {
       this.lyricCanScroll = true
       this.scrollTimer && clearTimeout(this.scrollTimer)
       this.scrollTimer = setTimeout(() => {
-        this.lyricLineRoll(this.lyricRollIndex)
+        this.lyricLineRoll(this.lyricActiveIndex)
       }, 100);
     },
     // 执行滚动操作
     lyricLineRoll(index) {
-      if (this.lyricText.length) {
-        this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
-      }
+      // this.$nextTick(() => {
+        if (this.lyricText.length) {
+          this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
+        }
+      // })
     },
     // todo: 需修改 滚动事件 
     lyricBoxScroll() {
       if (this.lyricCanScroll) {
         this.scrollTimer && clearTimeout(this.scrollTimer)
         this.scrollTimer = setTimeout(() => {
-          this.lyricLineRoll(this.lyricRollIndex)
+          this.lyricLineRoll(this.lyricActiveIndex)
         }, 150)
       }
     }
@@ -453,7 +434,7 @@ export default {
         clearInterval(this.lyricTimer)
       }
     },
-    lyricRollIndex: {
+    lyricActiveIndex: {
       handler: function (newV) {
         if (this.lyricCanScroll) {
           this.lyricLineRoll(newV)
@@ -463,9 +444,9 @@ export default {
     },
     playerImg(newV) {
       if (!newV) {
-        this.$nextTick(() => {
-          this.lyricLineRoll(this.lyricRollIndex)
-        })
+        // this.$nextTick(() => {
+          this.lyricLineRoll(this.lyricActiveIndex)
+        // })
       }
     }
   }
