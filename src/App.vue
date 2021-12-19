@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <keep-alive :include="/.*Include$/">
-      <router-view class="app-content"></router-view>
+      <router-view ref="appContent"></router-view>
     </keep-alive>
 
     <!-- 全局加载提示 -->
@@ -12,8 +12,10 @@
       loadingSize=".3rem"
     ></Loading>
     
-    <!-- 播放器 -->
+    <!-- 大播放器 -->
     <Player></Player>
+    <!-- 小播放器 -->
+    <MiniPlayer ref="miniPlayer"></MiniPlayer>
 
     <!-- 播放列表 -->
     <van-popup
@@ -29,6 +31,7 @@
 </template>
 <script>
 import Player from '@/components/Player/Player.vue'
+import MiniPlayer from '@/components/Player/MiniPlayer.vue'
 import PlayerPlayList from '@/components/PlayerPlayList.vue'
 
 export default {
@@ -41,12 +44,16 @@ export default {
     // 加载
     Loading: () => import('@/components/Loading'),
     Player,
+    MiniPlayer,
     PlayerPlayList
   },
   computed: {
     // 加载状态
     gLoading() {
       return this.$store.getters.gLoading
+    },
+    showPlayer() {
+      return this.$store.getters.showPlayer
     },
     showList: {
       get() {
@@ -55,14 +62,43 @@ export default {
       set(value) {
         this.$store.commit('changeShowPlayList', value)
       }
+    },
+    playList() {
+      return this.$store.getters.playList
+    },
+    playListLen() {
+      return this.playList.length
     }
   },
   watch: {
-    // showList(newV) {
-    //   console.log(newV);
-    //   this.showList = newV
-    //   this.$store.commit('changeShowPlayList', newV)
-    // }
+    // 如果显示了小播放器, 需要给页面添加 padding-bottom
+    $route(to, from) {
+      console.log(to, from);
+      let miniPH = '.46rem'
+      let footerH = '.54rem'
+      this.$nextTick(() => {
+        // 存在播放列表, 需要设置 padding-bottom, 空出位置显示小播放器, 
+        // 如果进入的是主页, 因为有底部导航, 高度要放往上面一点, 也要取消底部导航的 border-top, 其他页面还是放到底部
+        if (this.playList.length) {
+          this.$refs.appContent.$el.style.paddingBottom = miniPH
+          if (/^\/Home\//.test(to.fullPath)) {
+            this.$refs.miniPlayer.$el.style.bottom = footerH
+            document.querySelector('.home-footer').style.border = '0px'
+          } else {
+            this.$refs.miniPlayer.$el.style.bottom = '0px'
+          }
+        } else {
+          this.$refs.appContent.$el.style.paddingBottom = '0px'
+        }
+      })
+    },
+    playListLen(newV) {
+      if (!newV) {
+        this.$nextTick(() => {
+          this.$refs.appContent.$el.style.paddingBottom = '0px'
+        })
+      }
+    }
   }
 }
 </script>

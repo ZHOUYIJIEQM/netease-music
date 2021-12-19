@@ -12,7 +12,7 @@
     icon-danquxunhuan 单曲循环
     icon-suijibofang-wangyiicon 随机播放
     icon-shangyiqu-wangyiicon 上一曲
-    icon-bofang 播放
+    icon-bofang2 播放
     icon-zanting 暂停
     icon-shangyiqu-wangyiicon 下一曲
     icon-caidan 播放列表

@@ -509,9 +509,11 @@ export default {
     }
   },
   watch: {
+    // 监听歌曲id, id变化代表切换了歌曲
     songId(newId) {
       this.songIdChange(newId)
     },
+    // 播放状态
     playStatus(newV) {
       if (newV === 'playing') {
         this.needleEl.classList.add('playing')
@@ -521,6 +523,7 @@ export default {
         clearInterval(this.lyricTimer)
       }
     },
+    // 歌词滚动
     lyricActiveIndex: {
       handler: function (newV) {
         if (this.lyricCanScroll) {
