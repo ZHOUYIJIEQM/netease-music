@@ -113,16 +113,21 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // 每次跳转前, 如果存在播放器, 先隐藏 (直接按了返回键)
+  // 播放列表
   if (store.getters.showPlayList) {
     store.commit('changeShowPlayList', false)
-    next(false)
+    if (from.query.playlist) {
+      next()      
+    } else {
+      next(false)
+    }
     return
   }
+  // 播放器
   if (store.getters.showPlayer) {
     store.commit('changeShowPlayer', false)
     // console.log(to, from, window.location.href.includes('player=show'));
     if (from.query.player === 'show') {
-      console.log('有player=show');
       next()
     } else {
       next(false)

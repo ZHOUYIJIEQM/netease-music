@@ -33,6 +33,7 @@ const getters = {
       return []
     }
   },
+  playRate: state => state.playRate,
   playState: state => state.playState,
   showPlayList: state => state.showPlayList,
   playingIndex: state => state.playingIndex,

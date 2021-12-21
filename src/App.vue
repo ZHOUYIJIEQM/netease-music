@@ -93,10 +93,14 @@ export default {
       })
     },
     playListLen(newV) {
+      // 如果不存在小播放器
       if (!newV) {
         this.$nextTick(() => {
           this.$refs.appContent.$el.style.paddingBottom = '0px'
+          document.querySelector('.home-footer').style.border = ''
         })
+      } else {
+        document.querySelector('.home-footer').style.border = '0px'
       }
     }
   }

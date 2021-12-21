@@ -163,7 +163,8 @@ export default {
       if (!this.isDrag ) {
         this.currentTime = this.adoEl.currentTime
         this.progressTime = this.currentTime / this.adoEl.duration * 100
-        // console.log('-------', this.progressTime);
+        // console.log(this.progressTime);
+        this.$store.commit('setPlayRate', this.progressTime)
       }
     },
     // 获取 区域内随机整数

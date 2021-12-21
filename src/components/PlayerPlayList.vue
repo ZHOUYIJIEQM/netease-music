@@ -68,6 +68,8 @@ export default {
     },
     delAll() {
       this.$store.commit('setPlayList', [])
+      this.$store.getters.adoEl.pause()
+      this.$store.commit('changeShowPlayer', false)
     },
     clickSong(id) {
       this.$store.commit('changeSongId', String(id))

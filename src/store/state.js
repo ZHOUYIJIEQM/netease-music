@@ -29,6 +29,8 @@ const state = {
   songId: window.localStorage.getItem('musicSongId'),
   // 播放状态
   playState: 'paused',
+  // 歌曲播放进度
+  playRate: 0,
   // 播放音频的元素
   adoEl: null,
   // 是否显示了更多回复

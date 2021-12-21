@@ -59,7 +59,7 @@ const mutations = {
     window.localStorage.setItem('musicRedirect', value)
   },
   /**
-   * 是否显示底部播放器
+   * 是否显示全屏播放器
    */
   changeShowPlayer(state, value) {
     if (value) {
@@ -97,6 +97,10 @@ const mutations = {
   },
   setPlayState(state, value) {
     state.playState = value
+  },
+  // 设置播放进度
+  setPlayRate(state, value) {
+    state.playRate = value
   },
   setAdoEl(state, element) {
     state.adoEl = element
