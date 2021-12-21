@@ -12,10 +12,11 @@
       <span class="split">-</span>
       <span class="ar">{{currentSongInfo.artist}}</span>
     </div>
-    <div class="play-state">
-      <i class="iconfont icon-bofang2"></i>
+    <div class="play-state" @click.stop="togglePlay">
+      <i class="iconfont icon-bofang2" v-if="playState==='paused'"></i>
+      <i class="iconfont icon-weibiaoti519" v-else></i>
     </div>
-    <div class="iconfont icon-caidan"></div>
+    <div class="iconfont icon-caidan" @click.stop="showPlayList"></div>
   </div>
 </template>
 <script>
@@ -30,14 +31,34 @@ export default {
     },
     currentSongInfo() {
       return this.playList[this.$store.getters.playingIndex]
+    },
+    adoEl() {
+      return this.$store.getters.adoEl
+    },
+    playState() {
+      return this.$store.getters.playState
     }
   },
   methods: {
+    // 显示播放器
     showPlayer() {
       this.$store.commit('changeShowPlayer', true)
+    },
+    // 显示播放列表
+    showPlayList() {
+      this.$store.commit('changeShowPlayList', true)
+    },
+    // 切换播放
+    togglePlay() {
+      if (this.adoEl.paused) {
+        this.adoEl.play()
+      } else {
+        this.adoEl.pause()
+      }
     }
   },
-  
+  watch: {
+  }
 };
 </script>
 <style lang="scss" scoped>

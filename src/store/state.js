@@ -21,11 +21,14 @@ const state = {
   // playList: [],
   playList: window.localStorage.getItem('musicPlayList'),
   // 当前播放歌曲在列表里是第几个
-  playingIndex: 0,
+  playingIndex: Number(window.localStorage.getItem('musicPlayingIndex')),
   // 正在播放的mv id, 保持只有一个播放器在播放
   mvId: 0,
   // 正在播放的歌曲 id 
-  songId: 0,
+  // songId: 0,
+  songId: window.localStorage.getItem('musicSongId'),
+  // 播放状态
+  playState: 'paused',
   // 播放音频的元素
   adoEl: null,
   // 是否显示了更多回复

@@ -64,6 +64,7 @@ export default {
       let playlist = this.playlist
       playlist.splice(index, 1)
       this.$store.commit('setPlayList', playlist)
+      this.$store.commit('setPlayingIndex', 0)
     },
     delAll() {
       this.$store.commit('setPlayList', [])

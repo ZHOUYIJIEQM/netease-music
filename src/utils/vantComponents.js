@@ -14,6 +14,7 @@ import {
   NoticeBar,
   ShareSheet,
   Dialog,
+  Circle,
 } from 'vant';
 
 Vue
@@ -32,3 +33,4 @@ Vue
   .use(NoticeBar)
   .use(ShareSheet)
   .use(Dialog)
+  .use(Circle)

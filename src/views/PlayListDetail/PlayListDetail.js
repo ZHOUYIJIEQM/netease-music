@@ -81,6 +81,9 @@ export default {
     },
     playlistId() {
       return this.$route.params.id
+    },
+    playListLen() {
+      return this.$store.getters.playList.length
     }
   },
   created() {

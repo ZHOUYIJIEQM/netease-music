@@ -133,7 +133,13 @@
     </div>
 
     <!-- 返回顶部 -->
-    <i class="iconfont icon-fanhui toTop" :class="{topMore: $store.getters.showPlayer}" v-show="topFlag" @click="toTop"></i>
+    <i 
+      class="iconfont icon-fanhui toTop" 
+      :class="{topMore: $store.getters.showPlayer}" 
+      v-show="topFlag" 
+      @click="toTop"
+      :style="{'bottom': playListLen && '.6rem'}"
+    ></i>
 
     <!-- 分享 -->
     <van-share-sheet

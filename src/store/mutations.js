@@ -93,6 +93,10 @@ const mutations = {
   },
   setPlayingIndex(state, index) {
     state.playingIndex = index
+    window.localStorage.setItem('musicPlayingIndex', index)
+  },
+  setPlayState(state, value) {
+    state.playState = value
   },
   setAdoEl(state, element) {
     state.adoEl = element

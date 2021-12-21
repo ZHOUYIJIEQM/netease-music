@@ -73,7 +73,7 @@ export default {
   watch: {
     // 如果显示了小播放器, 需要给页面添加 padding-bottom
     $route(to, from) {
-      console.log(to, from);
+      // console.log(to, from);
       let miniPH = '.46rem'
       let footerH = '.54rem'
       this.$nextTick(() => {
