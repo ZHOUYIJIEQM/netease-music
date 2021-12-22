@@ -170,7 +170,10 @@ export default {
     },
     audioError() {
       console.log(`可能是无效播放地址: '${this.adoEl.src}'`);
-      this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
+      this.toast('无效的播放地址! 可能是付费歌曲!\n即将播放下一曲!', 2000)
+      this.nextSongTimer = setTimeout(() => {
+        this.nextSong()
+      }, 2000)
     },
     audioWaiting() {
       console.log('waiting');
@@ -249,6 +252,8 @@ export default {
     },
     // 上一曲
     preSong() {
+      // 如果存在播放错误又主动点了上一曲
+      this.nextSongTimer && clearTimeout(this.nextSongTimer)
       // 播放列表只有1个时
       if (this.playList.length <= 1) {
         this.adoEl.pause()
@@ -296,6 +301,8 @@ export default {
     },
     // 下一曲
     nextSong() {
+      // 如果存在播放错误又主动点了下一曲
+      this.nextSongTimer && clearTimeout(this.nextSongTimer)
       // 播放列表只有1个时
       if (this.playList.length <= 1) {
         console.log(this.duration);
@@ -521,7 +528,7 @@ export default {
     // 获取歌词 喜欢的所有音乐
     async getSongLyric(newId) {
       let lyricData = await songLyric(newId)
-      console.log(`'id:' ${newId}`, lyricData);
+      // console.log(`'id:' ${newId}`, lyricData);
       if (lyricData.code === 200 && lyricData.lrc) {
         let lyrObj = { text: lyricData.lrc.lyric }
         if (lyricData.tlyric && lyricData.tlyric.lyric) {

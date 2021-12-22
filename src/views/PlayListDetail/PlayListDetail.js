@@ -129,7 +129,7 @@ export default {
       try {
         let ids = this.songsIds.slice(this.songList.length, this.songList.length + this.len).join(",")
         let songList = await songDetail(ids)
-        console.log(songList);
+        // console.log(songList);
         this.songList.push(
           ...songList.songs.map((item, index) => {
             return {
