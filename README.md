@@ -1,4 +1,7 @@
+
+
 # netease-music
+> 界面模仿网易云音乐app,仅供学习
 
 ## 用到的一些文档
 1. [网易云音乐API 文档](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
@@ -6,19 +9,102 @@
 1. [vant 文档](https://vant-contrib.gitee.io/vant/#/zh-CN/toast)
 1. [日期处理 Moment.js](http://momentjs.cn/)
 
-## 已实现
-1. 发现页
-1. 我的页
-1. 云村页
-1. 主页菜单 (退出登录在底部)
-1. 登录/注册 (验证码登录, 密码登录, 找回账号, 注册)
-1. 每日推荐
-1. 排行榜
-1. 搜索功能
-1. 歌单广场
-1. 歌单详情
-1. 歌单评论
-1. 歌曲播放
+## <a id="feature">实现的功能</a>
+1. [发现页](#发现页)
+1. [我的页](#我的页)
+1. [云村页](#云村页)
+1. [菜单(退出登录在底部)](#菜单)
+1. [登录/注册 (验证码登录, 密码登录, 找回账号, 注册)](#登录)
+1. [每日推荐](#每日推荐)
+1. [排行榜](#排行榜)
+1. [歌单广场](#歌单广场)
+1. [歌单详情](#歌单详情)
+1. [歌单评论](#歌单评论)
+1. [搜索功能](#搜索功能)
+1. [播放器](#播放器)
+
+<hr>
+
+## <a id="发现页">[发现页](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页1.jpg" alt="发现页1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页2.jpg" alt="发现页2.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页3.jpg" alt="发现页3.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页4.jpg" alt="发现页4.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页5.jpg" alt="发现页5.jpg">
+
+<hr>
+
+## <a id="我的页">[我的页](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页1.jpg" alt="我的页1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页2.jpg" alt="我的页2.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页3.jpg" alt="我的页3.jpg">
+
+<hr>
+
+## <a id="云村页">[云村页](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/云村页1.jpg" alt="云村页1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/云村页2.jpg" alt="云村页2.jpg">
+
+<hr>
+
+## <a id="菜单">[菜单](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/菜单1.jpg" alt="菜单1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/菜单2.jpg" alt="菜单2.jpg">
+
+<hr>
+
+## <a id="登录">[登录](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/登录页1.jpg" alt="登录页1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/手机号.jpg" alt="手机号.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/密码.jpg" alt="密码.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/验证码.jpg" alt="验证码.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/找回账号 密码.jpg" alt="找回账号 密码.jpg">
+
+<hr>
+
+## <a id="每日推荐">[每日推荐](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/每日推荐.jpg" alt="每日推荐.jpg">
+
+<hr>
+
+## <a id="排行榜">[排行榜](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/排行榜.jpg" alt="排行榜.jpg">
+
+<hr>
+
+## <a id="歌单广场">[歌单广场](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单广场1.jpg" alt="歌单广场.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单广场2.jpg" alt="歌单广场.jpg">
+
+<hr>
+
+## <a id="歌单详情">[歌单详情](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单详情1.jpg" alt="歌单详情.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单详情2.jpg" alt="歌单详情.jpg">
+
+<hr>
+
+## <a id="歌单评论">[歌单评论](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单评论.jpg" alt="歌单评论.jpg">
+
+<hr>
+
+## <a id="搜索功能">[搜索功能](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索页.jpg" alt="搜索页.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索提示.jpg" alt="搜索提示.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果1.jpg" alt="搜索结果1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果2.jpg" alt="搜索结果2.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果3.jpg" alt="搜索结果3.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果4.jpg" alt="搜索结果4.jpg">
+
+<hr>
+
+## <a id="播放器">[播放器界面](#feature)</a>
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放器界面1.jpg" alt="播放器界面1.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放器界面2.jpg" alt="播放器界面2.jpg">
+<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放列表界面.jpg" alt="播放列表界面.jpg">
+
+
 
 
 ## 用到的一些模块
