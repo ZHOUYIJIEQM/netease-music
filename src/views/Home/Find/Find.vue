@@ -326,6 +326,7 @@
             </div>
           </div>
           <div class="item-content newlist-content">
+            <!-- 新歌 -->
             <div class="newlist content-item" v-show="newListActive === 0">
               <swiper 
                 :options="songOptions"
@@ -349,6 +350,7 @@
                 </swiper-slide>
               </swiper>
             </div>
+            <!-- 新碟 -->
             <div class="newlist content-item" v-show="newListActive === 1">
               <swiper 
                 :options="songOptions"
@@ -364,6 +366,7 @@
                     <div class="rcmd-song-item"
                       v-for="(item2, index2) in item1"
                       :key="index2"
+                      @click="toast(`未开发新碟!`, 2000)"
                     >
                       <FindSongItem :songInfo="item2" :imgShadow="true"></FindSongItem>
                     </div>
@@ -371,6 +374,7 @@
                 </swiper-slide>
               </swiper>
             </div>
+            <!-- 数字专辑 -->
             <div class="newlist content-item" v-show="newListActive === 2">
               <swiper 
                 :options="songOptions"
@@ -386,6 +390,7 @@
                     <div class="rcmd-song-item"
                       v-for="(item2, index2) in item1"
                       :key="index2"
+                      @click="toast(`未开发数字专辑!`, 2000)"
                     >
                       <FindSongItem :songInfo="item2" :imgShadow="true"></FindSongItem>
                     </div>

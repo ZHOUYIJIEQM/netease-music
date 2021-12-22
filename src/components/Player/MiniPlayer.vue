@@ -15,8 +15,6 @@
       <span class="split">-</span>
       <span class="ar">{{currentSongInfo.artist}}</span>
     </div>
-    <!-- <div class="play-state" >
-    </div> -->
     <van-circle 
       @click.native.stop="togglePlay"
       class="state-box" 
@@ -38,7 +36,6 @@ export default {
   data() {
     return {
       currentRate: 0,
-      // rate: 0,
     };
   },
   computed: {

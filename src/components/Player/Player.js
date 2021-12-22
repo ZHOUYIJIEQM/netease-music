@@ -1,5 +1,5 @@
 import logo from '@/assets/player/defaultBg.png'
-import { songDetail, songUrl, songLyric } from '@/api/api'
+import { songDetail, songUrl, songLyric, favoriteSong, favoriteSongList } from '@/api/api'
 import moment from "moment"
 
 export default {
@@ -53,6 +53,8 @@ export default {
       // 播放记录
       recordArr: [],
       recordIndex: 0,
+      // 喜欢的歌曲
+      favoriteIcon: false
     }
   },
   computed: {
@@ -90,6 +92,9 @@ export default {
     fCurrentTime() {
       return this.formatTime(this.currentTime)
     },
+    loginStatus() {
+      return this.$store.getters.loginStatus
+    }
   },
   mounted() {
     this.initSet()
@@ -138,9 +143,24 @@ export default {
     hidePlayer() {
       this.$router.go(-1)
     },
+    // 喜欢/不喜欢 歌曲
+    async clickFavorite() {
+      if (this.songInfo.id && this.loginStatus) {
+        let f = await favoriteSong({
+          id: this.songInfo.id,
+          like: !this.favoriteIcon
+        })
+        if (f.code === 200) {
+          this.favoriteIcon = !this.favoriteIcon
+        }
+      }
+    },
     audioCanplay() {
       this.adoReady = true
       this.durationTime = this.formatTime(this.adoEl.duration)
+      if (this.adoEl.duration + 10 < this.songInfo.duration && this.showPlayer) {
+        this.toast(`id: ${this.songInfo.id} 为试听歌曲!`, 2000)
+      }
     },
     audioPlay() {
       this.playStatus = 'playing'
@@ -153,7 +173,7 @@ export default {
       this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
     },
     audioWaiting() {
-
+      console.log('waiting');
     },
     audioEnded() {
       // 播完就下一曲
@@ -180,6 +200,7 @@ export default {
       index >= this.playSortTypeArr.length && (index = 0)
       this.playSortType = this.playSortTypeArr[index]
       localStorage.music_player_sortType = this.playSortType
+      this.$store.commit('setPlayerSortType', this.playSortType)
       this.toast(tipArr[this.playSortType], 1000)
     },
     // 拖动进度变化时
@@ -315,71 +336,6 @@ export default {
         }, 500)
       }
     },
-    /**
-     * 格式化歌词
-     * @param lyricData 歌词对象 {text: '歌词', transText: '翻译歌词'}
-     */
-    formatLyric(lyricData) {
-      let resArr = []
-      let textArr = lyricData.text.split('\n')
-      // 提取
-      textArr = this.extractLyric(textArr)
-      let transTextArr = []
-      // 如果存在翻译歌词, 就提取
-      if (lyricData.transText && lyricData.transText.length) {
-        transTextArr = lyricData.transText.split('\n')
-        transTextArr = this.extractLyric(transTextArr)
-      }
-      
-      // 遍历可枚举属性
-      let textArrKeys = Object.keys(textArr)
-      textArrKeys.forEach((item, index) => {
-        let lyr = {time: +item, text: textArr[item]}
-        // [99:00.00]纯音乐，请欣赏
-        if (item == 99 * 60) {
-          if (textArrKeys.length > 1) {
-            lyr.time = +textArrKeys[index-1] + 1
-          } else {
-            lyr.time = 0
-          }
-        }
-        // 可枚举属性长度, 判断transTextArr是否空对象, 合并
-        if (Object.keys(transTextArr).length) {
-          transTextArr[item] && (lyr.transText = transTextArr[item])
-        }
-        resArr.push(lyr)
-      })
-
-      // 有些歌词时间没排序 按时间升序排序
-      resArr = resArr.sort((a, b) => {
-        return a.time - b.time
-      })
-      
-      return resArr
-    },
-    /**
-     * 提取歌词 返回对象
-     * @param lyricArr 歌词数组
-     */
-    extractLyric(lyricArr) {
-      let resObj = {}
-      let patt = /^\[(\d*:\d*.\d*)\]\s*(.*)$/
-      lyricArr.forEach((item, index) => {
-        let res = patt.exec(item)
-        if (res) {
-          let time = res[1].split(":");
-          // 分
-          let m = +time[0] * 60;
-          // 秒
-          let s = +time[1].split(".")[0];
-          // 毫秒保留小数点2位
-          let ms = time[1].split(".").slice(-1)[0].slice(0, 2);
-          time = `${m + s}.${ms}`;
-          resObj[time] = res[2]
-        }
-      })
-      return resObj
-    },
     // 显示播放列表
     showPlayList() {
       this.$store.commit('changeShowPlayList', true)
@@ -447,6 +403,71 @@ export default {
         this.setActiveIndex(currentT)
       }
     },
+    /**
+     * 格式化歌词
+     * @param lyricData 歌词对象 {text: '歌词', transText: '翻译歌词'}
+     */
+    formatLyric(lyricData) {
+      let resArr = []
+      let textArr = lyricData.text.split('\n')
+      // 提取
+      textArr = this.extractLyric(textArr)
+      let transTextArr = []
+      // 如果存在翻译歌词, 就提取
+      if (lyricData.transText && lyricData.transText.length) {
+        transTextArr = lyricData.transText.split('\n')
+        transTextArr = this.extractLyric(transTextArr)
+      }
+      
+      // 遍历可枚举属性
+      let textArrKeys = Object.keys(textArr)
+      textArrKeys.forEach((item, index) => {
+        let lyr = {time: +item, text: textArr[item]}
+        // [99:00.00]纯音乐，请欣赏
+        if (item == 99 * 60) {
+          if (textArrKeys.length > 1) {
+            lyr.time = +textArrKeys[index-1] + 2
+          } else {
+            lyr.time = 0
+          }
+        }
+        // 可枚举属性长度, 判断transTextArr是否空对象, 合并
+        if (Object.keys(transTextArr).length) {
+          transTextArr[item] && (lyr.transText = transTextArr[item])
+        }
+        resArr.push(lyr)
+      })
+
+      // 有些歌词时间没排序 按时间升序排序
+      resArr = resArr.sort((a, b) => {
+        return a.time - b.time
+      })
+      
+      return resArr
+    },
+    /**
+     * 提取歌词 返回对象
+     * @param lyricArr 歌词数组
+     */
+    extractLyric(lyricArr) {
+      let resObj = {}
+      let patt = /^\[(\d*:\d*.\d*)\]\s*(.*)$/
+      lyricArr.forEach((item, index) => {
+        let res = patt.exec(item)
+        if (res) {
+          let time = res[1].split(":");
+          // 分
+          let m = +time[0] * 60;
+          // 秒
+          let s = +time[1].split(".")[0];
+          // 毫秒保留小数点2位
+          let ms = time[1].split(".").slice(-1)[0].slice(0, 2);
+          time = `${m + s}.${ms}`;
+          resObj[time] = res[2]
+        }
+      })
+      return resObj
+    },
     // 触摸了歌词容器
     lyricBoxTouchS() {
       this.lyricCanScroll = false
@@ -497,7 +518,7 @@ export default {
         }
       })
     },
-    // 获取歌词
+    // 获取歌词 喜欢的所有音乐
     async getSongLyric(newId) {
       let lyricData = await songLyric(newId)
       console.log(`'id:' ${newId}`, lyricData);
@@ -513,6 +534,14 @@ export default {
         this.$nextTick(() => {
           this.lyricLineRoll(this.lyricActiveIndex)
         })
+      }
+
+      // 登录后才能获取喜欢的音乐列表
+      if (this.loginStatus) {
+        let favoriteL = await favoriteSongList(this.$store.getters.userInfo.userId)
+        if (favoriteL.code === 200) {
+          this.favoriteIcon = favoriteL.ids.some(item => item == newId)
+        }
       }
     },
     // 歌曲id, 改变触发
@@ -540,6 +569,7 @@ export default {
         } else {
           // 没有就保存起来
           let songInfo = await songDetail(newId)
+          console.log(songInfo);
           if (songInfo.code === 200) {
             playlist.push({
               id: songInfo.songs[0].id,
@@ -586,6 +616,7 @@ export default {
   watch: {
     // 监听歌曲id, id变化代表切换了歌曲
     songId(newId) {
+      console.log('新id', newId);
       this.songIdChange(newId)
     },
     // 播放状态 paused playing

@@ -261,22 +261,22 @@ export default {
         this.$router.push({ name: "LeaderBoard" })
       }
       if(type === "私人FM") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
       if(type === "助眠解压") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
       if(type === "数字专辑") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
       if(type === "歌房") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
       if(type === "专注冥想") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
       if(type === "游戏专区") {
-        this.$toast(`${type} 未开发!`)
+        this.toast(`${type} 未开发!`)
       }
     },
     // 推荐歌单第一项
@@ -329,7 +329,7 @@ export default {
           this.$store.commit('changeLoading', false)
         }
       } else {
-        this.$toast('登录后才能换一批音乐视频哦!')
+        this.toast('登录后才能换一批音乐视频哦!')
       }
     },
     // 提取需要的数据

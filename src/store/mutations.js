@@ -107,6 +107,9 @@ const mutations = {
   },
   changeShowPlayList(state, value) {
     state.showPlayList = value
+  },
+  setPlayerSortType(state, value) {
+    state.playerSortType = value
   }
 }
 

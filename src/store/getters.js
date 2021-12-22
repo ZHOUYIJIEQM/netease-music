@@ -36,6 +36,7 @@ const getters = {
   playRate: state => state.playRate,
   playState: state => state.playState,
   showPlayList: state => state.showPlayList,
+  playerSortType: state => state.playerSortType,
   playingIndex: state => state.playingIndex,
   adoEl: state => state.adoEl,
 }

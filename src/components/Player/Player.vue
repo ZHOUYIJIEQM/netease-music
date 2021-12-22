@@ -59,10 +59,12 @@
                 </div> -->
                 <!-- 收藏 下载 铃声 评论 更多 -->
                 <div class="song-bar" @click.stop="clickSong">
-                  <!-- 空心 -->
-                  <i class="iconfont icon-icon-test"></i>
-                  <!-- 实心 -->
-                  <!-- <i class="iconfont icon-aixin"></i> -->
+                  <div @click.stop="clickFavorite">
+                    <!-- 实心 -->
+                    <i class="iconfont icon-aixin" v-if="favoriteIcon"></i>
+                    <!-- 空心 -->
+                    <i class="iconfont icon-icon-test" v-else></i>
+                  </div>
                   <i class="iconfont icon-xiazaipt"></i>
                   <i class="iconfont icon-lingsheng"></i>
                   <i class="iconfont icon-pinglunpt-wangyiicon"></i>

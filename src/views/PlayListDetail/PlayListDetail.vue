@@ -106,8 +106,8 @@
       <!-- 头部 -->
       <van-sticky :offset-top="navbarHeight">
         <div class="playlist-title">
-          <i class="iconfont icon-bofang1"></i>
-          <span class="title-text">播放全部<span v-if="playList.trackIds">({{playList.trackIds.length}})</span></span>
+          <i class="iconfont icon-bofang1" @click="playAll"></i>
+          <span class="title-text" @click="playAll">播放全部<span v-if="playList.trackIds">({{playList.trackIds.length}})</span></span>
           <span class="title-icon">
             <i class="iconfont icon-xiazai1"></i>
           </span>

@@ -3,9 +3,12 @@
   <div class="player-playlist-comp">
     <div class="title">当前播放<span v-if="playlist.length">({{playlist.length}})</span></div>
     <div class="navbar">
+      <!-- 播放顺序 -->
       <div class="icon">
-        <i class="iconfont icon-xunhuan"></i>
-        <span>列表循环</span>
+        <i class="iconfont icon-xunhuan" v-if="playerSortType === 'listCycle'"></i>
+        <i class="iconfont icon-danquxunhuan" v-if="playerSortType === 'singleCycle'"></i>
+        <i class="iconfont icon-suijibofang-wangyiicon" v-if="playerSortType === 'random'"></i>
+        <span>{{sortArr[playerSortType]}}</span>
       </div>
       <div class="right">
         <i class="iconfont icon-xiazai1"></i>
@@ -41,7 +44,7 @@
 export default {
   data() {
     return {
-
+      sortArr: { 'listCycle': '列表循环', 'singleCycle': '单曲循环', 'random': '随机播放'}
     }
   },
   computed: {
@@ -57,6 +60,9 @@ export default {
     playingIndex() {
       return this.$store.getters.playingIndex
     },
+    playerSortType() {
+      return this.$store.getters.playerSortType
+    }
   },
   methods: {
     // 删除某一曲

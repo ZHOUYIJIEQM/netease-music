@@ -372,6 +372,19 @@ export function songUrl(ids) {
   return get(`/song/url?id=${ids}`)
 }
 
+
+// 喜欢音乐
+// 必选参数 : id: 歌曲 id
+// 可选参数 : like: 布尔值 , 默认为 true 即喜欢 , 若传 false, 则取消喜欢
+export function favoriteSong(params) {
+  return post('like', params)
+}
+
+// 用户 uid 喜欢的所有音乐
+export function favoriteSongList(uid) {
+  return get(`/likelist?uid=${uid}`)
+}
+
 /**
  * 推荐视频
  * @param {Number} offset 分页

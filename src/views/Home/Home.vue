@@ -151,7 +151,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    border-top: 1px solid rgb(230, 230, 230);
+    border-top: 1px solid #f5f5f5;
     @include df();
     // align-items: center;
     padding: .06rem .23rem;

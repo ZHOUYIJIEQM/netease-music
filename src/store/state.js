@@ -37,6 +37,9 @@ const state = {
   showReply: false,
   // 搜索历史记录数组
   searchHistoryArr: window.localStorage.getItem('musicSearchHistory'),
+  // 播放器播放顺序
+  playerSortType: window.localStorage.getItem('music_player_sortType') || 'listCycle',
+  
 }
 
 export default state

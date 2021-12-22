@@ -129,7 +129,7 @@ export default {
       try {
         let ids = this.songsIds.slice(this.songList.length, this.songList.length + this.len).join(",")
         let songList = await songDetail(ids)
-        // console.log(songList);
+        console.log(songList);
         this.songList.push(
           ...songList.songs.map((item, index) => {
             return {
@@ -139,6 +139,8 @@ export default {
               artist: item.ar.map(item1 => item1.name).join('/'),
               al: item.al.name,
               mvId: item.mv,
+              duration: item.dt / 1000,
+              bgImg: item.al.picUrl + '?param=400y400',
               sq: songList.privileges[index].maxbr >= 999000,
             }
           })
@@ -247,6 +249,16 @@ export default {
     touchE() {
       this.isTouch = false
       this.handlerScroll()
+    },
+    // 播放全部
+    playAll() {
+      if (this.songList.length) {
+        this.$store.commit('setPlayList', this.songList)
+        this.toast(`即将播放歌单中已加载的歌曲!`, 3000)
+        this.clickSong(this.songList[0].id)
+      } else {
+        this.toast('歌曲还未加载完成!')
+      }
     },
     // 处理订阅
     async handlerSubscribe() {

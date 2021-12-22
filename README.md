@@ -11,98 +11,106 @@
 
 ## <a id="feature">实现的功能</a>
 1. [发现页](#发现页)
+> 推荐歌单 推荐歌曲 精选音乐视频 热门播客 专属场景歌单 新歌,新碟,数字专辑 音乐日历 云村KTV 广播电台 视频歌单
 1. [我的页](#我的页)
+> 创建歌单 收藏歌单
 1. [云村页](#云村页)
+> 推荐视频(可以播放)
 1. [菜单(退出登录在底部)](#菜单)
-1. [登录/注册 (验证码登录, 密码登录, 找回账号, 注册)](#登录)
+1. [登录/注册](#登录)
+> 登录 手机号 验证码 密码
 1. [每日推荐](#每日推荐)
 1. [排行榜](#排行榜)
+> 滚动导航
 1. [歌单广场](#歌单广场)
+> 标签轮播切换
 1. [歌单详情](#歌单详情)
 1. [歌单评论](#歌单评论)
 1. [搜索功能](#搜索功能)
+> (默认搜索页, 搜索提示页, 搜索结果页) 待完善
 1. [播放器](#播放器)
+> 收藏/取消 歌曲切换(循环,单曲,随机) 歌词滚动 播放列表
 
 <hr>
 
 ## <a id="发现页">[发现页](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页1.jpg" alt="发现页1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页2.jpg" alt="发现页2.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页3.jpg" alt="发现页3.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页4.jpg" alt="发现页4.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/发现页5.jpg" alt="发现页5.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/发现页1.jpg" alt="发现页1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/发现页2.jpg" alt="发现页2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/发现页3.jpg" alt="发现页3.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/发现页4.jpg" alt="发现页4.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/发现页5.jpg" alt="发现页5.jpg">
 
 <hr>
 
 ## <a id="我的页">[我的页](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页1.jpg" alt="我的页1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页2.jpg" alt="我的页2.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/我的页3.jpg" alt="我的页3.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/我的页1.jpg" alt="我的页1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/我的页2.jpg" alt="我的页2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/我的页3.jpg" alt="我的页3.jpg">
 
 <hr>
 
 ## <a id="云村页">[云村页](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/云村页1.jpg" alt="云村页1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/云村页2.jpg" alt="云村页2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/云村页1.jpg" alt="云村页1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/云村页2.jpg" alt="云村页2.jpg">
 
 <hr>
 
 ## <a id="菜单">[菜单](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/菜单1.jpg" alt="菜单1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/菜单2.jpg" alt="菜单2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/菜单1.jpg" alt="菜单1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/菜单2.jpg" alt="菜单2.jpg">
 
 <hr>
 
 ## <a id="登录">[登录](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/登录页1.jpg" alt="登录页1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/手机号.jpg" alt="手机号.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/密码.jpg" alt="密码.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/验证码.jpg" alt="验证码.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/找回账号 密码.jpg" alt="找回账号 密码.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/登录页1.jpg" alt="登录页1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/手机号.jpg" alt="手机号.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/密码.jpg" alt="密码.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/验证码.jpg" alt="验证码.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/找回账号 密码.jpg" alt="找回账号 密码.jpg">
 
 <hr>
 
 ## <a id="每日推荐">[每日推荐](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/每日推荐.jpg" alt="每日推荐.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/每日推荐.jpg" alt="每日推荐.jpg">
 
 <hr>
 
 ## <a id="排行榜">[排行榜](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/排行榜.jpg" alt="排行榜.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/排行榜.jpg" alt="排行榜.jpg">
 
 <hr>
 
 ## <a id="歌单广场">[歌单广场](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单广场1.jpg" alt="歌单广场.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单广场2.jpg" alt="歌单广场.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单广场1.jpg" alt="歌单广场.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单广场2.jpg" alt="歌单广场.jpg">
 
 <hr>
 
 ## <a id="歌单详情">[歌单详情](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单详情1.jpg" alt="歌单详情.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单详情2.jpg" alt="歌单详情.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单详情1.jpg" alt="歌单详情.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单详情2.jpg" alt="歌单详情.jpg">
 
 <hr>
 
 ## <a id="歌单评论">[歌单评论](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/歌单评论.jpg" alt="歌单评论.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单评论.jpg" alt="歌单评论.jpg">
 
 <hr>
 
 ## <a id="搜索功能">[搜索功能](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索页.jpg" alt="搜索页.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索提示.jpg" alt="搜索提示.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果1.jpg" alt="搜索结果1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果2.jpg" alt="搜索结果2.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果3.jpg" alt="搜索结果3.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/搜索结果4.jpg" alt="搜索结果4.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索页.jpg" alt="搜索页.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索提示.jpg" alt="搜索提示.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索结果1.jpg" alt="搜索结果1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索结果2.jpg" alt="搜索结果2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索结果3.jpg" alt="搜索结果3.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/搜索结果4.jpg" alt="搜索结果4.jpg">
 
 <hr>
 
 ## <a id="播放器">[播放器界面](#feature)</a>
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放器界面1.jpg" alt="播放器界面1.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放器界面2.jpg" alt="播放器界面2.jpg">
-<img style="display: block; width: 360px; margin: 10px 0; box-shadow: 0px 0px 15px -6px #868686" src="./preview/播放列表界面.jpg" alt="播放列表界面.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/播放器界面1.jpg" alt="播放器界面1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/播放器界面2.jpg" alt="播放器界面2.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/播放列表界面.jpg" alt="播放列表界面.jpg">
 
 
 
@@ -115,6 +123,7 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
 > [vant 自动按需引入组件需要先配置, 否则使用时没有样式](https://vant-contrib.gitee.io/vant/#/zh-CN/quickstart#fang-shi-yi.-zi-dong-an-xu-yin-ru-zu-jian-tui-jian)
 
 ## 记录
+1. 关于 v-for 时的 key, 最好绑定 item.id, 绑定 index 在某些情况下可能出现问题, 比如删除操作
 1. 请求设置
     - ```axios```请求中, 在登录后需要携带的参数```cookie```。 ```POST```请求```url```必须添加时间戳, 不然得到的是缓存结果
 1. 发现

@@ -75,6 +75,13 @@ export let global = {
       console.log('mv', id);
       this.$store.commit('changeMvId', Number(id))
     },
+    // toast 提示
+    toast(msg, durationT = 1500) {
+      this.$toast({
+        message: msg,
+        className: "playerToast", duration: durationT, position: "bottom",
+      });
+    },
     // 复制文本 value 
     copyText(value) {
       // 创建的input需要加到 body, 不然复制不到值
@@ -86,7 +93,7 @@ export let global = {
       document.body.appendChild(input)
       input.select()
       document.execCommand('copy')
-      this.$toast('复制成功! 快和小伙伴们分享吧!')
+      this.toast('复制成功! 快和小伙伴们分享吧!')
       document.body.removeChild(input)
     },
     // 已滚动高度
