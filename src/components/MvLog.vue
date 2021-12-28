@@ -26,11 +26,12 @@
         </div>
       </div>
     </div>
-    <div class="mv-name two-eli">{{ mvLogData.name }}</div>
+    <div class="mv-name two-eli" @click="goMvPlayer">{{ mvLogData.name }}</div>
   </div>
 </template>
 <script>
 import {getMLog} from '@/api/api'
+import { global } from "@/mixin/global.js";
 
 export default {
   props: {
@@ -42,6 +43,7 @@ export default {
       },
     },
   },
+  mixins: [global],
   data() {
     return {
       // video 是否在暂停状态
@@ -58,7 +60,7 @@ export default {
       if (!vdo.src) {
         try {
           let mlog = await getMLog({id: this.mvLogData.id, res: 480})
-          // console.log(mlog);
+          console.log(mlog);
           vdo.src = mlog.data.resource.content.video.urlInfo.url
           vdo.oncanplay = () => {
             vdo.play()
@@ -83,6 +85,9 @@ export default {
     },
     vdoError() {
       this.$toast('视频播放错误!')
+    },
+    goMvPlayer() {
+      this.clickMvIcon(this.mvLogData.id, 'mlog')
     }
   },
   watch: {

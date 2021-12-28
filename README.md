@@ -30,6 +30,7 @@
 > (默认搜索页, 搜索提示页, 搜索结果页) 待完善
 1. [播放器](#播放器)
 > 收藏/取消 歌曲切换(循环,单曲,随机) 歌词滚动 播放列表
+1. [视频播放器](#mv播放器)
 
 <hr>
 
@@ -113,6 +114,9 @@
 <img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/播放器界面2.jpg" alt="播放器界面2.jpg">
 <img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/播放列表界面.jpg" alt="播放列表界面.jpg">
 
+## <a id="mv播放器">[mv播放器界面](#feature)</a>
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/mv播放器1.jpg" alt="mv播放器1.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/mv播放器2.jpg" alt="mv播放器2.jpg">
 
 
 

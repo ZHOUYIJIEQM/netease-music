@@ -1,4 +1,4 @@
-import {getMvDetail, getVdoDetail, getMvUrl, getVdoUrl} from '@/api/api'
+import {getMvDetail, getVdoDetail, getMvUrl, getVdoUrl, getMLogtoVideoId} from '@/api/api'
 import { global } from "@/mixin/global.js";
 
 export default {
@@ -17,7 +17,6 @@ export default {
     }
   },
   mounted() {
-    this.$refs.vdoEl.volume = 0
     this.initSet()
   },
   methods: {
@@ -95,93 +94,124 @@ export default {
     toggleShowDes() {
       this.showDes = !this.showDes
     },
+    // 获取 type 为 video 的数据
+    async videoGetData(newV) {
+      // 详细介绍
+      let vdoDetailData = await getVdoDetail(newV)
+      console.log(`vdo详情`, vdoDetailData);
+
+      if (vdoDetailData.code === 200) {
+        // this.toast('已获取视频详情')
+        this.vdoInfo = {
+          id: newV,
+          creator: {
+            id: vdoDetailData.data.creator.userId,
+            nickname: vdoDetailData.data.creator.nickname,
+            avatarUrl: vdoDetailData.data.creator.avatarUrl,
+            identityIconUrl: vdoDetailData.data.creator.avatarDetail && vdoDetailData.data.creator.avatarDetail.identityIconUrl
+          },
+          title: vdoDetailData.data.title,
+          description: vdoDetailData.data.description && vdoDetailData.data.description.replace(/\n/g, '<br>'),
+          duration: vdoDetailData.data.durationms / 1000,
+          commentCount: vdoDetailData.data.commentCount,
+          praisedCount: vdoDetailData.data.praisedCount,
+          shareCount: vdoDetailData.data.shareCount,
+          subscribeCount: vdoDetailData.data.subscribeCount,
+        }
+      } else {
+        this.toast('获取视频详情错误')
+      }
+
+      // 播放地址
+      let vdoData = await getVdoUrl(newV)
+      // console.log(`vdo地址`, vdoData);
+      if (vdoData.code === 200) {
+        this.vdoInfo.url = vdoData.urls[0].url
+      } else {
+        this.toast(`获取播放地址错误`)
+      }
+      console.log(JSON.stringify(this.vdoInfo, null, '  '));
+      this.$nextTick(() => {
+        this.$refs.vdoEl.setAttribute('src', this.vdoInfo.url)
+        this.$refs.vdoEl.play()
+      })
+
+      this.$store.commit("changeLoading", false);
+    },
+    async mvGetData(newV) {
+      // 详细介绍
+      let mvDetailData = await getMvDetail(newV)
+      console.log(`mv详情`, mvDetailData);
+      if (mvDetailData.code === 200) {
+        // this.toast('已获取视频详情')
+        this.vdoInfo = {
+          id: newV,
+          creator: {
+            id: mvDetailData.data.artists[0].id,
+            nickname: mvDetailData.data.artists[0].name,
+            avatarUrl: mvDetailData.data.artists[0].img1v1Url,
+          },
+          title: mvDetailData.data.name,
+          description: mvDetailData.data.desc && mvDetailData.data.desc.replace(/\n/g, '<br>'),
+          duration: mvDetailData.data.duration / 1000,
+          commentCount: mvDetailData.data.commentCount,
+          praisedCount: mvDetailData.data.subCount,
+          shareCount: mvDetailData.data.shareCount,
+          subscribeCount: mvDetailData.data.subCount
+        }
+      } else {
+        this.toast('获取视频详情错误')
+      }
+
+      // 播放地址
+      let mvData = await getMvUrl(newV, 1080)
+      // console.log(`mv地址`, mvData);
+      if (mvData.code === 200) {
+        this.vdoInfo.url = mvData.data.url
+      } else {
+        this.toast(`获取播放地址错误`)
+      }
+      console.log(JSON.stringify(this.vdoInfo, null, '  '));
+      this.$nextTick(() => {
+        this.$refs.vdoEl.setAttribute('src', this.vdoInfo.url)
+        this.$refs.vdoEl.play()
+      })
+
+      this.$store.commit("changeLoading", false);
+    },
+    async mlogGetData(newV) {
+      let data = await getMLogtoVideoId(newV)
+      console.log(data);
+      if (data.code === 200) {
+        this.videoGetData(data.data)
+      } else {
+        this.toast('获取mlog错误!该链接无法播放!', 3000)
+        throw '获取mlog错误!该链接可能无法播放!'
+      }
+    }
   },
   watch: {
     '$route.params.id': {
-      handler: async function (newV) {
-        this.$store.commit("changeLoading", true);
-        // 不同类型发起不同请求 type mv video, 再提取需要的数据
-        let type = this.$route.query.type
-        // this.vdoInfo = {}
-        // console.log(`id 触发 ${newV} 类型 ${type}  正在发起请求`);
-        if (type === 'mv') {
-          // 详细介绍
-          let mvDetailData = await getMvDetail(newV)
-          console.log(`mv详情`, mvDetailData);
-          if (mvDetailData.code === 200) {
-            // this.toast('已获取视频详情')
-            this.vdoInfo = {
-              id: newV,
-              creator: {
-                id: mvDetailData.data.artists[0].id,
-                nickname: mvDetailData.data.artists[0].name,
-                avatarUrl: mvDetailData.data.artists[0].img1v1Url,
-              },
-              title: mvDetailData.data.name,
-              description: mvDetailData.data.desc && mvDetailData.data.desc.replace(/\n/g, '<br>'),
-              duration: mvDetailData.data.duration / 1000,
-              commentCount: mvDetailData.data.commentCount,
-              praisedCount: mvDetailData.data.subCount,
-              shareCount: mvDetailData.data.shareCount,
-              subscribeCount: mvDetailData.data.subCount
-            }
-          } else {
-            this.toast('获取视频详情错误')
+      handler: function (newV) {
+        try {
+          this.$store.commit("changeLoading", true);
+          // 不同类型发起不同请求 type mv video, 再提取需要的数据
+          let type = this.$route.query.type
+          // this.vdoInfo = {}
+          // console.log(`id 触发 ${newV} 类型 ${type}  正在发起请求`);
+          if (type === 'mv') {
+            this.mvGetData(newV)
+          } else if (type === 'video') {
+            this.videoGetData(newV)
+          } else if (type === 'mlog') {
+            this.mlogGetData(newV)
           }
-          
-          // 播放地址
-          let mvData = await getMvUrl(newV, 1080)
-          // console.log(`mv地址`, mvData);
-          if (mvData.code === 200) {
-            this.vdoInfo.url = mvData.data.url
-          } else {
-            this.toast(`获取播放地址错误`)
-          }
-          console.log(JSON.stringify(this.vdoInfo, null, '  '));
-        } else {
-          // 详细介绍
-          let vdoDetailData = await getVdoDetail(newV)
-          console.log(`vdo详情`, vdoDetailData);
-
-          if (vdoDetailData.code === 200) {
-            // this.toast('已获取视频详情')
-            this.vdoInfo = {
-              id: newV,
-              creator: {
-                id: vdoDetailData.data.creator.userId,
-                nickname: vdoDetailData.data.creator.nickname,
-                avatarUrl: vdoDetailData.data.creator.avatarUrl,
-                identityIconUrl: vdoDetailData.data.creator.avatarDetail && vdoDetailData.data.creator.avatarDetail.identityIconUrl
-              },
-              title: vdoDetailData.data.title,
-              description: vdoDetailData.data.description && vdoDetailData.data.description.replace(/\n/g, '<br>'),
-              duration: vdoDetailData.data.durationms / 1000,
-              commentCount: vdoDetailData.data.commentCount,
-              praisedCount: vdoDetailData.data.praisedCount,
-              shareCount: vdoDetailData.data.shareCount,
-              subscribeCount: vdoDetailData.data.subscribeCount,
-            }
-          } else {
-            this.toast('获取视频详情错误')
-          }
-
-          // 播放地址
-          let vdoData = await getVdoUrl(newV)
-          // console.log(`vdo地址`, vdoData);
-          if (vdoData.code === 200) {
-            this.vdoInfo.url = vdoData.urls[0].url
-          } else {
-            this.toast(`获取播放地址错误`)
-          }
-          console.log(JSON.stringify(this.vdoInfo, null, '  '));
+        } catch (error) {
+          console.log('获取必要信息错误!');
+          this.toast('获取必要信息错误', 2000)
+        } finally {
+          this.$store.commit("changeLoading", false);
         }
-
-        this.$nextTick(() => {
-          this.$refs.vdoEl.setAttribute('src', this.vdoInfo.url)
-          this.$refs.vdoEl.play()
-        })
-
-        this.$store.commit("changeLoading", false);
       },
       immediate: true
     }

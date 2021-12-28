@@ -332,6 +332,14 @@ export function getMLog(params) {
 }
 
 /**
+ * 将 mlog id 转为视频 id
+ * @param {string} id  mlog id
+ */
+export function getMLogtoVideoId(id) {
+  return get(`/mlog/to/video?id=${id}`)
+}
+
+/**
  * @description 获取全部 mv
  * @param {Object} 
  * 可选参数 : 
