@@ -14,7 +14,7 @@
     </div>
 
     <!-- todo: 一键登录 -->
-    <div @click="lgin">一键登录</div>
+    <!-- <div @click="lgin">一键登录</div> -->
 
     <div class="menu-content" ref="menuContent" @scroll="menuContentScroll">
       <!-- 推荐去买黑胶vip -->
