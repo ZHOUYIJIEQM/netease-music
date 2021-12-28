@@ -15,7 +15,7 @@
 1. [我的页](#我的页)
 > 创建歌单 收藏歌单
 1. [云村页](#云村页)
-> 推荐视频(可以播放)
+> 推荐视频(播放,离开视图区域暂停播放)
 1. [菜单(退出登录在底部)](#菜单)
 1. [登录/注册](#登录)
 > 登录 手机号 验证码 密码
@@ -89,6 +89,7 @@
 ## <a id="歌单详情">[歌单详情](#feature)</a>
 <img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单详情1.jpg" alt="歌单详情.jpg">
 <img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单详情2.jpg" alt="歌单详情.jpg">
+<img style="display: block; width: 360px; margin: 20px 0; box-shadow: 0px 0px 20px -6px #868686" src="./preview/歌单详情3.jpg" alt="歌单详情.jpg">
 
 <hr>
 

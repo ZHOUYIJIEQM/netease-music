@@ -361,7 +361,7 @@ export function getMvDetail(id) {
  * @param {Number|Stirng} id mv id
  * @param {Number|Stirng} r 分辨率
  */
-export function mvUrl(id, r=480) {
+export function getMvUrl(id, r=480) {
   return get(`/mv/url?id=${id}&r=${r}`)
 }
 
@@ -392,6 +392,15 @@ export function favoriteSongList(uid) {
  */
 export function vdoRcmd(offset) {
   return get(`/video/timeline/recommend?offset=${offset}`)
+}
+
+// 获取视频详情
+export function getVdoDetail(id) {
+  return get(`/video/detail?id=${id}`)
+}
+// 获取视频url
+export function getVdoUrl(id) {
+  return get(`/video/url?id=${id}`)
 }
 
 /**

@@ -1,0 +1,158 @@
+@import '@/styles/variable.scss';
+@import '@/styles/mixin.scss';
+.mv-player-page {
+  z-index: 101;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  color: #fff;
+  @include df(column);
+  height: 100%;
+  .nav {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    @include df();
+    justify-content: space-between;
+    i {
+      font-size: .22rem;
+      padding: .12rem;
+    }
+  }
+
+  .vdo-content {
+    flex: 1;
+    position: relative;
+    $authorH: .8rem;
+    .vdo-box {
+      display: flex;
+      position: absolute;
+      overflow: hidden;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      video.video-ele {
+        object-fit: contain;
+        width: 100%;
+      }
+    }
+    .icon-bofang2 {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: .6rem;
+      color: rgba(255, 255, 255, .8);
+    }
+    .author-box {
+      position: absolute;
+      bottom: .1rem;
+      left: 0;
+      width: 82%;
+      min-height: $authorH;
+      padding-left: .12rem;
+      .artist {
+        @include df();
+        align-items: center;
+        // font-size: .14rem;
+        white-space: nowrap;
+        .avatar-box {
+          width: .4rem;
+          height: .4rem;
+          flex-shrink: 0;
+          // border-radius: 50%;
+          font-size: 0;
+          position: relative;
+          .avatar {
+            border: 2px solid #fff;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background-color: #fff;
+          }
+          .identityIcon {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: .14rem;
+          }
+        }
+        .name {
+          margin-left: .1rem;
+        }
+        .follow {
+          padding: .04rem .08rem;
+          background-color: red;
+          border-radius: 1rem;
+          margin-left: .1rem;
+          i {
+            font-size: .1rem;
+            margin-right: .04rem;
+          }
+          font-size: .1rem;
+        }
+      }
+      .des-box {
+        margin-top: .1rem;
+        line-height: 1.5;
+        .title {
+          font-size: .14rem;
+          i {
+            font-size: .12rem;
+            margin-left: .05rem;
+          }
+        }
+        .des {
+          font-size: .12rem;
+          color: #9c9c9c;
+          max-height: .7rem;
+          overflow-y: auto;
+        }
+      }
+    }
+    .progress-box {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      @include df();
+      align-items: center;
+    }
+    .right-bar {
+      position: absolute;
+      right: .15rem;
+      bottom: .15rem;
+      .icon-box {
+        @include df(column);
+        align-items: center;
+        padding: .1rem 0;
+        .iconfont {
+          font-size: .24rem;
+        }
+        p {
+          margin-top: .08rem;
+          font-size: .12rem;
+        }
+      }
+    }
+  }
+  
+  .bottom {
+    height: $miniPlayerH;
+    @include df();
+    align-items: center;
+    padding-left: .15rem;
+    color: #292929;
+    flex-shrink: 0;
+    .icon-yinle {
+      font-size: .2rem;
+      margin-right: .12rem;
+    }
+  }
+}

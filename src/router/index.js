@@ -63,6 +63,11 @@ const routes = [
     component: () => import('@/views/PlayListDetail/PlayListDetail.vue'),
   },
   {
+    path: "/MvPlayer/:id",
+    name: "MvPlayer",
+    component: () => import('@/views/MvPlayer/MvPlayer.vue'),
+  },
+  {
     path: "/PlayListDetail/:id/comment",
     name: "PlayListComment",
     component: () => import('@/views/PlayListComment/PlayListComment.vue'),

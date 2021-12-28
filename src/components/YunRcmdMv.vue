@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="mv-info">
+    <div class="mv-info" @click="clickMvIcon(rcmdMv.id, 'video')">
       <div class="name two-eli">{{ rcmdMv.name }}</div>
       <div class="playinfo">
         <div class="count">
@@ -35,7 +35,7 @@
           <span>{{ rcmdMv.playCount | formatNum }}</span>
         </div>
         <div class="praised-count" v-if="rcmdMv.praisedCount">
-          <i class="iconfont icon-zanpress"></i>
+          <i class="iconfont icon-zan"></i>
           <span>{{ rcmdMv.praisedCount | formatNum }}</span>
         </div>
         <div class="tag text-eli">{{ rcmdMv.tag }}</div>
@@ -45,9 +45,12 @@
 </template>
 
 <script>
-import {mvUrl} from '@/api/api'
+import { getMvUrl } from '@/api/api'
 import moment from "moment";
+import { global } from "@/mixin/global.js";
+
 export default {
+  mixins: [global],
   props: {
     rcmdMv: {
       type: Object,
@@ -105,7 +108,7 @@ export default {
           if (this.rcmdMv.url) {
             vdo.src = this.rcmdMv.url
           } else {
-            let url = await mvUrl(id)
+            let url = await getMvUrl(id)
             url = url.data.url
             vdo.src = url
           }

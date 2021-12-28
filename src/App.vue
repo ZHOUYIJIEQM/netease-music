@@ -80,6 +80,10 @@ export default {
         // 存在播放列表, 需要设置 padding-bottom, 空出位置显示小播放器, 
         // 如果进入的是主页, 因为有底部导航, 高度要放往上面一点, 也要取消底部导航的 border-top, 其他页面还是放到底部
         if (this.playList.length) {
+          // 不做处理的路由页
+          if (to.name === 'MvPlayer') {
+            return 
+          }
           this.$refs.appContent.$el.style.paddingBottom = miniPH
           if (/^\/Home\//.test(to.fullPath)) {
             this.$refs.miniPlayer.$el.style.bottom = footerH
@@ -88,16 +92,16 @@ export default {
             this.$refs.miniPlayer.$el.style.bottom = '0px'
           }
         } else {
-          this.$refs.appContent.$el.style.paddingBottom = '0px'
+          this.$refs.appContent.$el.style.paddingBottom = ''
         }
       })
     },
     playListLen(newV) {
-      // 如果不存在小播放器
       this.$nextTick(() => {
         let homeFooterEl = document.querySelector('.home-footer')
+        // 如果不存在小播放器
         if (!newV) {
-            this.$refs.appContent.$el.style.paddingBottom = '0px'
+            this.$refs.appContent.$el.style.paddingBottom = ''
             homeFooterEl && (homeFooterEl.style.border = '')
         } else {
           homeFooterEl && (homeFooterEl.style.border = '0px')

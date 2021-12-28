@@ -60,6 +60,7 @@ export default {
           this.pageNum++;
         } else {
           let allmv = await vdoRcmd(this.pageNum)
+          // console.log(allmv);
           this.recommendVideo.push(
             ...allmv.datas.map(item => {
               return {
