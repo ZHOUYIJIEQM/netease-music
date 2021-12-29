@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="mv-info" @click="clickMvIcon(rcmdMv.id, 'video')">
+    <div class="mv-info" @click="toMvPlayer">
       <div class="name two-eli">{{ rcmdMv.name }}</div>
       <div class="playinfo">
         <div class="count">
@@ -219,6 +219,13 @@ export default {
     waiting() {
       this.setPStatus('stop')
     },
+    toMvPlayer() {
+      if (this.loginStatus) {
+        this.clickMvIcon(this.rcmdMv.id, 'video')
+      } else {
+        this.clickMvIcon(this.rcmdMv.id, 'mv')
+      }
+    }
   },
   watch: {
     '$store.getters.mvId': {

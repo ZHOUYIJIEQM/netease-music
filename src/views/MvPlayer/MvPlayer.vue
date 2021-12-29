@@ -25,6 +25,7 @@
           @pause="vdoPause"
           @loadeddata="vdoLoadedData"
           @timeupdate="vdoTimeUpdate"
+          @error="vdoError"
         ></video>
       </div>
       <transition name="fadeIn">
@@ -37,7 +38,7 @@
       <div class="author-box" v-if="vdoInfo.id">
         <div class="artist">
           <div class="avatar-box">
-            <img class="avatar" :src="vdoInfo.creator.avatarUrl" alt="">
+            <img class="avatar" :src="vdoInfo.creator.avatarUrl || defaultImg" alt="">
             <img class="identityIcon" v-if="vdoInfo.creator.identityIconUrl" :src="vdoInfo.creator.identityIconUrl">
           </div>
           <div class="name">
@@ -72,7 +73,7 @@
           <p>{{vdoInfo.subscribeCount|formatNum}}</p>
         </div>
       </div>
-      <div class="progress-box" @click="bigButton">
+      <div class="progress-box">
         <van-slider 
           v-model="progressTime" 
           :bar-height="barHeight"

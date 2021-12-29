@@ -5,6 +5,7 @@ export default {
   mixins: [global],
   data() {
     return {
+      defaultImg: require('@/assets/mine/未登录.png'),
       vdoInfo: {},
       // showDes: false,
       showDes: false,
@@ -38,6 +39,9 @@ export default {
     vdoPause() {
       this.playState = 'paused'
       this.setButton('big')
+    },
+    vdoError() {
+      console.log('error');
     },
     setButton(type) {
       this.progTimer && clearTimeout(this.progTimer)

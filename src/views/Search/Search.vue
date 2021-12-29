@@ -86,6 +86,7 @@ export default {
     // 不想移动端一不小心下拉刷新
     document.querySelector('body').style.overflow = 'hidden'
   },
+  // 直接按返回键
   beforeRouteLeave (to, from, next) {
     document.querySelector('body').style.overflow = ''
     console.log('去往的组件页', to.name);
@@ -97,10 +98,16 @@ export default {
       if (nextList.includes(to.name)) {
         next()
       } else {
-        // 不离开
-        next(false)
-        // 动态组件切换到默认
-        this.searchType = 'default'
+        // 如果播放器显示了
+        if (this.$store.getters.showPlayer) {
+          this.$store.commit('changeShowPlayer', false)
+          next(false)
+        } else {
+          // 不离开
+          next(false)
+          // 动态组件切换到默认
+          this.searchType = 'default'
+        }
       }
     } else {
       next()
