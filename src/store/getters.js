@@ -13,7 +13,7 @@ const getters = {
   redirect: state => state.redirect,
   // 获取登录后的用户信息
   userInfo: state => JSON.parse(state.userInfo),
-  // 是否显示底部播放器
+  // 是否显示播放器
   showPlayer: state => state.showPlayer,
   mvId: state => state.mvId,
   songId: state => state.songId,
