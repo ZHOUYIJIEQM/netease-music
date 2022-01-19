@@ -144,7 +144,7 @@ export default {
       if (from.name === 'PhoneLogin') {
         // 从 PhoneLogin 跳转过来才发送验证码
         // todo: 测试过程注释, 正常使用时取消注释, api 每天只能发5次验证码
-        // vm.sendCaptcha()
+        vm.sendCaptcha()
       }
     })
   }
