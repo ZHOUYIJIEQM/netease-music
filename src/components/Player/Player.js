@@ -155,6 +155,8 @@ export default {
         if (f.code === 200) {
           this.favoriteIcon = !this.favoriteIcon
         }
+      } else {
+        this.toast('登录后才能收藏哦!', 2000)
       }
     },
     audioCanplay() {
