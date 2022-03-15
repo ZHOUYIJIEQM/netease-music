@@ -7,7 +7,8 @@
 1. [vant 文档](https://vant-contrib.gitee.io/vant/#/zh-CN/toast)
 1. [日期处理 Moment.js](http://momentjs.cn/)
 
-## [F12后切换到移动端预览](https://musicapp.yjsjyb.top)
+## 线上效果
+[F12后切换到移动端预览](https://musicapp.yjsjyb.top)
 
 ## <a id="feature">实现的功能</a>
 1. [发现页](#发现页)
