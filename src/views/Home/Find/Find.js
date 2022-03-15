@@ -197,7 +197,7 @@ export default {
         // console.log('发现页需要的数据', JSON.stringify(this.homeFindData, null, '  '));
         this.loading = false
       } catch(error) {
-        console.log(error);
+        // console.log(error);
       }
     },
     // 登录后, 获取发现页数据, 需要传入 cursor 参数
@@ -345,8 +345,8 @@ export default {
           // console.log(dataItem);
           let rcmdPlayList = {}
           rcmdPlayList.type = '推荐歌单'
-          rcmdPlayList.title = dataItem.uiElement.subTitle.title
-          rcmdPlayList.text = dataItem.uiElement.button.text
+          rcmdPlayList.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          rcmdPlayList.text = dataItem.uiElement && dataItem.uiElement.button.text
           rcmdPlayList.scrollPlaylist = []
           rcmdPlayList.list = []
           dataItem.creatives.forEach(async item => {
@@ -382,8 +382,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_STYLE_RCMD') {
           let rcmdSong = {}
           rcmdSong.type = '推荐歌曲'
-          rcmdSong.title = dataItem.uiElement.subTitle.title
-          rcmdSong.text = dataItem.uiElement.button.text
+          rcmdSong.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          rcmdSong.text = dataItem.uiElement && dataItem.uiElement.button.text
           rcmdSong.list = []
           dataItem.creatives.forEach(item => {
             let list = []
@@ -407,8 +407,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_MUSIC_MLOG') {
           let mLog = {}
           mLog.type = '精选音乐视频'
-          mLog.title = dataItem.uiElement.subTitle.title
-          mLog.text = dataItem.uiElement.button.text
+          mLog.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          mLog.text = dataItem.uiElement && dataItem.uiElement.button.text
           mLog.list = []
           dataItem.extInfo.forEach(item => {
             mLog.list.push({
@@ -427,7 +427,7 @@ export default {
           let radarPlayList = {}
           radarPlayList.type = '雷达歌单'
           radarPlayList.title = '你的雷达歌单'
-          radarPlayList.text = dataItem.uiElement.button.text
+          radarPlayList.text = dataItem.uiElement && dataItem.uiElement.button.text
           radarPlayList.list = []
           dataItem.creatives.forEach(item => {
             radarPlayList.list.push({
@@ -443,17 +443,26 @@ export default {
         // 热门播客
         if (dataItem.blockCode === 'HOMEPAGE_VOICELIST_RCMD') {
           let hotPodcast = {}
-          // console.log(dataItem);
+          // console.log('播客:', dataItem);
           hotPodcast.type = '热门播客'
-          hotPodcast.title = dataItem.uiElement.subTitle.title
-          hotPodcast.text = dataItem.uiElement.button.text
+          hotPodcast.title = '热门播客'
+          hotPodcast.text = '更多'
           hotPodcast.list = []
           dataItem.creatives.forEach(item => {
-            hotPodcast.list.push({
-              id: item.creativeId,
-              name: item.uiElement.mainTitle.title,
-              img: item.uiElement.image.imageUrl,
-              labelText: item.uiElement.labelTexts && item.uiElement.labelTexts[0],
+            // hotPodcast.list.push({
+            //   id: item.creativeId,
+            //   name: item.uiElement.mainTitle.title,
+            //   img: item.uiElement.image && item.uiElement.image.imageUrl,
+            //   labelText: item.uiElement.labelTexts && item.uiElement.labelTexts[0],
+            // })
+            // 网易云会改动某些字段, 导致显示空白
+            item.resources.forEach(res => {
+              hotPodcast.list.push({
+                id: res.resourceId,
+                name: res.uiElement.mainTitle.title,
+                img: res.uiElement.image.imageUrl,
+                labelText: res.uiElement.labelTexts.length && res.uiElement.labelTexts[0]
+              })
             })
           })
           hotPodcast.list = arrTurnTwo(hotPodcast.list, 3)
@@ -464,8 +473,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_OFFICIAL_PLAYLIST') {
           let scenePlayList = {}
           scenePlayList.type = '专属场景歌单'
-          scenePlayList.title = dataItem.uiElement.subTitle.title
-          scenePlayList.text = dataItem.uiElement.button.text
+          scenePlayList.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          scenePlayList.text = dataItem.uiElement && dataItem.uiElement.button.text
           scenePlayList.list = []
           dataItem.creatives.forEach(item => {
             scenePlayList.list.push({
@@ -537,21 +546,23 @@ export default {
         
         // 排行榜
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_TOPLIST') {
+          // console.log('排行榜', dataItem);
           let toplist = {}
           toplist.type = '排行榜'
-          toplist.title = dataItem.uiElement.subTitle.title
-          toplist.text = dataItem.uiElement.button.text
+          toplist.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          toplist.text = dataItem.uiElement && dataItem.uiElement.button.text
           toplist.list = []
           dataItem.creatives.forEach(item => {
             let list = []
             item.resources.forEach(item2 => {
+              console.log();
               list.push({
                 id: item2.resourceId,
                 name: item2.uiElement.mainTitle && item2.uiElement.mainTitle.title,
                 info: item2.uiElement.subTitle && item2.uiElement.subTitle.title,
                 img: item2.uiElement.image.imageUrl,
-                artists: item2.resourceExtInfo.artists.map(artistsName => artistsName.name),
-                sq: Number(item2.resourceExtInfo.songPrivilege.maxbr) > 480000
+                artists: item2.resourceExtInfo && item2.resourceExtInfo.artists.map(artistsName => artistsName.name),
+                sq: item2.resourceExtInfo && Number(item2.resourceExtInfo.songPrivilege.maxbr) > 480000
               })
             })
           })
@@ -562,8 +573,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_MUSIC_CALENDAR') {
           let musicCalendar = {}
           musicCalendar.type = '音乐日历'
-          musicCalendar.title = dataItem.uiElement.subTitle.title
-          musicCalendar.text = dataItem.uiElement.button.text
+          musicCalendar.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          musicCalendar.text = dataItem.uiElement && dataItem.uiElement.button.text
           musicCalendar.list = []
           dataItem.creatives.forEach(item => {
             musicCalendar.list.push({
@@ -580,8 +591,8 @@ export default {
         if (dataItem.blockCode === 'HOMEPAGE_BLOCK_FUN_CLUB') {
           let funClub = {}
           funClub.type = '云村ktv'
-          funClub.title = dataItem.uiElement.subTitle.title
-          funClub.text = dataItem.uiElement.button.text
+          funClub.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          funClub.text = dataItem.uiElement && dataItem.uiElement.button.text
           funClub.list = []
           dataItem.extInfo.roomInfoList.forEach(item => {
             funClub.list.push({
@@ -628,8 +639,8 @@ export default {
           let videoPlayList = {}
           videoPlayList.type = '视频合辑'
           videoPlayList.title = '视频歌单'
-          // videoPlayList.title = dataItem.uiElement.subTitle.title
-          videoPlayList.text = dataItem.uiElement.button.text
+          // videoPlayList.title = dataItem.uiElement && dataItem.uiElement.subTitle.title
+          videoPlayList.text = dataItem.uiElement && dataItem.uiElement.button.text
           videoPlayList.list = []
           dataItem.creatives.forEach(item => {
             videoPlayList.list.push({

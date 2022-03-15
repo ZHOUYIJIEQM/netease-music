@@ -10,7 +10,7 @@
         @pause="vdoPause"
         @error="vdoError"
       ></video>
-      <img ref="coverUrl" v-lazy="mvLogData.img" alt="" />
+      <img ref="coverUrl" @click="playVideo" v-lazy="mvLogData.img" alt="" />
       <!-- 右上角的数据 -->
       <span class="tr-text" v-if="mvLogData.playCount">
         <span class="iconfont icon-bofangsanjiaoxing"></span>
@@ -64,6 +64,7 @@ export default {
           vdo.src = mlog.data.resource.content.video.urlInfo.url
           vdo.oncanplay = () => {
             vdo.play()
+            this.$refs.coverUrl.style.zIndex = '-1'
           }
         } catch (error) {
           this.$toast('获取播放链接错误!')
@@ -71,6 +72,7 @@ export default {
         }
       } else {
         this.toggleVdoStatus()
+        this.$refs.coverUrl.style.zIndex = '-1'
       }
     },
     toggleVdoStatus() {
@@ -96,6 +98,7 @@ export default {
         if (!this.$refs.mlogVideo.paused && newV !== this.mvLogData.id) {
           // console.log('暂停', this.mvLogData.name);
           this.$refs.mlogVideo.pause()
+          this.$refs.coverUrl.style.zIndex = '1'
         }
       }
     },
@@ -122,6 +125,10 @@ export default {
     font-size: 0;
     overflow: hidden;
     background: rgb(59, 59, 59);
+    img {
+      position: absolute;
+      z-index: 1;
+    }
     img,
     video {
       width: 100%;
@@ -138,6 +145,7 @@ export default {
       top: 0;
     }
     .tr-text {
+      z-index: 2;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -159,6 +167,7 @@ export default {
       position: absolute;
       bottom: 0.12rem;
       right: 0.08rem;
+      z-index: 2;
       .iconfont {
         color: #fff;
         font-size: 0.12rem;

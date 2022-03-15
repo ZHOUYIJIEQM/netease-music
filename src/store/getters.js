@@ -15,6 +15,7 @@ const getters = {
   userInfo: state => JSON.parse(state.userInfo),
   // 是否显示播放器
   showPlayer: state => state.showPlayer,
+  showMiniPlayer: state => state.showMiniPlayer,
   mvId: state => state.mvId,
   songId: state => state.songId,
   showReply: state => state.showReply,
@@ -39,6 +40,7 @@ const getters = {
   playerSortType: state => state.playerSortType,
   playingIndex: state => state.playingIndex,
   adoEl: state => state.adoEl,
+  historyList: state => state.historyList,
 }
 
 export default getters

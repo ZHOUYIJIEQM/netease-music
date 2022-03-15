@@ -3,7 +3,7 @@
   <div class="rcmd-mv">
     <div class="img-box" ref="imgbox">
       <transition name="fadeIn">
-        <img ref="img" v-if="imgShow" />
+        <img ref="img" v-if="imgShow" @click="clickVideo(rcmdMv.id)" />
       </transition>
       <video 
         ref="rcmdVideo" 
@@ -114,6 +114,7 @@ export default {
           }
           vdo.oncanplay = () => {
             vdo.play()
+            this.$refs.img.style.zIndex = '-1'
           }
         } else {
           this.toggleVdoStatus()
@@ -239,6 +240,7 @@ export default {
           this.$refs.rcmdVideo.load()
           clearInterval(this.vdoTimer)
           this.setPStatus('')
+          this.$refs.img.style.zIndex = ''
         }
       }
     },
@@ -258,6 +260,9 @@ export default {
     background-color: #f7b2b2;
     position: relative;
     font-size: 0;
+    img {
+      z-index: 1;
+    }
     img, video {
       position: absolute;
       left: 0;
@@ -274,6 +279,7 @@ export default {
       font-size: 0.11rem;
     }
     .play-status {
+      /* z-index: 2; */
       position: absolute;
       left: .05rem;
       bottom: .08rem;

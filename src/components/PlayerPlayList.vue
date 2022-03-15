@@ -68,6 +68,10 @@ export default {
     // 删除某一曲
     delList(index) {
       let playlist = this.playlist
+      if (playlist.length <= 1) {
+        this.$store.getters.adoEl.pause()
+        this.$store.commit('changeShowPlayer', false)
+      }
       playlist.splice(index, 1)
       this.$store.commit('setPlayList', playlist)
       this.$store.commit('setPlayingIndex', 0)

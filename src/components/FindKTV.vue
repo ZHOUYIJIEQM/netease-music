@@ -16,7 +16,7 @@
       {{ktvData.name}}
     </div>
     <div class="img-box">
-      <img :src="ktvData.img" alt="">
+      <img ref="img" :src="ktvData.img" alt="">
     </div>
     <div class="num">{{ktvData.onlineNum}}人</div>
   </div>

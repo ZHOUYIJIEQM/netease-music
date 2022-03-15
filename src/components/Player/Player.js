@@ -26,8 +26,6 @@ export default {
       volumeInActiveColor: 'rgba(255, 255, 255, .4)',
       // 当前播放时间
       currentTime: 0,
-      // 格式化后
-      // fCurrentTime: '00:00',
       // 全曲时间
       durationTime: '00:00',
       // 是否按住了进度条
@@ -46,7 +44,7 @@ export default {
       lyricActiveIndex: 0,
       // 标记歌词能否自动滚动
       lyricCanScroll: true,
-      // 列表循环   单曲循环  列表里随机
+      // 列表循环  单曲循环  列表里随机
       playSortTypeArr: ['listCycle', 'singleCycle', 'random'],
       // 播放顺序
       playSortType: window.localStorage.getItem('music_player_sortType') || 'listCycle',
@@ -54,7 +52,9 @@ export default {
       recordArr: [],
       recordIndex: 0,
       // 喜欢的歌曲
-      favoriteIcon: false
+      favoriteIcon: false,
+      // 不是第一次设置音乐 src
+      notFirstSrc: false,
     }
   },
   computed: {
@@ -89,8 +89,17 @@ export default {
     durationT() {
       return this.songInfo.duration
     },
-    fCurrentTime() {
-      return this.formatTime(this.currentTime)
+    fCurrentTime: {
+      get() {
+        if (this.currentTime) {
+          return this.formatTime(this.currentTime)
+        } else {
+          return '00:00'
+        }
+      },
+      set(value) {
+        this.formatTime(value)
+      }
     },
     loginStatus() {
       return this.$store.getters.loginStatus
@@ -125,14 +134,7 @@ export default {
         // 如果 audio 没有播放地址 歌曲id存在, 获取地址
         if (!this.adoEl.src) {
           (async () => {
-            let url = ''
-            let songUrlData = await songUrl(this.songInfo.id)
-            if (songUrlData.code === 200) {
-              url = songUrlData.data[0].url
-            } else {
-              this.toast(`获取音乐url出错!`, 2000)
-            }
-  
+            let url = await this.getMusicUrl(this.songInfo.id)
             this.adoEl.setAttribute('src', url)
             this.diskEl.classList.remove('ready')
           })()
@@ -169,11 +171,8 @@ export default {
       this.playStatus = 'paused'
     },
     audioError() {
-      console.log(`可能是无效播放地址: '${this.adoEl.src}'`);
-      this.toast('无效的播放地址! 可能是付费歌曲!\n即将播放下一曲!', 2000)
-      this.nextSongTimer = setTimeout(() => {
-        this.nextSong()
-      }, 2000)
+      console.log(`无效的播放地址: '${this.adoEl.src}'`);
+      if (this.notFirstSrc) this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
     },
     audioWaiting() {
       console.log('waiting');
@@ -551,10 +550,25 @@ export default {
         }
       }
     },
+    async getMusicUrl(songId) {
+      let url = ''
+      let songUrlData = await songUrl(songId)
+      if (songUrlData.code === 200) {
+        url = songUrlData.data[0].url
+        if (!url) {
+          url = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
+        }
+      } else {
+        this.toast(`获取音乐url出错!`, 2000)
+      }
+      return url
+    },
     // 歌曲id, 改变触发
     async songIdChange(newId) {
       try {
         this.$store.commit("changeLoading", true);
+        this.adoEl.currentTime = 0
+        this.notFirstSrc = true
 
         this.recordArr.push(newId)
         this.lyricText = []
@@ -565,8 +579,6 @@ export default {
           this.adoEl.pause()
         }
 
-        // id 对应的 音乐url
-        let url = ''
         // 去重处理 
         let playlist = this.playList
         let index = playlist.findIndex(item => String(item.id) === String(newId))
@@ -576,7 +588,7 @@ export default {
         } else {
           // 没有就保存起来
           let songInfo = await songDetail(newId)
-          console.log(songInfo);
+          // console.log(songInfo);
           if (songInfo.code === 200) {
             playlist.push({
               id: songInfo.songs[0].id,
@@ -592,14 +604,7 @@ export default {
           }
         }
 
-        // 歌曲url不是固定的, 不好直接保存到播放列表, 每次听重新请求
-        let songUrlData = await songUrl(newId)
-        if (songUrlData.code === 200) {
-          url = songUrlData.data[0].url
-        } else {
-          this.toast(`获取音乐url出错!`, 2000)
-        }
-
+        let url = await this.getMusicUrl(newId)
         // this.songInfo = this.playList[this.playingIndex]
         this.adoEl.setAttribute('src', url)
         this.diskEl.classList.remove('ready')
@@ -623,7 +628,6 @@ export default {
   watch: {
     // 监听歌曲id, id变化代表切换了歌曲
     songId(newId) {
-      console.log('新id', newId);
       this.songIdChange(newId)
     },
     // 播放状态 paused playing

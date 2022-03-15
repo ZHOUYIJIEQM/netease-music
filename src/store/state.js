@@ -13,8 +13,10 @@ const state = {
   userInfo: window.localStorage.getItem('musicUserInfo'),
   // 保存登录前的位置, 登录后返回该位置
   redirect: window.localStorage.getItem('musicRedirect') || '',
-  // 是否显示底部播放器
+  // 是否显示播放器
   showPlayer: false,
+  // 是否显示底部小播放器
+  showMiniPlayer: false,
   // 播放列表
   showPlayList: false,
   // 要播放的歌曲列表
@@ -39,7 +41,8 @@ const state = {
   searchHistoryArr: window.localStorage.getItem('musicSearchHistory'),
   // 播放器播放顺序
   playerSortType: window.localStorage.getItem('music_player_sortType') || 'listCycle',
-  
+  // 保存历史页面栈
+  historyList: []
 }
 
 export default state

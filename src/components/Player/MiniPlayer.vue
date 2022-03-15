@@ -1,19 +1,19 @@
 <template>
   <!-- 底部小播放器 -->
   <div class="mini-player" 
-    v-if="playList.length"
+    v-show="showMiniPlayer"
     @click="showPlayer"
   >
     <div 
       class="disk-box"
       :class="[playState === 'paused' ? 'paused' : 'playing']"
     >
-      <img :src="currentSongInfo.bgImg">
+      <img :src="currentSongInfo && currentSongInfo.bgImg">
     </div>
     <div class="text-info text-eli">
-      <span class="name">{{currentSongInfo.name}}</span>
+      <span class="name">{{currentSongInfo && currentSongInfo.name}}</span>
       <span class="split">-</span>
-      <span class="ar">{{currentSongInfo.artist}}</span>
+      <span class="ar">{{currentSongInfo && currentSongInfo.artist}}</span>
     </div>
     <van-circle 
       @click.native.stop="togglePlay"
@@ -53,12 +53,15 @@ export default {
     },
     playRate() {
       return this.$store.getters.playRate
+    },
+    showMiniPlayer() {
+      return this.$store.getters.showMiniPlayer
     }
   },
   methods: {
     // 显示播放器
     showPlayer() {
-      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      let history = this.$store.getters.historyList
       if (history.length <= 1 && !window.location.href.includes('?player=show')) {
         window.location.href+='?player=show'
       }
@@ -66,7 +69,7 @@ export default {
     },
     // 显示播放列表
     showPlayList() {
-      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      let history = this.$store.getters.historyList
       // http://localhost:8080/#/Home/Find
       if (history.length <= 1 && !window.location.href.includes('?player=show')) {
         window.location.href+='?playlist=show'
@@ -83,6 +86,12 @@ export default {
     }
   },
   watch: {
+    'playList.length': {
+      handler: function (newV) {
+        this.$store.commit('changeShowMiniPlayer', Boolean(newV))
+      },
+      immediate: true
+    }
   }
 };
 </script>

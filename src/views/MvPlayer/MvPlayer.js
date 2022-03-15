@@ -3,6 +3,7 @@ import { global } from "@/mixin/global.js";
 
 export default {
   mixins: [global],
+  name: 'MvPlayer',
   data() {
     return {
       defaultImg: require('@/assets/mine/未登录.png'),
@@ -18,6 +19,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit("changeLoading", true);
     this.initSet()
   },
   methods: {
@@ -72,7 +74,7 @@ export default {
       }
     },
     vdoLoadedData() {
-      console.log(this.vdoEl.videoWidth, this.vdoEl.videoHeight);
+      // console.log(this.vdoEl.videoWidth, this.vdoEl.videoHeight);
       let ratio = this.vdoEl.videoWidth / this.vdoEl.videoHeight
       // 根据比例判断横屏, 竖屏
       if (ratio >= 1) {
@@ -102,7 +104,7 @@ export default {
     async videoGetData(newV) {
       // 详细介绍
       let vdoDetailData = await getVdoDetail(newV)
-      console.log(`vdo详情`, vdoDetailData);
+      // console.log(`vdo详情`, vdoDetailData);
 
       if (vdoDetailData.code === 200) {
         // this.toast('已获取视频详情')
@@ -134,7 +136,7 @@ export default {
       } else {
         this.toast(`获取播放地址错误`)
       }
-      console.log(JSON.stringify(this.vdoInfo, null, '  '));
+      // console.log(JSON.stringify(this.vdoInfo, null, '  '));
       this.$nextTick(() => {
         this.$refs.vdoEl.setAttribute('src', this.vdoInfo.url)
         this.$refs.vdoEl.play()
@@ -175,7 +177,7 @@ export default {
       } else {
         this.toast(`获取播放地址错误`)
       }
-      console.log(JSON.stringify(this.vdoInfo, null, '  '));
+      // console.log(JSON.stringify(this.vdoInfo, null, '  '));
       this.$nextTick(() => {
         this.$refs.vdoEl.setAttribute('src', this.vdoInfo.url)
         this.$refs.vdoEl.play()

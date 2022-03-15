@@ -38,7 +38,8 @@
       >
         {{item}}
       </span>
-      <span class="al">{{listInfo.al}}</span>
+      <!-- <span class="al">{{listInfo.al}}</span> -->
+      <span class="al" v-html="listInfo.al"></span>
     </div>
   </div>
 </template>

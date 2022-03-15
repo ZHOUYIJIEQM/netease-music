@@ -145,14 +145,14 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   // 这还是不太好用, 不能判断是 push 过来的 还是 replace 
-  let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+  let history = store.getters.historyList
   if (history.length && to.name === history[0]) {
     return
   }else {
     history.unshift(to.name)
   }
-  // console.log(history);
-  window.sessionStorage.setItem('netMusicAppHistory', JSON.stringify(history))
+  store.commit('changeHistoryList', history)
+  console.log('进入的历史:', store.getters.historyList);
 })
 
 export default router;

@@ -69,6 +69,9 @@ const mutations = {
     }
     state.showPlayer = value
   },
+  changeShowMiniPlayer(state, value) {
+    state.showMiniPlayer = value
+  },
   changeMvId(state, value) {
     state.mvId = value
   },
@@ -110,6 +113,9 @@ const mutations = {
   },
   setPlayerSortType(state, value) {
     state.playerSortType = value
+  },
+  changeHistoryList(state, arr) {
+    state.historyList = arr
   }
 }
 

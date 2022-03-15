@@ -34,9 +34,9 @@ export let global = {
       this.$store.commit("toggleMenu");
     },
     // http://localhost:8080
-    // 路由返回, 如果第一次进入的页面有导航返回键, go(-1), 是无效的, 把访问过的路由记录到 sessionStorage, 只有一个路由还点了返回键, 就直接跳到首页
+    // 路由返回, 如果第一次进入的页面有导航返回键, go(-1), 是无效的, 把访问过的路由记录到 vuex, 只有一个路由还点了返回键, 就直接跳到首页
     goBack() {
-      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      let history = this.$store.getters.historyList
       if (history.length > 1) {
         this.$router.go(-1);
       } else {
@@ -65,7 +65,7 @@ export let global = {
       // console.log('点击歌曲', id);
       // http://localhost:8080/#/Home/Find
       this.$store.commit('changeSongId', String(id))
-      let history = JSON.parse(window.sessionStorage.getItem('netMusicAppHistory')) || []
+      let history = this.$store.getters.historyList
       if (history.length <= 1 && !window.location.href.includes('?player=show')) {
         window.location.href+='?player=show'
       }
