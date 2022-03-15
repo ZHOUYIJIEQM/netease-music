@@ -192,6 +192,7 @@ export default {
         this.videoGetData(data.data)
       } else {
         this.toast('获取mlog错误!该链接无法播放!', 3000)
+        this.$store.commit("changeLoading", false);
         throw '获取mlog错误!该链接可能无法播放!'
       }
     }

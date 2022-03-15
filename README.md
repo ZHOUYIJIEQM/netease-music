@@ -1,4 +1,5 @@
-
+修改 播放器 显示界面  changeShowPlayer
+修改 播放列表  showPlayList
 
 # netease-music
 > 界面模仿网易云音乐app,仅供学习

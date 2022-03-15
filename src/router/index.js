@@ -152,7 +152,7 @@ router.afterEach((to, from) => {
     history.unshift(to.name)
   }
   store.commit('changeHistoryList', history)
-  console.log('进入的历史:', store.getters.historyList);
+  // console.log('进入的历史:', store.getters.historyList);
 })
 
 export default router;

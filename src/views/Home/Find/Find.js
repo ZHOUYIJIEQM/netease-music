@@ -163,6 +163,7 @@ export default {
     // 获取发现页数据, 并提取需要的数据
     async getData() {
       try {
+        // https://neteasecloudmusicapi.vercel.app/#/?id=%e9%a6%96%e9%a1%b5-%e5%8f%91%e7%8e%b0
         let find = await homePageFind({refresh: true})
         // console.log(find);
         // 登录状态
@@ -659,6 +660,7 @@ export default {
   watch: {
     loginStatus: {
       handler: function (newV) {
+        this.dividerShow = false
         this.homeFindData = []
         this.initData()
       },

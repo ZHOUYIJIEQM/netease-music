@@ -77,9 +77,19 @@ export default {
     playListLen() {
       return this.playList.length;
     },
+    adoEl() {
+      return this.$store.getters.adoEl
+    }
   },
   created() {
     console.log('%c在 pc 浏览, 按 F12 切换手机模式后 swiper 左右滑动异常, 需要刷新一次', 'font-size: 16px; color: #fff; background: #1989fa; padding: 3px;');
+    // 用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back()或者history.forward()方法）
+    window.addEventListener('popstate', (event) => {
+      let history = this.$store.getters.historyList
+      history.shift()
+      this.$store.commit('changeHistoryList', history)
+      // console.log('后退', this.$store.getters.historyList);
+    });
   },
   methods: {
     // 设置底部小播放器位置
@@ -128,6 +138,14 @@ export default {
         this.setPadding(this.$route)
       });
     },
+    '$store.getters.mvId': {
+      // 如果在播放歌曲, 需要暂停播放
+      handler: function () {
+        if (!this.adoEl.paused) {
+          this.adoEl.pause()
+        }
+      }
+    }
   },
 };
 </script>

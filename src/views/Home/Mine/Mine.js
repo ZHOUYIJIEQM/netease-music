@@ -132,11 +132,12 @@ export default {
           : recommendList.result.slice(0, 4);
         // console.log(this.recommendList);
         this.recommendList = this.recommendList.map((item) => {
+          console.log(item);
           return {
             id: item.id,
             name: item.name,
             img: item.picUrl,
-            playCount: item.playcount,
+            playCount: item.playcount || item.playCount,
           };
         });
         hotList = {
