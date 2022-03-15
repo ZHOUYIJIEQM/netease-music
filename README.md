@@ -1,6 +1,3 @@
-修改 播放器 显示界面  changeShowPlayer
-修改 播放列表  showPlayList
-
 # netease-music
 > 界面模仿网易云音乐app,仅供学习
 
@@ -9,6 +6,8 @@
 1. [swiper 文档](https://www.swiper.com.cn/api/start/new.html)
 1. [vant 文档](https://vant-contrib.gitee.io/vant/#/zh-CN/toast)
 1. [日期处理 Moment.js](http://momentjs.cn/)
+
+## [点这里预览](https://musicapp.yjsjyb.top)
 
 ## <a id="feature">实现的功能</a>
 1. [发现页](#发现页)
