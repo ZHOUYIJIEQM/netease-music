@@ -72,7 +72,6 @@ export let global = {
       this.$store.commit('changeShowPlayer', true)
     },
     clickMvIcon(id, type="mv") {
-      console.log('mv', id);
       this.$store.commit('changeMvId', Number(id))
       this.$router.push({name: 'MvPlayer', params: {id}, query: {type}})
     },

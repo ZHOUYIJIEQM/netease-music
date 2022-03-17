@@ -75,7 +75,6 @@ export default {
     // 如果搜索词已经改变了
     if (this.$parent.searchText !== this.keyWord) {
       this.keyWord = this.$parent.searchText
-      console.log('加载数据:', this.keyWord);
       // 清空数据
       this.resultData.forEach((item, index) => {
         item.hasData = false
@@ -109,14 +108,12 @@ export default {
       el.addEventListener('scroll', () => {
         this.resultData[index].timer && clearTimeout(this.resultData[index].timer)
         this.resultData[index].timer = setTimeout(async () => {
-          console.log('scroll');
           let elH = el.offsetHeight
           let elSH = el.scrollHeight
           let elST = el.scrollTop
           let bottom = 200
           if (elH + elST > elSH - bottom) {
             console.log(index, '到底!');
-
           }
         }, 100)
       })
@@ -218,6 +215,10 @@ export default {
     // 提取视频
     extractVideo(data) {
       return data.map((item) => {
+        let type = ''
+        item.type == 0 && (type = 'mv')
+        item.type == 1 && (type = 'video')
+        item.type == 2 && (type = 'mlog')
         return {
           name: item.title.replace(
             new RegExp(this.keyWord, "ig"),
@@ -228,6 +229,7 @@ export default {
           duration: moment(item.durationms).format("mm:ss"),
           creator: item.creator[0].userName,
           playTime: item.playTime,
+          type
         };
       });
     },
@@ -310,7 +312,6 @@ export default {
               keywords: this.keyWord,
               type: 1014,
             });
-            // console.log(vdoData);
             if (vdoData.code === 200) {
               let vdoIndex = this.resultData.findIndex(
                 (item) => item.type === "视频"
@@ -318,9 +319,10 @@ export default {
               this.resultData[vdoIndex].data = this.extractVideo(
                 vdoData.result.videos
               );
-              let vdo = this.resultData[vdoIndex].data.slice(0, 5);
+              let vdo = this.resultData[vdoIndex].data.slice(0, 6);
               // this.resultData[index].data.videoList = this.resultData[this.resultData.findIndex(item => item.type === '视频')].data.slice(0, 5)
               // this.resultData[index].data.videoText = data.new_mlog.moreText
+              // 1 video 2 mlog  0 mv
               this.$set(this.resultData[index].data, "videoList", vdo);
               this.$set(
                 this.resultData[index].data,

@@ -28,10 +28,21 @@ export default {
       MV: [],
       // 特色
       feature: [],
+      // 记录滚动高度
+      scrollT: 0,
     };
   },
   created() {
     this.getData();
+  },
+  activated() {
+    setTimeout(() => {
+      window.scroll(0, this.scrollT)
+      window.addEventListener('scroll', this.handlerScroll)
+    }, 10)
+  },
+  deactivated() {
+    window.removeEventListener('scroll', this.handlerScroll)
   },
   methods: {
     async getData() {
@@ -111,5 +122,8 @@ export default {
     getRandom(start, end) {
       return Math.round(Math.random() * (end - start) + start);
     },
+    handlerScroll(e) {
+      this.scrollT = Math.ceil(this.getScrollTop())
+    }
   },
 };

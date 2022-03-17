@@ -1,6 +1,6 @@
 <template>
   <!-- 用于搜索结果显示视频 -->
-  <div class="search-vdo-comp" @click="clickMvIcon(searchVdoData.id)">
+  <div class="search-vdo-comp" @click="clickMvIcon(searchVdoData.id, searchVdoData.type)">
     <div class="left">
       <img :src="searchVdoData.coverUrl" alt="">
       <i class="iconfont icon-bofang2"></i>

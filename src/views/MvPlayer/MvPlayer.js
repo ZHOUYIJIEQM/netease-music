@@ -147,7 +147,6 @@ export default {
     async mvGetData(newV) {
       // 详细介绍
       let mvDetailData = await getMvDetail(newV)
-      console.log(`mv详情`, mvDetailData);
       if (mvDetailData.code === 200) {
         // this.toast('已获取视频详情')
         this.vdoInfo = {

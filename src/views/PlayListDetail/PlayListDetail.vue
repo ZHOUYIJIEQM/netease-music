@@ -1,6 +1,6 @@
 <template>
   <!-- 歌单详情页面 -->
-  <div class="playlist-detail-page">
+  <div class="playlist-detail-page" ref="playlistDetailEl">
     <Navbar 
       class="navbar" 
       @clickLeft="goBack"

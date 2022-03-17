@@ -31,9 +31,12 @@ export default {
     this.getData()
   },
   activated() {
-    window.addEventListener('scroll', this.handlerScroll)
-    window.addEventListener('touchstart', this.touchS)
-    window.addEventListener('touchend', this.touchE)
+    setTimeout(() => {
+      window.scroll(0, this.scrollT)
+      window.addEventListener('scroll', this.handlerScroll)
+      window.addEventListener('touchstart', this.touchS)
+      window.addEventListener('touchend', this.touchE)
+    }, 10)
   },
   deactivated() {
     window.removeEventListener('scroll', this.handlerScroll)

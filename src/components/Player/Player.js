@@ -172,7 +172,7 @@ export default {
     audioCanplay() {
       this.adoReady = true
       this.durationTime = this.formatTime(this.adoEl.duration)
-      if (this.adoEl.duration + 10 < this.songInfo.duration && this.showPlayer) {
+      if (this.adoEl.duration <= 30 && this.showPlayer) {
         this.toast(`id: ${this.songInfo.id} 为试听歌曲!`, 2000)
       }
     },

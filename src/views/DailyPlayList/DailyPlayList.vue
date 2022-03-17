@@ -1,6 +1,6 @@
 <template>
   <!-- 每日推荐 -->
-  <div class="daily-playlist-page">
+  <div class="daily-playlist-page" ref="dailyList">
     <Navbar
       class="navbar"
       @clickLeft="goBack"
