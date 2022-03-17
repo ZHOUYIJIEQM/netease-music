@@ -27,14 +27,16 @@
           <span class="des-info text-eli" v-else lang="">{{songInfo.info}}</span>
         </div>
       </div>
-      <div class="mv-box" v-if="Number(songInfo.mvid) > 0">
+      <div class="mv-box" v-if="Number(songInfo.mvid) > 0" @click.stop="clickMvIcon(songInfo.mvid)">
         <i class="iconfont icon-bofangshu"></i>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { global } from "@/mixin/global.js";
 export default {
+  mixins: [global],
   props: {
     songInfo: {
       type: Object,
@@ -46,7 +48,7 @@ export default {
       type: Boolean,
       default: false,
     }
-  }
+  },
 }
 </script>
 

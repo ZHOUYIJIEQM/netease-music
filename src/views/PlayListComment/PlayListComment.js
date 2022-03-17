@@ -41,6 +41,9 @@ export default {
     this.getPlayList()
     window.addEventListener('scroll', this.handlerScroll)
   },
+  destroyed() {
+    window.removeEventListener('scroll', this.handlerScroll)
+  },
   beforeRouteLeave (to, from, next) {
     if (this.showReply) {
       this.$store.commit('changeShowReply', false)
@@ -130,6 +133,7 @@ export default {
     },
     // 滚动加载更多
     handlerScroll() {
+      console.log('歌单评论滚动');
       let scrollT = this.getScrollTop()
       let scrollH = this.getScrollHeight()
       let clienH = this.getClientHeight()

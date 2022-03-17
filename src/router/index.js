@@ -122,11 +122,11 @@ router.beforeEach((to, from, next) => {
   if (store.getters.showPlayList) {
     store.commit('changeShowPlayList', false)
     if (from.query.playlist) {
-      next()      
+      next()
     } else {
       next(false)
+      return
     }
-    return
   }
   // 播放器
   if (store.getters.showPlayer) {

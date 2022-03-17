@@ -102,7 +102,7 @@ export default {
   position: fixed;
   width: 100%;
   left: 0;
-  bottom: $footerHeight;
+  bottom: 0;
   height: $miniPlayerH;
   display: flex;
   align-items: center;

@@ -59,7 +59,7 @@
                 </div> -->
                 <!-- 收藏 下载 铃声 评论 更多 -->
                 <div class="song-bar" @click.stop="clickSong">
-                  <div @click.stop="clickFavorite">
+                  <div @click.stop="clickFavorite" style="width: .24rem;">
                     <!-- 实心 -->
                     <i class="iconfont icon-aixin" v-if="favoriteIcon"></i>
                     <!-- 空心 -->

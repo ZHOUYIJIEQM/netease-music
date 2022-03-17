@@ -124,7 +124,7 @@ export default {
     $route(to, from) {
       // console.log(to.name);
       // 这些页面不显示小播放器
-      let pages = ['MvPlayer', 'PhoneLogin', 'Register', 'PasswdLogin', 'VerifyCode', 'Login']
+      let pages = ['PlayListComment', 'MvPlayer', 'PhoneLogin', 'Register', 'PasswdLogin', 'VerifyCode', 'Login']
       this.$nextTick(() => {
         if (pages.includes(to.name)) {
           this.showMiniPlayer = false

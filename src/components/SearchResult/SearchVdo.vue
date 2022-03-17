@@ -1,6 +1,6 @@
 <template>
   <!-- 用于搜索结果显示视频 -->
-  <div class="search-vdo-comp">
+  <div class="search-vdo-comp" @click="clickMvIcon(searchVdoData.id)">
     <div class="left">
       <img :src="searchVdoData.coverUrl" alt="">
       <i class="iconfont icon-bofang2"></i>
@@ -12,7 +12,9 @@
   </div>
 </template>
 <script>
+import { global } from "@/mixin/global.js";
 export default {
+  mixins: [global],
   props: {
     searchVdoData: {
       type: Object,
@@ -32,9 +34,6 @@ export default {
         return num;
       }
     }
-  },
-  methods: {
-    
   },
 }
 </script>

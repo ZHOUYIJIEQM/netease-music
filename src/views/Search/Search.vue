@@ -89,9 +89,8 @@ export default {
   // 直接按返回键
   beforeRouteLeave (to, from, next) {
     document.querySelector('body').style.overflow = ''
-    console.log('去往的组件页', to.name);
     // 可以离开的组件名
-    let nextList = ['PlayListDetail']
+    let nextList = ['PlayListDetail', 'MvPlayer']
     // 处理直接按返回
     if (this.searchType !== 'default') {
       // 如果去的页面在可以离开的数组里才离开

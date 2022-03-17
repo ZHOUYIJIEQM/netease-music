@@ -148,12 +148,22 @@ export default {
     // 喜欢/不喜欢 歌曲
     async clickFavorite() {
       if (this.songInfo.id && this.loginStatus) {
-        let f = await favoriteSong({
-          id: this.songInfo.id,
-          like: !this.favoriteIcon
-        })
-        if (f.code === 200) {
-          this.favoriteIcon = !this.favoriteIcon
+        try {
+          this.$store.commit("changeLoading", true);
+          let f = await favoriteSong({
+            id: this.songInfo.id,
+            like: !this.favoriteIcon
+          })
+          if (f.code === 200) {
+            this.favoriteIcon = !this.favoriteIcon
+            this.favoriteIcon && this.toast('成功收藏!', 2000)
+            !this.favoriteIcon && this.toast('取消收藏!', 2000)
+          }
+        } catch (error) {
+          this.toast(error.data.msg, 2000)
+          console.log(error.data.msg);
+        } finally {
+          this.$store.commit("changeLoading", false);
         }
       } else {
         this.toast('登录后才能收藏哦!', 2000)
@@ -529,13 +539,11 @@ export default {
     // 获取歌词 喜欢的所有音乐
     async getSongLyric(newId) {
       let lyricData = await songLyric(newId)
-      // console.log(`'id:' ${newId}`, lyricData);
       if (lyricData.code === 200 && lyricData.lrc) {
         let lyrObj = { text: lyricData.lrc.lyric }
         if (lyricData.tlyric && lyricData.tlyric.lyric) {
           lyrObj.transText = lyricData.tlyric.lyric
         }
-        // console.log(lyrObj);
         this.lyricText = this.formatLyric(lyrObj)
         // 提取歌词时间
         this.lyricTextTime = this.lyricText.map(item => item.time)

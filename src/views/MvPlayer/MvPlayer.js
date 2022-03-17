@@ -155,7 +155,7 @@ export default {
           creator: {
             id: mvDetailData.data.artists[0].id,
             nickname: mvDetailData.data.artists[0].name,
-            avatarUrl: mvDetailData.data.artists[0].img1v1Url,
+            avatarUrl: mvDetailData.data.artists[0].img1v1Url || mvDetailData.data.cover,
           },
           title: mvDetailData.data.name,
           description: mvDetailData.data.desc && mvDetailData.data.desc.replace(/\n/g, '<br>'),
@@ -191,9 +191,9 @@ export default {
       if (data.code === 200) {
         this.videoGetData(data.data)
       } else {
-        this.toast('获取mlog错误!该链接无法播放!', 3000)
+        this.toast('获取mlog错误! 该链接无法播放!', 3000)
         this.$store.commit("changeLoading", false);
-        throw '获取mlog错误!该链接可能无法播放!'
+        throw '获取mlog错误! 该链接可能无法播放!'
       }
     }
   },

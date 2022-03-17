@@ -105,12 +105,26 @@ export default {
           }, 1000)
         } else {
           // 获取错误
-          this.$toast({
-            message: captcha.message+'\n如果不能再发送请使用密码登录!',
-            className: "toastT toastT-bottom",
-            duration: 3000,
-            position: "bottom",
-          })
+          // this.$toast({
+          //   message: captcha.message+'! 如果不能再发送验证码, 请使用密码登录!',
+          //   className: "toastT toastT-bottom",
+          //   duration: 6000,
+          //   position: "bottom",
+          // })
+          // 弹出提示登录
+          this.$dialog
+            .confirm({
+              title: "登录提示",
+              message: captcha.message+'! 请使用密码登录!',
+              confirmButtonText: "确定",
+            })
+            .then((res) => {
+              console.log("确认", res);
+              this.$router.push({ name: "PasswdLogin" });
+            })
+            .catch((err) => {
+              console.log("取消", err);
+            });
         }
       } catch (error) {
         console.log(error);

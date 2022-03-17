@@ -136,3 +136,24 @@ input:-internal-autofill-selected {
   opacity: 0;
   transform: translateY(-30%);
 }
+
+.scaleIcon-enter-active {
+  animation: scaleIcon .5s;
+}
+.scaleIcon-leave-active {
+  animation: scaleIcon .5s reverse;
+}
+@keyframes scaleIcon {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
