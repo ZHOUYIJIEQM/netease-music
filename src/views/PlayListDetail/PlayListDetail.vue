@@ -34,7 +34,7 @@
         <div class="navbar-bg bg-outer" ref="navbarBg">
           <div
             class="bg-inner"
-            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
+            :style="{ backgroundImage: 'url(' + plBgi + ')' }"
           ></div>
         </div>
       </template>
@@ -46,7 +46,7 @@
         <div class="detail-bg bg-outer" ref="detailBg">
           <div 
             class="bg-inner"
-            :style="{ 'background-image': 'url(' + playList.coverImgUrl + ')' }"
+            :style="{ backgroundImage: 'url(' + plBgi + ')' }"
           ></div>
         </div>
       </div>

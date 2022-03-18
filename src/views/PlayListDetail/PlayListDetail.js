@@ -87,6 +87,9 @@ export default {
     // },
     playListLen() {
       return this.$store.getters.playList.length
+    },
+    plBgi () {
+      return this.playList.coverImgUrl ? this.playList.coverImgUrl : ''
     }
   },
   mounted() {
