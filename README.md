@@ -1,5 +1,5 @@
 # netease-music
-> 界面模仿网易云音乐app,仅供学习
+> 界面模仿网易云音乐app, 基于 vue+vuex+vue-router+axios 开发, 仅供学习使用。
 
 ## 用到的一些文档
 1. [网易云音乐API 文档](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
