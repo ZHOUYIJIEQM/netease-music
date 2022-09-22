@@ -35,15 +35,7 @@ export default {
       // 默认碟子界面 (标记光碟界面true或是歌词界面false)
       playerImg: true,
       // 歌词
-      lyricText: [],
-      // 歌曲里的时间
-      lyricTextTime: [],
-      // 歌词滚动定时器
-      lyricTimer: null,
-      // 滚动的活动歌词
-      lyricActiveIndex: 0,
-      // 标记歌词能否自动滚动
-      lyricCanScroll: true,
+      lyricData: {},
       // 列表循环  单曲循环  列表里随机
       playSortTypeArr: ['listCycle', 'singleCycle', 'random'],
       // 播放顺序
@@ -55,6 +47,7 @@ export default {
       favoriteIcon: false,
       // 不是第一次设置音乐 src
       notFirstSrc: false,
+      // errorTips: '',
     }
   },
   computed: {
@@ -101,9 +94,15 @@ export default {
         this.formatTime(value)
       }
     },
+    errorTips() {
+      return this.$store.state.errorTips
+    },
     loginStatus() {
       return this.$store.getters.loginStatus
     }
+  },
+  components: {
+    lyricBox: () => import('@/components/Lyric/Lyric.vue')
   },
   mounted() {
     this.initSet()
@@ -118,7 +117,7 @@ export default {
       this.adoEl.volume = this.volume / 100
       this.needleEl = this.$refs.needle
       this.diskEl = this.$refs.disk
-      this.lyricBoxEl = this.$refs.lyricBox
+      // this.lyricBoxEl = this.$refs.lyricBox
       this.$store.commit('setAdoEl', this.adoEl)
       // 播放器组件页的过渡时间
       // this.pageTransTime = 300
@@ -126,7 +125,7 @@ export default {
       this.duration = document.defaultView.getComputedStyle(this.needleEl, null).transitionDuration
       this.duration = parseFloat(this.duration) * 1000 + 300
       // 显示播放时背景图还没有src就设置背景, 获取歌词
-      if (!this.$refs.diskImg.src && this.songInfo.id) {
+      if (this.songInfo && !this.$refs.diskImg.src && this.songInfo.id) {
 
         this.setBgImg()
         this.getSongLyric(this.songInfo.id)
@@ -183,8 +182,15 @@ export default {
       this.playStatus = 'paused'
     },
     audioError() {
-      console.log(`无效的播放地址: '${this.adoEl.src}'`);
-      if (this.notFirstSrc) this.toast('无效的播放地址! 可能是付费歌曲!', 2000)
+      console.log(`无效的播放地址: ${this.adoEl.src}`);
+      this.$store.state.errorTips = '无效的播放地址! 可能是付费歌曲!'
+      if (this.notFirstSrc) {
+        this.$toast({
+          className: 'error-tips',
+          message: this.errorTips, 
+          duration: 2000
+        })
+      }
     },
     audioWaiting() {
       console.log('waiting');
@@ -220,10 +226,9 @@ export default {
     // 拖动进度变化时
     progressChange() {
       this.isDrag = true
-      clearInterval(this.lyricTimer)
-      this.currentTime = this.progressTime / 100 * this.adoEl.duration
-      this.lyricTempIndex = 0
-      this.setActiveIndex(this.currentTime)
+      if (!this.errorTips) {
+        this.currentTime = this.progressTime / 100 * this.adoEl.duration
+      }
     },
     // 进度变化且结束拖动后触发
     progressChangeEnd() {
@@ -232,8 +237,6 @@ export default {
       if (this.adoEl.paused) {
         this.adoEl.play()
       }
-      // 继续使用歌词定时器
-      this.lyricRollTimer()
       this.isDrag = false
     },
     // 音量改变
@@ -251,6 +254,13 @@ export default {
     },
     // 切换播放状态
     togglePlay() {
+      if (this.errorTips) {
+        return this.$toast({
+          className: 'error-tips',
+          message: this.errorTips, 
+          duration: 2000
+        })
+      }
       if (this.adoEl.paused) {
         this.adoEl.play()
       } else {
@@ -379,48 +389,6 @@ export default {
         className: "playerToast", duration: durationT, position: "bottom",
       });
     },
-    // 歌词滚动定时器
-    lyricRollTimer() {
-      this.lyricTimer && clearInterval(this.lyricTimer)
-      // 设置歌词定时器, 10ms触发一次 精确到小数点后2位
-      this.lyricTimer = setInterval(this.handlerLyricRoll, 10)
-    },
-    // 传入时间 定位歌词的index
-    setActiveIndex(time) {
-      // ----- start
-      // 不用很多次循环, 但定位只能从头播到尾, 不能用于切换进度
-      // let maxL = this.lyricText.length
-      // let nextTime = this.lyricText[this.lyricActiveIndex + 1] 
-      // if (nextTime && time > nextTime.time) {
-      //   this.lyricActiveIndex++
-      // }
-      // ----- end
-
-      // 判断当前播放时间在歌词时间里的那个区域
-      let maxTime = 0
-      for (let i = 0, len=this.lyricTextTime.length; i < len; i++) {
-        if (time >= this.lyricTextTime[i]) {
-          // 最后一个的后一个是 undefined
-          if (this.lyricTextTime[i+1]) {
-            maxTime = this.lyricTextTime[i+1]
-          } else {
-            maxTime = this.adoEl.duration
-          }
-          if (time < maxTime) {
-            this.lyricActiveIndex = i
-            break
-          }
-        }
-      }
-    },
-    // 歌词定位
-    handlerLyricRoll() {
-      if (this.lyricText.length) {
-        // 只精确到小数点后1位
-        let currentT = +this.adoEl.currentTime.toFixed(2)
-        this.setActiveIndex(currentT)
-      }
-    },
     /**
      * 格式化歌词
      * @param lyricData 歌词对象 {text: '歌词', transText: '翻译歌词'}
@@ -486,37 +454,6 @@ export default {
       })
       return resObj
     },
-    // 触摸了歌词容器
-    lyricBoxTouchS() {
-      this.lyricCanScroll = false
-    },
-    // 触摸离开
-    lyricBoxTouchE() {
-      this.lyricCanScroll = true
-      // this.scrollTimer && clearTimeout(this.scrollTimer)
-      // this.scrollTimer = setTimeout(() => {
-      //   this.lyricLineRoll(this.lyricActiveIndex)
-      // }, 300);
-    },
-    // 执行滚动操作
-    lyricLineRoll(index) {
-      if (this.lyricText.length) {
-        // this.lyricBoxEl.scrollTop = this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2
-        this.lyricBoxEl.scrollTo({
-          top: this.$refs.lyricText[index].offsetTop - this.lyricBoxEl.offsetHeight / 2 + this.$refs.lyricText[index].offsetHeight / 2,
-          behavior: 'smooth'
-        })
-      }
-    },
-    // 滚动事件
-    lyricBoxScroll() {
-      this.scrollTimer && clearTimeout(this.scrollTimer)
-      this.scrollTimer = setTimeout(() => {
-        if (this.lyricCanScroll) {
-          this.lyricLineRoll(this.lyricActiveIndex)
-        }
-      }, 800)
-    },
     // 设置背景图
     setBgImg() {
       this.$nextTick(() => {
@@ -538,19 +475,9 @@ export default {
     },
     // 获取歌词 喜欢的所有音乐
     async getSongLyric(newId) {
+      this.lyricData = {}
       let lyricData = await songLyric(newId)
-      if (lyricData.code === 200 && lyricData.lrc) {
-        let lyrObj = { text: lyricData.lrc.lyric }
-        if (lyricData.tlyric && lyricData.tlyric.lyric) {
-          lyrObj.transText = lyricData.tlyric.lyric
-        }
-        this.lyricText = this.formatLyric(lyrObj)
-        // 提取歌词时间
-        this.lyricTextTime = this.lyricText.map(item => item.time)
-        this.$nextTick(() => {
-          this.lyricLineRoll(this.lyricActiveIndex)
-        })
-      }
+      this.lyricData = lyricData
 
       // 登录后才能获取喜欢的音乐列表
       if (this.loginStatus) {
@@ -579,10 +506,9 @@ export default {
         this.$store.commit("changeLoading", true);
         this.adoEl.currentTime = 0
         this.notFirstSrc = true
+        this.$store.state.errorTips = ''
 
         this.recordArr.push(newId)
-        this.lyricText = []
-        this.lyricActiveIndex = 0
 
         // 切换另一首, 如果歌曲在播放时, 暂停播放
         if (!this.adoEl.paused) {
@@ -644,30 +570,19 @@ export default {
     playStatus(newV) {
       if (newV === 'playing') {
         this.needleEl.classList.add('playing')
-        this.lyricRollTimer()
       } else {
         this.needleEl.classList.remove('playing')
-        clearInterval(this.lyricTimer)
       }
       this.$store.commit('setPlayState', newV)
     },
-    // 歌词滚动
-    lyricActiveIndex: {
-      handler: function (newV) {
-        if (this.lyricCanScroll) {
-          this.lyricLineRoll(newV)
-        }
-      },
-      // immediate: true
-    },
     // 监听是光碟界面还是歌词界面
     playerImg(newV) {
-      // 刚开始播放有点空, 直接滚动居中
-      if (!newV && this.lyricActiveIndex < 5) {
-        this.rollT && clearTimeout(this.rollT)
-        this.rollT = setTimeout(() => {
-          this.lyricLineRoll(this.lyricActiveIndex)
-        }, 500)
+      // 切换后歌词滚动居中
+      if (!newV) {
+        this.switchTimer && clearTimeout(this.switchTimer)
+        this.switchTimer = setTimeout(() => {
+          this.$refs.lyricBoxEl.scrollLyric(true)
+        }, 150)
       }
     },
   }

@@ -196,6 +196,9 @@ export default {
       }
       let v = new IntersectionObserver(
         (entries) => {
+          // console.log('===');
+          // console.log(entries);
+          // console.log('===');
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               // 可见
@@ -211,7 +214,7 @@ export default {
         // 在离顶/底部还有一小段距离时触发(顶/底部有个导航条,)
         { rootMargin: `${gap} 0px ${gap} 0px` }
       );
-
+      // 观察 video 元素
       v.observe(this.$refs.rcmdVideo)
     },
     playing() {
@@ -240,7 +243,7 @@ export default {
           this.$refs.rcmdVideo.load()
           clearInterval(this.vdoTimer)
           this.setPStatus('')
-          this.$refs.img.style.zIndex = ''
+          this.$refs.img.style && (this.$refs.img.style.zIndex = '')
         }
       }
     },

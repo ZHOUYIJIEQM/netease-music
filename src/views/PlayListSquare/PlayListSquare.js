@@ -17,6 +17,7 @@ export default {
       tabData: ["官方", "精品", "华语", "轻音乐", "古风", "电子", "ACG"],
       // 保留一些需要的数据 保留每个轮播项的 offset分页 scroll滚动位置 more是否有更多
       tabParams: [],
+      tabbarScrollLeft: 0,
       playList: [],
       listSwiperOptions: {
         resistanceRatio: 0,
@@ -45,12 +46,16 @@ export default {
       item.$el.addEventListener('scroll', this.swiperItemScroll)
     })
     this.getData();
+
+    this.tabbarEl = this.$refs.tabbar.$el
+    this.tabbarEl.addEventListener('scroll', this.getTabbarScrollL)
   },
   activated() {
     // 点击歌单后返回时, 返回原来的滚动位置
     this.$refs.listItem.forEach((item, index) => {
       item.$el.scrollTop = this.tabParams[index].scroll
     })
+    this.$refs.tabbar.$el.scrollLeft = this.tabbarScrollLeft
   },
   methods: {
     // 获取数据
@@ -117,6 +122,9 @@ export default {
         // console.log('到底了');
         this.getData()
       }
+    },
+    getTabbarScrollL() {
+      this.tabbarScrollLeft = this.tabbarEl.scrollLeft
     }
   },
 };

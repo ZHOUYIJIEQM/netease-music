@@ -52,7 +52,7 @@
       <van-sticky :offset-top="'0.5rem'">
         <div class="playlist-title">
           <i class="iconfont icon-bofang1"></i>
-          <span class="title-text">播放全部</span>
+          <span class="title-text" @click="playAll">播放全部</span>
           <span class="title-icon">
             <i class="iconfont icon-xiazai1"></i>
           </span>

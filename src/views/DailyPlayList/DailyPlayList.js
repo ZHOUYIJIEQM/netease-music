@@ -1,5 +1,5 @@
 import { global } from "@/mixin/global.js";
-import { dailyRecommend } from "@/api/api.js";
+import { songDetail, dailyRecommend } from "@/api/api.js";
 import Navbar from "@/components/Navbar"
 import SongInfo from "@/components/SongInfo"
 
@@ -94,6 +94,26 @@ export default {
     touchE() {
       this.isTouch = false
       this.handlerScroll()
+    },
+    async playAll() {
+      let ids = this.dailySongs.map(i => i.id).join(',')
+      let songList = await songDetail(ids)
+      let temp = songList.songs.map((item, index) => {
+        return {
+          id: item.id,
+          name: item.name,
+          secName: item.tns ? item.tns[0] : item.alia[0],
+          artist: item.ar.map(item1 => item1.name).join('/'),
+          al: item.al.name,
+          mvId: item.mv,
+          duration: item.dt / 1000,
+          bgImg: item.al.picUrl + '?param=400y400',
+          sq: songList.privileges[index].maxbr >= 999000,
+        }
+      })
+      this.$store.commit('setPlayList', temp)
+      this.toast(`即将播放歌单中已加载的歌曲!`, 3000)
+      this.clickSong(temp[0].id)
     },
     // 滚动
     handlerScroll() {

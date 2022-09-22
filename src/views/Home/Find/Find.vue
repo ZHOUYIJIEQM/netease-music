@@ -76,7 +76,7 @@
           <div class="item-title">
             <div class="title text-eli">{{item.title}}</div>
             <div class="text" v-if="item.text">
-              <span>{{item.text}}</span>
+              <span @click="$router.push({name: 'PlayListSquare'})">{{item.text}}</span>
               <span class="iconfont icon-jiantouyou"></span>
             </div>
           </div>
@@ -87,7 +87,6 @@
               :options="threeColumnOptions"
               v-if="item.list.length"
             >
-            <!-- todo: 测试template可否去掉 -->
               <!-- <template v-if="item.scrollPlaylist.length"> -->
                 <swiper-slide class="list-item-box">
                   <div class="list-item-inner scroll-list">

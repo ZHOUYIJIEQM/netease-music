@@ -11,9 +11,9 @@
       <img :src="currentSongInfo && currentSongInfo.bgImg">
     </div>
     <div class="text-info text-eli">
-      <span class="name">{{currentSongInfo && currentSongInfo.name}}</span>
+      <span class="name">{{currentSongInfo && currentSongInfo?.name}}</span>
       <span class="split">-</span>
-      <span class="ar">{{currentSongInfo && currentSongInfo.artist}}</span>
+      <span class="ar">{{currentSongInfo && currentSongInfo?.artist}}</span>
     </div>
     <van-circle 
       @click.native.stop="togglePlay"
@@ -56,6 +56,9 @@ export default {
     },
     showMiniPlayer() {
       return this.$store.getters.showMiniPlayer
+    },
+    errorTips() {
+      return this.$store.state.errorTips
     }
   },
   methods: {
@@ -78,6 +81,13 @@ export default {
     },
     // 切换播放
     togglePlay() {
+      if (this.errorTips) {
+        return this.$toast({
+          className: 'error-tips',
+          message: this.errorTips, 
+          duration: 2000
+        })
+      }
       if (this.adoEl.paused) {
         this.adoEl.play()
       } else {

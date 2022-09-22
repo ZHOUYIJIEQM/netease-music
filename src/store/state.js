@@ -42,7 +42,9 @@ const state = {
   // 播放器播放顺序
   playerSortType: window.localStorage.getItem('music_player_sortType') || 'listCycle',
   // 保存历史页面栈
-  historyList: []
+  historyList: [],
+  // 错误提示
+  errorTips: '',
 }
 
 export default state

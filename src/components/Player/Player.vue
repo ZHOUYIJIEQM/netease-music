@@ -35,79 +35,59 @@
         <div class="navbar">
           <i class="iconfont icon-jiantouyou-copy" @click="hidePlayer"></i>
           <div class="navbar-text">
-            <div class="name text-eli">{{songInfo.name}}</div>
-            <div class="artist text-eli">{{songInfo.artist}}</div>
+            <div class="name text-eli">{{songInfo?.name}}</div>
+            <div class="artist text-eli">{{songInfo?.artist}}</div>
           </div>
           <i class="iconfont icon-fenxiangpt"></i>
         </div>
         <!-- 中部 -->
-          <div class="middle-box" @click="togglePlayerImg">
-            <transition-group name="fadeIn" mode="in-out">
-              <div class="player-img" key="img" v-show="playerImg">
-                <div class="top">
-                  <div class="needle-box">
-                    <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
-                  </div>
-                  <div class="disk-box" ref="disk"
-                    :class="[playStatus === 'paused' ? 'paused' : 'playing', {'ready': adoReady}]"
-                  >
-                    <img ref="diskImg" alt="">
-                  </div>
+        <div class="middle-box" @click="togglePlayerImg">
+          <transition-group name="fadeIn" mode="in-out">
+            <div class="player-img" key="img" v-show="playerImg">
+              <div class="top">
+                <div class="needle-box">
+                  <img ref="needle" class="needle" src="../../assets/player/needle.png" alt="">
                 </div>
-                <!-- <div class="ly">
-                  <p class="text-eli" v-if="lyricText[lyricActiveIndex]">{{lyricText[lyricActiveIndex].text}}</p>
-                </div> -->
-                <!-- 收藏 下载 铃声 评论 更多 -->
-                <div class="song-bar" @click.stop="clickSong">
-                  <div @click.stop="clickFavorite" style="width: .24rem;">
-                    <!-- 实心 -->
-                    <i class="iconfont icon-aixin" v-if="favoriteIcon"></i>
-                    <!-- 空心 -->
-                    <i class="iconfont icon-icon-test" v-else></i>
-                  </div>
-                  <i class="iconfont icon-xiazaipt"></i>
-                  <i class="iconfont icon-lingsheng"></i>
-                  <i class="iconfont icon-pinglunpt-wangyiicon"></i>
-                  <i class="iconfont icon-gengduoxiao"></i>
-                </div>
-              </div>
-              <div class="player-lyric" key="lyric" v-show="!playerImg">
-                <div class="volume-box">
-                  <i class="iconfont icon-laba"></i>
-                  <van-slider 
-                    class="volume-slider"
-                    v-model="volume"
-                    bar-height="2px"
-                    button-size=".08rem"
-                    :active-color="volumeActiveColor"
-                    :inactive-color="volumeInActiveColor"
-                    @input="volumeChange"
-                  />
-                </div>
-                <div 
-                  class="lyric-box" 
-                  ref="lyricBox" 
-                  @touchstart="lyricBoxTouchS"
-                  @touchend="lyricBoxTouchE"
-                  @scroll="lyricBoxScroll"
+                <div class="disk-box" ref="disk"
+                  :class="[playStatus === 'paused' ? 'paused' : 'playing', {'ready': adoReady}]"
                 >
-                  <div class="lyric-text" v-if="lyricText.length">
-                    <div 
-                      class="line"
-                      ref="lyricText" 
-                      v-for="(item, index) in lyricText" 
-                      :key="index"
-                      :class="{'active': lyricActiveIndex === index}"
-                    >
-                      <p>{{item.text}}</p>
-                      <p v-if="item.transText">{{item.transText}}</p>
-                    </div>
-                  </div>
-                  <div class="no-lyric" v-else>暂无歌词!</div>
+                  <img ref="diskImg" alt="">
                 </div>
               </div>
-            </transition-group>
-          </div>
+              <!-- <div class="ly">
+                <p class="text-eli" v-if="lyricText[lyricActiveIndex]">{{lyricText[lyricActiveIndex].text}}</p>
+              </div> -->
+              <!-- 收藏 下载 铃声 评论 更多 -->
+              <div class="song-bar" @click.stop="clickSong">
+                <div @click.stop="clickFavorite" style="width: .24rem;">
+                  <!-- 实心 -->
+                  <i class="iconfont icon-aixin" v-if="favoriteIcon"></i>
+                  <!-- 空心 -->
+                  <i class="iconfont icon-icon-test" v-else></i>
+                </div>
+                <i class="iconfont icon-xiazaipt"></i>
+                <i class="iconfont icon-lingsheng"></i>
+                <i class="iconfont icon-pinglunpt-wangyiicon"></i>
+                <i class="iconfont icon-gengduoxiao"></i>
+              </div>
+            </div>
+            <div class="player-lyric" key="lyric" v-show="!playerImg">
+              <div class="volume-box">
+                <i class="iconfont icon-laba"></i>
+                <van-slider 
+                  class="volume-slider"
+                  v-model="volume"
+                  bar-height="2px"
+                  button-size=".08rem"
+                  :active-color="volumeActiveColor"
+                  :inactive-color="volumeInActiveColor"
+                  @input="volumeChange"
+                />
+              </div>
+              <lyricBox ref="lyricBoxEl" :lyricObj="lyricData" :playTime="currentTime"></lyricBox>
+            </div>
+          </transition-group>
+        </div>
         <!-- 底部 -->
         <div class="bottom-box">
           <!-- 进度条 -->
