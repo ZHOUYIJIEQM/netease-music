@@ -243,7 +243,7 @@ export default {
           this.$refs.rcmdVideo.load()
           clearInterval(this.vdoTimer)
           this.setPStatus('')
-          this.$refs.img.style && (this.$refs.img.style.zIndex = '')
+          this.$refs.img && (this.$refs.img.style.zIndex = '')
         }
       }
     },
