@@ -96,7 +96,7 @@ export default {
             this.cursor && (params.cursor = this.cursor)
           }
           let comment = await commentNew(params)
-          console.log(comment.data);
+          // console.log(comment.data);
           this.hasMore = comment.data.hasMore
           comment.data.cursor && (this.cursor = comment.data.cursor)
           this.pageNum++
@@ -133,7 +133,7 @@ export default {
     },
     // 滚动加载更多
     handlerScroll() {
-      console.log('歌单评论滚动');
+      // console.log('歌单评论滚动');
       let scrollT = this.getScrollTop()
       let scrollH = this.getScrollHeight()
       let clienH = this.getClientHeight()

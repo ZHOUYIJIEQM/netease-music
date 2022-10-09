@@ -136,13 +136,14 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
 > ★ 表示难点问题
 1. 关于 v-for 时的 key, 最好绑定 item.id, 绑定 index 在某些情况下可能出现问题, 比如删除操作
 1. 请求配置
-    - ```axios```请求中, 在登录后, [请求参数需携带```cookie```](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%b0%83%e7%94%a8%e5%89%8d%e9%a1%bb%e7%9f%a5), 得到用户的数据。 ```POST```请求```url```必须添加时间戳, 没有会返回缓存结果。
+    - 在向这个后端```axios```请求时, [请求参数需携带```cookie```](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%b0%83%e7%94%a8%e5%89%8d%e9%a1%bb%e7%9f%a5), 不带相当于未登录, 携带正确的```cookie```会得到推荐给该用户的数据, ```POST```请求```url```必须添加时间戳, 没有会返回缓存结果。
 1. 发现
-    - 请求是否携带```cookie```,从[首页-发现](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e9%a6%96%e9%a1%b5-%e5%8f%91%e7%8e%b0)接口获取不同数据, 没登录, 一次性得到全部数据, 登录后, 获取一部分推荐数据
-    - 登录后滚动到底部, 传入```cursor```参数, 获取更多推荐数据
+    - 请求是否携带```cookie```,从[首页-发现接口](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e9%a6%96%e9%a1%b5-%e5%8f%91%e7%8e%b0)获取不同数据, 没登录, 一次性得到全部数据, 登录后, 获取一部分推荐数据
+    - 登录后滚动到底部(上拉加载新数据), 传入```cursor```参数, 获取更多推荐数据
     - 得到的数据很繁杂, 提取需要的内容
     - 登录后, [首页-发现](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e9%a6%96%e9%a1%b5-%e5%8f%91%e7%8e%b0)返回的数据里, 推荐歌单第一项没有滚动轮播的数据, 可以从[歌单分类](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%ad%8c%e5%8d%95%e5%88%86%e7%b1%bb)获取分类类型, 再随机从中提取几个类型, 根据类型从[精品歌单](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%ad%8c%e5%8d%95-%e7%bd%91%e5%8f%8b%e7%b2%be%e9%80%89%e7%a2%9f-)中获取数据, 这样, 每次刷新就得到不同的数据, 看起来就像是得到推荐数据
-    - ```swiper``` 设置了循环自动播放, 切换到其它路由再换回来, 不能自动播放。监听路由, 离开就暂停播放, 换回来就继续播放
+    - 推荐歌曲部分, 把扁平数组转为二维数组
+    - ```swiper``` 设置了循环自动播放, 切换到其它路由再换回来, 不自动播放。监听路由, 离开就暂停播放, 换回来就继续播放
 1. 云村
     - [推荐视频](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%8e%a8%e8%8d%90%e8%a7%86%e9%a2%91)需要登录, 未登录前, 使用[全部mv](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%85%a8%e9%83%a8-mv)接口
     - 因为页面存在多个```video```, 切换其他```video```播放时, 为避免性能消耗, 应卸载/销毁当前的```video```
@@ -178,14 +179,15 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     v.observe(this.$refs.rcmdVideo)
     ```
     - 用于一个全局变量保存视频```id```, 监听它, 改变后销毁与视频```id```不同的```video```元素
-    - 移动端```chrome的video```切换到后台后会自动暂停, 不能继续播放
+    - 移动端```chrome浏览器的video```切换到后台后会自动暂停, 不能继续播放
 1. 登录
     - 记录进入登录页前的路由, 登录后返回该路径
     - 输入手机号后判断是否已经注册过, 未注册则弹框提示去注册
-    - 登录后把用户用户信息
+    - 登录后把用户信息存入```Vuex```和```localStorage```, 下次进入浏览器则从```localStorage```里获取用户信息
 1. 菜单
-    - 主要功能是: 登录/退出
+    - 主要功能是: 登录/退出(退出按钮在底部)
     - 菜单弹出层, 弹出层的```css```中设置了```transform```, 如果子孙元素```css```中设置```position:fixed;```会无效
+    - 弹出后使用自定义的左滑手势指令退出弹出层
 1. 歌单详情页面
     - [获取歌单详情](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e8%af%a6%e6%83%85), 并从里面 trackIds 提取歌单的所有歌曲 id, 根据 id [获取歌曲信息](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e6%9b%b2%e8%af%a6%e6%83%85), 每次最多加载100首曲, 滚动到底触发加载更多歌曲
     - 顶部歌单描述区域有一个滑动到指定高度触摸松开后跳转的操作, 在触摸松开时由于滑动惯性可能还会滑动一段距离, 所以不要直接在```touchend```里处理操作
@@ -194,11 +196,31 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     - 滚动事件回调里, 需要设置头部背景透明度, 歌单介绍背景弧度, ```playlistbar```透明度
     - 点击订阅, 如果未登录, 此时显示未订阅(+)图标, 点击则弹窗提示去登录, 如果登录, 且是自己创建的歌单, 显示已订阅(勾选)图标且颜色为灰色, 如果不是自己创建的歌单, 判断是否已经订阅过, 显示对应图标, 点击后切换图标, 订阅人数加1
     - 点击歌单介绍内容, 弹出另一个歌单详情介绍, 保存封面, 处理直接按返回键(如果显示了弹出层, 返回阻止路由跳转, 并取消显示弹出层)
+    - 保存封面的图片, 利用一个a标签, 把要下载的图片放到它的href属性, 点击它就可以下载, 但这样只是直接在当前标签打开图片, 需要转为bolb:xxx的格式, 这样就可以下载到本地
+    ```js
+    // 图片地址直接放到a标签,点击后会直接打开, 无法达到预期的下载图片效果
+    const link = document.createElement('a')
+    link.href = imageSrc
+    link.download = fileName
+    link.click()
+
+    // 以blob格式请求图片, 再转为url放到a标签, 这样可以点击下载图片
+    let {data} = await axios({
+      url: imageSrc,
+      responseType: 'blob'
+    })
+    // 返回一个字符串url, 该URL可用于指定源object的内容
+    const imgData = URL.createObjectURL(data)
+    const link = document.createElement('a')
+    link.href = imgData
+    link.download = fileName
+    link.click()
+    ```
 1. 音乐播放器
     - 在```vuex```中用一个变量保存选中的歌曲id, 切歌后更改歌曲id
     - 监听歌曲id, 变化时修改当前歌曲信息, 重新获取歌词, 修改背景图。 如果背景图放在```div```里的```background-image```上, 再设置过渡时间```transition```, 可以让图片切换时不显得太生硬
-1. **★ 歌词滚动组件** 
-    - 组件接受2个参数: 原始的歌词对象, 歌曲播放时间(用于定位歌词滚动位置)  
+1. **★ 根据播放时间滚动的歌词组件** 
+    从后端获取到的歌词格式:
     ```js
     {
       // 省略...
@@ -213,8 +235,7 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
       // 省略...
     }
     ```
-    - 先需要把原始歌词处理为如下格式, 对象包含时间, 歌词, 有翻译时带上翻译; 根据传入的时间判断当前数组所在下标;  
-    下标改变后跳转容器的```scrollTop```, 使活跃的歌词保持在容器中部
+    - 为了方便后续操作, 要把它转换为这种格式:
     ```js
     [
       { time: 0, lyric: "作词 : Taylor Swift", tlyric: "" },
@@ -299,8 +320,8 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     }
     getIndex(15)
     ```
-    - 监听高亮歌词的变化, 每次触发时, 设置父容器的滚动高度, 即使高亮歌词改变后也保持在中部
-    - 当按住歌词滑动时不设置滚动, 松开才触发滚动, 思路与歌单详情页面顶部描述区域类似
+    - 监听高亮歌词下标, 每次触发时, 设置父容器的滚动高度(scrollTop), 使高亮歌词改变后也保持在中部
+    - 当时间变化, 此时用户如果滑动查看歌词, 因为高亮歌词要保持垂直居中, 会导致歌词区域上下跳动, 使用定时器控制滚动操作, 如果触摸时, 清除定时器, 触摸离开后执行。同样的, 滑动离开后惯性滚动时也会有相似的情况。
 
 1. 歌单评论
     - (新版评论接口貌似有些问题)待完善
@@ -318,7 +339,16 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
 1. 使用```flex: 1;```时, 子元素```text-overflow: ellipsis;```不起作用, 可在```flex: 1;``` 所在元素设置 ```overflow: hidden;``` 或 ```width: 0;```
 1. 因为设置了超出显示省略号, 出现了文字底部显示不全，可设置行高
 ![文字底部显示不全](./preview/文字底部显示不全.jpg)
-1. 元素设置了```display: flex;```, 该元素不能同时设置 ```css``` 超出显示省略号, 因为设置后无效 :), 可以在里面套一个元素, 在里面设置 超出显示省略号
+1. 元素设置了```display: flex;```, 该元素不能同时设置 ```css``` 超出显示省略号, 因为设置后无效, 可以在里面套一个元素, 在里面设置超出显示省略号
+    ```css
+    /* 无效 */
+    .text {
+      display: flex;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    ```
 1. 如果浏览器在歌单页面关闭, 下次打开按导航返回没有效果, 用 ```sessionStorage``` 记录进去过的路由, 如果是第一个, 点返回直接回到 ```/home```
 1. 因为设置了 ```keep-alive```, 在组件页里侦听 ```$route```, 处理函数在其他路由页也会触发, 可能会造成一些奇怪的问题, 比如处理函数里面有网络请求, 路由一改变也会触发里面的请求, 每次进入其它路由页就会发起请求, 造成重复请求, 需要设置一些限定条件
 1. 使用弹出层组件时, v-model 绑定 vuex 的 state 值, 给 computed 设置 get set, 详细看 App.vue 的 showList

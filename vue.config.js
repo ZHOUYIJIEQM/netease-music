@@ -4,5 +4,5 @@ module.exports = {
   //   ? '/netease_music_app/'
   //   : '/'
 
-  // publicPath: './'
+  publicPath: './'
 }

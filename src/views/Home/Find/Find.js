@@ -314,7 +314,7 @@ export default {
           let find = await homePageFind({refresh: true, cursor: '{"blockCodeOrderList":["HOMEPAGE_MUSIC_MLOG"]}'})
           // console.log(find);
           let index = this.homeFindData.findIndex(item => item.type === '精选音乐视频')
-          console.log(index);
+          // console.log(index);
           this.homeFindData[index].list = []
           find.data.blocks[0].extInfo.forEach(item => {
             this.homeFindData[index].list.push({

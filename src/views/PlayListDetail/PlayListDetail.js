@@ -2,6 +2,7 @@ import { playListDetail, songDetail, collectPlayList } from "@/api/api";
 import { global } from "@/mixin/global.js";
 import PlayListDetailItem from "@/components/PlayListDetailItem"
 import Navbar from "@/components/Navbar"
+import axios from 'axios'
 
 export default {
   name: 'PlayListDetailInclude',
@@ -349,20 +350,24 @@ export default {
         message: `开始下载!`,
         position: "bottom",
       });
-      // 使用浏览器自带的 fetch
+      
       const suffix = this.playList.coverImgUrl.split('.').slice(-1)[0]
       const fileName = `${this.playList.name}.${suffix}`
-      // fetch 能提供 Blob 类型的响应
-      const image = await fetch(imageSrc)
-      // console.log(image);
-      // 得到 Blob 实例
-      const imageBlog = await image.blob()
-      // console.log(imageBlog);
-      // 根据传入的 Blob 实例, 生成指向内存地址的字符串
-      const imageURL = URL.createObjectURL(imageBlog)
-      // console.log(imageURL);
+
+      // const link = document.createElement('a')
+      // link.href = imageSrc
+      // link.download = fileName
+      // link.click()
+      
+      // 以blob格式请求图片
+      let {data} = await axios({
+        url: imageSrc,
+        responseType: 'blob'
+      })
+      // 返回一个字符串url, 该URL可用于指定源object的内容
+      const imgData = URL.createObjectURL(data)
       const link = document.createElement('a')
-      link.href = imageURL
+      link.href = imgData
       link.download = fileName
       link.click()
 
