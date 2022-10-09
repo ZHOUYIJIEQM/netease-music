@@ -142,6 +142,26 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     - 得到的数据很繁杂, 提取需要的内容
     - 登录后, [首页-发现](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e9%a6%96%e9%a1%b5-%e5%8f%91%e7%8e%b0)返回的数据里, 推荐歌单第一项没有滚动轮播的数据, 可以从[歌单分类](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%ad%8c%e5%8d%95%e5%88%86%e7%b1%bb)获取分类类型, 再随机从中提取几个类型, 根据类型从[精品歌单](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%ad%8c%e5%8d%95-%e7%bd%91%e5%8f%8b%e7%b2%be%e9%80%89%e7%a2%9f-)中获取数据, 这样, 每次刷新就得到不同的数据, 看起来就像是得到推荐数据
     - 推荐歌曲部分, 把扁平数组转为二维数组
+    ```js
+    /**
+    * @description 一维数组转二维
+    * @param {Array} arr 要转换的数组
+    * @param {Number} num 二维数组每项包含几个
+    */
+    function arrTurnTwo(arr, num) {
+      let temp = [],
+        result = [];
+      for (let i = 0; i < arr.length; i++) {
+        temp.push(arr[i]);
+        if (temp.length === num) {
+          result.push(temp);
+          temp = [];
+        }
+      }
+      temp.length && result.push(temp);
+      return result;
+    }
+    ```
     - ```swiper``` 设置了循环自动播放, 切换到其它路由再换回来, 不自动播放。监听路由, 离开就暂停播放, 换回来就继续播放
 1. 云村
     - [推荐视频](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%8e%a8%e8%8d%90%e8%a7%86%e9%a2%91)需要登录, 未登录前, 使用[全部mv](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%85%a8%e9%83%a8-mv)接口
@@ -195,7 +215,7 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     - 滚动事件回调里, 需要设置头部背景透明度, 歌单介绍背景弧度, ```playlistbar```透明度
     - 点击订阅, 如果未登录, 此时显示未订阅(+)图标, 点击则弹窗提示去登录, 如果登录, 且是自己创建的歌单, 显示已订阅(勾选)图标且颜色为灰色, 如果不是自己创建的歌单, 判断是否已经订阅过, 显示对应图标, 点击后切换图标, 订阅人数加1
     - 点击歌单介绍内容, 弹出另一个歌单详情介绍, 保存封面, 处理直接按返回键(如果显示了弹出层, 返回阻止路由跳转, 并取消显示弹出层)
-    - 保存封面的图片, 利用一个a标签, 把要下载的图片放到它的href属性, 点击它就可以下载, 但这样只是直接在当前标签打开图片, 需要转为bolb:xxx的格式, 这样就可以下载到本地
+    - 保存封面的图片, 利用一个a标签, 把要下载的图片放到它的href属性, 点击它就可以下载, 但点击后图片直接在当前标签页打开了, 需要转为bolb:xxx的格式, 才可以点击下载到本地
     ```js
     // 图片地址直接放到a标签,点击后会直接打开, 无法达到预期的下载图片效果
     const link = document.createElement('a')
@@ -216,10 +236,10 @@ npm install -S swiper@5.4.5 vue-awesome-swiper js-md5 moment vant axios
     link.click()
     ```
 1. 音乐播放器
-    - 在```vuex```中用一个变量保存选中的歌曲id, 切歌后更改歌曲id
+    - 歌曲id需要在多个组件使用, 在```vuex```中用一个变量保存选中的歌曲id, 切歌后更改歌曲id
     - 监听歌曲id, 变化时修改当前歌曲信息, 重新获取歌词, 修改背景图。 如果背景图放在```div```里的```background-image```上, 再设置过渡时间```transition```, 可以让图片切换时不显得太生硬
 1. **★ 根据播放时间滚动的歌词组件** 
-    从后端获取到的歌词格式:
+    - 从后端获取到的歌词格式:
     ```js
     {
       // 省略...
