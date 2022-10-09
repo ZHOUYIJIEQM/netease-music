@@ -1,7 +1,7 @@
 # netease-music
 > 界面模仿网易云音乐app, 基于 vue+vuex+vue-router+axios 开发, 仅供学习使用。
 
-## <a id="流程记录标题">[项目过程遇到的问题](#流程记录)</a>
+## <a id="流程记录标题">[记录项目过程中遇到的一些问题](#流程记录)</a>
 
 ## 用到的一些文档
 1. [网易云音乐API 文档](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
@@ -11,8 +11,7 @@
 
 
 ## 线上效果(都是在国外, 速度慢)
-1. [F12后切换到移动端预览](https://musicapp.yjsjyb.top)
-2. [GitHub Pages](https://zhouyijieqm.github.io/netease_music_app)
+1. [点此链接查看效果, F12后切换到移动端预览](https://app.yjsjyb.top/music)
 
 ## <a id="feature">实现的功能</a>
 1. [发现页](#发现页)
