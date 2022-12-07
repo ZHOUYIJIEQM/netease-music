@@ -73,6 +73,9 @@ html, body, #app {
   height: 100%;
 }
 
+.van-toast {
+  width: max-content;
+}
 // toast 自定义类需写在 #app 外
 .toastT {
   border-radius: 1rem;
