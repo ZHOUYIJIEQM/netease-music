@@ -12,7 +12,7 @@ const actions = {
     commit("changeLoading", true);
     try {
       let l = await phoneLogin(params);
-      // console.log('登录信息:', l);
+      console.log('登录信息:', l);
       if (l.code === 200) {
         // 保存登录信息
         dispatch("saveLoginData", l);
@@ -35,9 +35,9 @@ const actions = {
       }
     } catch (err) {
       vue.$toast({
-        message: err.data.msg,
-        className: "toastT",
-        duration: 2000,
+        message: err.data?.msg || '服务器部署于国外, 无法完成登录操作!',
+        className: "toastT error",
+        duration: 3000,
         position: "bottom",
       });
       console.log("登录接口错误:", err);

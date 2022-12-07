@@ -85,6 +85,10 @@ html, body, #app {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: max-content;
+}
+.error {
+  color: red;
 }
 .toastT-bottom {
   bottom: 0.15rem;
