@@ -1,19 +1,18 @@
 <template>
   <div class="home-page">
-    <div class="home-content">
+    <div class="home-content" v-gesture="{'funcName': showMenuFn, 'distanceX': 60, 'distanceY': 60, 'type': 'right'}">
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
     </div>
-
     
     <!-- 菜单 手势隐藏菜单 -->
-    <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 60}" >
+    <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 60, 'type': 'left'}" >
       <van-popup 
         class="home-menu"
         v-model="showMenu"
         position="left" 
-        @click-overlay="toggleMenu"
+        @click-overlay="closeMenu"
         :style="{ width: '80%' }"
         :overlay-style="{'background-color': 'rgb(0 0 0 / 60%)'}"
       >
@@ -39,7 +38,6 @@
 </template>
 <script>
 import { global } from "@/mixin/global";
-import { defaultSearch } from '@/api/api'
 
 export default {
   name: "homeInclude",
@@ -112,9 +110,19 @@ export default {
       // 会报错 NavigationDuplicated: Avoided redundant navigation to current location
     },
     hideMenu(value) {
+      // console.log('显示菜单', value);
       if (value === 'left') {
         this.$store.commit('toggleMenu')
       }
+    },
+    showMenuFn(value) {
+      // console.log('显示菜单', value);
+      if (value === 'right') {
+        this.$store.commit('toggleMenu')
+      }
+    },
+    closeMenu() {
+      this.$store.commit('closeMenu')
     }
   },
   watch: {

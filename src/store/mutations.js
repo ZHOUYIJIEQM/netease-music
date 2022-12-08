@@ -50,6 +50,9 @@ const mutations = {
   toggleMenu(state) {
     state.showMenu = !state.showMenu
   },
+  closeMenu(state) {
+    state.showMenu = false
+  },
   /**
    * 保存重定向位置
    * @param {String} value 重定向位置

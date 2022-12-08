@@ -4,7 +4,7 @@ import store from "@/store";
 // 自定义配置新建 axios 实例
 let instance = axios.create({
   // baseURL: "http://localhost:3000",
-  // baseURL: "http://192.168.31.43:3000",
+  // baseURL: "http://192.168.1.9:3000",
   baseURL: "https://musicapi.yjsjyb.top",
   timeout: 1000 * 8,
   // 设置后跨域仍然有问题, 需要手动传 cookie https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1257
