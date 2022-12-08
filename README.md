@@ -1,14 +1,13 @@
 # netease-music
-> 界面模仿网易云音乐app, 基于 vue+vuex+vue-router+axios 开发, 仅供学习使用。
+> 云音乐H5移动端, 基于 Vue、Vuex、Vue Router、Axios、Scss 开发, 仅供学习使用。
 
 ## <a id="流程记录标题">[记录项目过程中遇到的一些问题](#流程记录)</a>
 
 ## 用到的一些文档
-1. [网易云音乐API 文档](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
+1. [云音乐API 文档](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
 1. [swiper 文档](https://www.swiper.com.cn/api/start/new.html)
 1. [vant 文档](https://vant-contrib.gitee.io/vant/#/zh-CN/toast)
 1. [日期处理 Moment.js](http://momentjs.cn/)
-
 
 ## 线上效果(都是在国外, 速度慢)
 1. [点此链接查看效果, F12后切换到移动端预览](https://app.yjsjyb.top/music)
