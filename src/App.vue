@@ -154,7 +154,7 @@ export default {
 #app {
   position: relative;
   .gloading {
-    z-index: calc($playerZIndex + 1);
+    z-index: 9999;
     position: fixed;
     top: 50%;
     left: 50%;

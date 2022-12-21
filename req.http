@@ -1,0 +1,26 @@
+###
+POST http://localhost:3000/comment/new
+content-type: application/json
+
+{
+  "id": "924680166",
+  "pageNo": 1,
+  "pageSize": 20,
+  "sortType": 99,
+  "type": 2
+}
+
+###
+POST http://localhost:3000/comment/playlist
+content-type: application/json
+
+{
+  "id": "924680166",
+  "limit": 10,
+  "offset": 0
+}
+
+
+
+###
+GET http://localhost:3000/comment/new?id=924680166&type=2&pageSize=20&pageNo=1&sortType=1

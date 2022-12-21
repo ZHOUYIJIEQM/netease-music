@@ -1,13 +1,13 @@
 <template>
   <div class="home-page">
-    <div class="home-content" v-gesture="{'funcName': showMenuFn, 'distanceX': 60, 'distanceY': 60, 'type': 'right'}">
+    <div class="home-content" v-gesture="{'funcName': showMenuFn, 'distanceX': 60, 'distanceY': 100, 'type': 'right'}">
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
     </div>
     
     <!-- 菜单 手势隐藏菜单 -->
-    <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 60, 'type': 'left'}" >
+    <div v-gesture="{'funcName': hideMenu, 'distanceX': 60, 'distanceY': 100, 'type': 'left'}" >
       <van-popup 
         class="home-menu"
         v-model="showMenu"
@@ -90,7 +90,8 @@ export default {
       // keep-alive watch $route 时需要限制在哪些路由页触发
       let routeName = to.name;
       // console.log(routeName);
-      if (routeName === 'Find' || routeName === 'Mine' || routeName === 'YunVillage') {
+      // if (routeName === 'Find' || routeName === 'Mine' || routeName === 'YunVillage') {
+      if (['Find', 'Mine', 'YunVillage'].includes(routeName)) {
         this.$router.push({ name: routeName })
           .catch((err) => {});
         this.tabIndex = this.tabArr.findIndex((item) => item === routeName);
@@ -127,10 +128,10 @@ export default {
   },
   watch: {
     // 因为 keep-alive 所以只要路由变化就会触发, 即进入其他路由也会执行 initTab, 所以需要限制在哪些路由页才能触发
-    // $route: {
-    //   handler: "initTab",
-    //   immediate: true,
-    // },
+    $route: {
+      handler: "initTab",
+      immediate: true,
+    },
   },
 };
 </script>

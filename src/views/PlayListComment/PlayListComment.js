@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar"
-import CommentItem from "@/components/CommentItem"
+import CommentItem from "@/components/Comment/CommentItem"
 import { global } from "@/mixin/global.js";
 import { playListDetail, commentNew } from "@/api/api.js";
 
@@ -19,7 +19,8 @@ export default {
       // 歌单信息
       playList: {},
       // 评论标记
-      active: "最新",
+      active: "推荐",
+      // active: "最新",
       // 第几页评论
       pageNum: 1,
       // 是否有更多评论
@@ -86,7 +87,7 @@ export default {
           }
           // let sortType = 99
           if (this.active === '推荐') {
-            params.sortType = 99
+            params.sortType = 1
           } else if (this.active === '最新') {
             params.sortType = 3
             this.cursor && (params.cursor = this.cursor)
@@ -96,7 +97,7 @@ export default {
             this.cursor && (params.cursor = this.cursor)
           }
           let comment = await commentNew(params)
-          // console.log(comment.data);
+          console.log('新版评论', comment.data);
           this.hasMore = comment.data.hasMore
           comment.data.cursor && (this.cursor = comment.data.cursor)
           this.pageNum++
@@ -121,14 +122,14 @@ export default {
         this.comments = []
         this.pageNum = 1
         this.getComment()
-        if (type === '推荐' || type === '最热') {
-          this.$toast({
-            message: '接口存在bug, 推荐, 最热可能无法正常读取数据!',
-            className: "toastT",
-            duration: 2000,
-            position: "bottom",
-          })
-        }
+        // if (type === '推荐' || type === '最热') {
+        //   this.$toast({
+        //     message: '接口存在bug, 推荐, 最热可能无法正常读取数据!',
+        //     className: "toastT",
+        //     duration: 2000,
+        //     position: "bottom",
+        //   })
+        // }
       }
     },
     // 滚动加载更多

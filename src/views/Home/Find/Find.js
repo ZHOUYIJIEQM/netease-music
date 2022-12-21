@@ -86,7 +86,7 @@ export default {
       scrollPlayList: {
         // nested: true,
         // mousewheel: true,
-        speed: 600,
+        speed: 400,
         // // 循环
         loop: true,
         direction : 'vertical',
@@ -102,7 +102,7 @@ export default {
         // 自动轮播
         autoplay: {
           // 间隔时间
-          delay: 2000,
+          delay: 3000,
           // 滑动操作离开后重新自动播放
           // disableOnInteraction: false,
         },
@@ -292,7 +292,7 @@ export default {
         // 需要先设置 watchSlidesProgress: true
         let slideProgress = slides[i].progress;
         let scale = 1 - Math.abs(slideProgress) / 3;
-        scale = scale < 1 ? 0.75 : 1
+        scale = scale < 1 ? 0.7 : 1
         slides.eq(i).transform('scale(' + scale + ')');
       }
     },

@@ -207,7 +207,7 @@ export function collectPlayList(params) {
  * offset: 偏移数量 , 用于分页
  * before: 分页参数,取上一页最后一项的 time 获取下一页数据, 获取超过5000条评论的时候需要用到
  */
-export function playListComment(params = {}) {
+export function playListCommentReq(params = {}) {
   return post(`/comment/playlist`, params);
 }
 
@@ -240,7 +240,7 @@ export function commentHot(params = {}) {
  * cursor: 当sortType为3时且页数不是第一页时需传入, 值为上一条数据的time
  */
 export function commentNew(params = {}) {
-  return post("/comment/new", params);
+  return get("/comment/new", params);
 }
 
 /**

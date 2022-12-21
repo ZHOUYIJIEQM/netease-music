@@ -32,9 +32,10 @@ Vue.directive('gesture', {
     // 阻止浏览器自带的后台操作
     el.addEventListener("touchmove", (e) => {
       if (touchX < startX) {
+        e.stopPropagation()
         e.preventDefault();
       }
-    }, { passive: false })
+    }, { passive: false, capture: true })
     el.addEventListener("touchend", (e) => {
       if (e.changedTouches[0].clientX === touchX) {
         return
